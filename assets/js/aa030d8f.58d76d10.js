@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwake_docs=self.webpackChunkwake_docs||[]).push([[6124],{8334:s=>{s.exports=JSON.parse('{"blogTitle":"Blog","blogDescription":"Blog","totalPosts":4,"totalRecentPosts":3}')}}]);

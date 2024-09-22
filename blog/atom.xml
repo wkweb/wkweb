@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://wake-tools/blog/</id>
+    <title>Wake-Tools Blog</title>
+    <updated>2024-08-10T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://wake-tools/blog/"/>
+    <subtitle>Wake-Tools Blog</subtitle>
+    <icon>https://wake-tools/img/favicon.png</icon>
+    <entry>
+        <title type="html"><![CDATA[Wake template]]></title>
+        <id>https://wake-tools/blog/template/</id>
+        <link href="https://wake-tools/blog/template/"/>
+        <updated>2024-08-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A  template to get started in seconds instead of hours]]></summary>
+        <content type="html"><![CDATA[<p><img decoding="async" loading="lazy" src="https://raw.githubusercontent.com/wkweb/rc/main/blog/template/ui.png" alt="thumbnail" class="img_ev3q"></p>
+<p>We have all heard of writers looking at a blank page for hours trying to get over writer's block....</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="template-structure">Template structure<a href="https://wake-tools/blog/template/#template-structure" class="hash-link" aria-label="Direct link to Template structure" title="Direct link to Template structure">​</a></h3>
+<blockquote>
+<p><em>🔗 Link to</em> <a href="https://github.com/" target="_blank" rel="noopener noreferrer"><em>template</em></a></p>
+</blockquote>
+<p>The repository contains:</p>
+<ul>
+<li>a <code>bootstrap</code> directory</li>
+<li>a <code>modules</code> directory</li>
+</ul>
+<blockquote>
+<p>⚠️ Todo ...</p>
+</blockquote>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="feedback">Feedback<a href="https://wake-tools/blog/template/#feedback" class="hash-link" aria-label="Direct link to Feedback" title="Direct link to Feedback">​</a></h3>
+<p>We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts, inputs and questions
+regarding this starter template and corresponding guide here. Thanks!</p>]]></content>
+        <author>
+            <name>Michael Banville</name>
+            <uri>https://github.com/michael-banville/</uri>
+        </author>
+        <category label="template" term="template"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Wake template]]></title>
+        <id>https://wake-tools/blog/template/</id>
+        <link href="https://wake-tools/blog/template/"/>
+        <updated>2024-08-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A  template to get started in seconds instead of hours]]></summary>
+        <content type="html"><![CDATA[<p><img decoding="async" loading="lazy" src="https://raw.githubusercontent.com/wkweb/rc/main/blog/template/ui.png" alt="thumbnail" class="img_ev3q"></p>
+<p>We have all heard of writers looking at a blank page for hours trying to get over writer's block....</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="template-structure">Template structure<a href="https://wake-tools/blog/template/#template-structure" class="hash-link" aria-label="Direct link to Template structure" title="Direct link to Template structure">​</a></h3>
+<blockquote>
+<p><em>🔗 Link to</em> <a href="https://github.com/" target="_blank" rel="noopener noreferrer"><em>template</em></a></p>
+</blockquote>
+<p>The repository contains:</p>
+<ul>
+<li>a <code>bootstrap</code> directory</li>
+<li>a <code>modules</code> directory</li>
+</ul>
+<blockquote>
+<p>⚠️ Todo ...</p>
+</blockquote>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="feedback">Feedback<a href="https://wake-tools/blog/template/#feedback" class="hash-link" aria-label="Direct link to Feedback" title="Direct link to Feedback">​</a></h3>
+<p>We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts, inputs and questions
+regarding this starter template and corresponding guide here. Thanks!</p>]]></content>
+        <author>
+            <name>Michael Banville</name>
+            <uri>https://github.com/michael-banville/</uri>
+        </author>
+        <category label="template" term="template"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Wake template]]></title>
+        <id>https://wake-tools/blog/template/</id>
+        <link href="https://wake-tools/blog/template/"/>
+        <updated>2024-08-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A  template to get started in seconds instead of hours]]></summary>
+        <content type="html"><![CDATA[<p><img decoding="async" loading="lazy" src="https://raw.githubusercontent.com/wkweb/rc/main/blog/template/ui.png" alt="thumbnail" class="img_ev3q"></p>
+<p>We have all heard of writers looking at a blank page for hours trying to get over writer's block....</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="template-structure">Template structure<a href="https://wake-tools/blog/template/#template-structure" class="hash-link" aria-label="Direct link to Template structure" title="Direct link to Template structure">​</a></h3>
+<blockquote>
+<p><em>🔗 Link to</em> <a href="https://github.com/" target="_blank" rel="noopener noreferrer"><em>template</em></a></p>
+</blockquote>
+<p>The repository contains:</p>
+<ul>
+<li>a <code>bootstrap</code> directory</li>
+<li>a <code>modules</code> directory</li>
+</ul>
+<blockquote>
+<p>⚠️ Todo ...</p>
+</blockquote>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="feedback">Feedback<a href="https://wake-tools/blog/template/#feedback" class="hash-link" aria-label="Direct link to Feedback" title="Direct link to Feedback">​</a></h3>
+<p>We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts, inputs and questions
+regarding this starter template and corresponding guide here. Thanks!</p>]]></content>
+        <author>
+            <name>Michael Banville</name>
+            <uri>https://github.com/michael-banville/</uri>
+        </author>
+        <category label="template" term="template"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Wake template]]></title>
+        <id>https://wake-tools/blog/template/</id>
+        <link href="https://wake-tools/blog/template/"/>
+        <updated>2024-08-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A  template to get started in seconds instead of hours]]></summary>
+        <content type="html"><![CDATA[<p><img decoding="async" loading="lazy" src="https://raw.githubusercontent.com/wkweb/rc/main/blog/template/ui.png" alt="thumbnail" class="img_ev3q"></p>
+<p>We have all heard of writers looking at a blank page for hours trying to get over writer's block....</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="template-structure">Template structure<a href="https://wake-tools/blog/template/#template-structure" class="hash-link" aria-label="Direct link to Template structure" title="Direct link to Template structure">​</a></h3>
+<blockquote>
+<p><em>🔗 Link to</em> <a href="https://github.com/" target="_blank" rel="noopener noreferrer"><em>template</em></a></p>
+</blockquote>
+<p>The repository contains:</p>
+<ul>
+<li>a <code>bootstrap</code> directory</li>
+<li>a <code>modules</code> directory</li>
+</ul>
+<blockquote>
+<p>⚠️ Todo ...</p>
+</blockquote>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="feedback">Feedback<a href="https://wake-tools/blog/template/#feedback" class="hash-link" aria-label="Direct link to Feedback" title="Direct link to Feedback">​</a></h3>
+<p>We love feedback! Whether you are just starting out or you are a seasoned professional, we'd like to hear your thoughts, inputs and questions
+regarding this starter template and corresponding guide here. Thanks!</p>]]></content>
+        <author>
+            <name>Michael Banville</name>
+            <uri>https://github.com/michael-banville/</uri>
+        </author>
+        <category label="template" term="template"/>
+    </entry>
+</feed>
