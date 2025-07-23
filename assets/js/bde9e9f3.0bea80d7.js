@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwake_docs=self.webpackChunkwake_docs||[]).push([[5736],{8632:(e,s,t)=>{t.r(s),t.d(s,{default:()=>r});t(6540);var c=t(6347),d=t(4848);function r(){return(0,d.jsx)(c.rd,{to:"/docs/design/telemetry"})}}}]);

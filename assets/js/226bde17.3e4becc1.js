@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwake_docs=self.webpackChunkwake_docs||[]).push([[5114],{1407:e=>{e.exports=JSON.parse('{"tags":[{"label":"add-a-new-module","permalink":"/guides/tags/add-a-new-module","count":1}]}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwake_docs=self.webpackChunkwake_docs||[]).push([[5698],{1041:e=>{e.exports=JSON.parse('{"tags":[{"label":"template","permalink":"/blog/tags/template","count":4}]}')}}]);
