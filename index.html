@@ -152,12 +152,23 @@
         }
 
       .frameless-slideshow-wrapper {
-    position: relative;
-    width: 100%;
- height: auto;
+         height: 100%;
 
+      }
+      
+      
+.frameless-slide img.animate-vertical {
+    transition: transform 0.4s ease-out; 
+    will-change: transform;
 }
-        
+
+@keyframes floatY {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(var(--float-distance)); }
+}
+
+
+              
         /* Classe pour désactiver temporairement la transition */
         .frameless-slideshow-wrapper.no-transition {
             transition: none !important;
@@ -536,6 +547,7 @@
             window.addEventListener('scroll', () => {
                 if (!ticking) {
                     window.requestAnimationFrame(() => {
+                       
                         const scrollY = window.scrollY;
 
                         // Parallax effect on the wrapper
@@ -617,11 +629,9 @@
             });
 
             const setSlideClasses = () => {
-            
-            
+                        
                updateSlidePositions();
-               
-               
+
                 let frameIndex = ((framelessSlideIndex) + TotalSlides) % TotalSlides;
                         
                 framelessSlides.forEach((slide, index) => {
@@ -646,7 +656,110 @@
                 document.querySelectorAll('.frameless-dot').forEach((dot, index) => {
                     dot.classList.toggle('active', index === currentOriginalIndex);
                 });
+                
+                
             };
+            
+            
+            function setImageYOffset(index, yOffset) {
+                const slide = framelessSlides[index];
+                if (!slide) return;
+
+                const img = slide.querySelector('img');
+                if (!img) return;
+
+                img.style.transform = `translateY(${yOffset}px)`;
+            }
+
+                        
+          function getImageOverflowY(index) {
+             const slide = framelessSlides[index];
+             if (!slide) return 0;
+
+             const img = slide.querySelector('img');
+             if (!img || !img.complete) return 0;
+
+             const containerHeight = slide.offsetHeight;
+             const naturalHeight = img.naturalHeight; // toujours en pixels réels, même si image réduite
+
+           //console.log("containerHeight =", containerHeight);
+           //console.log(" img.naturalHeight =",  img.naturalHeight);
+
+
+             const overflow = containerHeight  - naturalHeight;
+         // return overflow < 0 ? overflow : 0;
+          return overflow;
+         }
+
+
+
+
+         let toY = 0;
+         let toYY = 0;
+         let last = -1;
+
+
+           function updateVerticalAnimation() {
+               const total = framelessSlides.length;
+               const frameIndex = framelessSlideIndex % total;
+               const overflowY =  getImageOverflowY(frameIndex);
+            
+                 
+                 if(last!= frameIndex){
+                     last=frameIndex;
+                     if(overflowY>=0){
+                           toY = overflowY/2.0;
+                     }else{
+                        toY = 0.0;
+                     }
+                     toYY=0;
+                          console.log(" img.overflowY =",  overflowY);
+                     
+                     
+                 }
+                 
+               
+               if(overflowY>0){
+                    //toYY =  0;
+                    //toY=overflowY;
+               }else{
+               
+                 if(toYY >= 0 && toY >=-5){
+                     toYY =  overflowY-20;
+                  }
+                // if(toYY < overflowY && toY < overflowY-5){
+                //    toYY = 20;
+                // }
+             }
+             
+
+              // toY -= (toY-toYY)/200;
+               //if(toYY< toY){
+               //}
+               toY-=0.25;
+        
+               
+                 if(overflowY>=0){
+          
+                        setImageYOffset(frameIndex, toY);
+                 }else{
+                        let posY= toY;
+                        if(posY> overflowY){ posY = overflowY;}
+                        if(posY<0){ posY = 0;}
+                        setImageYOffset(frameIndex, toY);
+                 
+                 }
+               
+              // setImageYOffset(2, -150)
+            }
+
+            function loopVerticalAnimation() {
+                   updateVerticalAnimation();
+                   requestAnimationFrame(loopVerticalAnimation);
+               }
+
+            
+            requestAnimationFrame(loopVerticalAnimation);
 
             // This function applies the transform, and handles adding/removing no-transition
             // It now also dynamically sets the transition duration
@@ -742,7 +855,7 @@ function updateSlidePositions() {
         // }
 
     }
-    console.log("Total cumulativeOffset =", cumulativeOffset);
+    //console.log("Total cumulativeOffset =", cumulativeOffset);
 
     // Largeur totale réelle des slides
     const totalslideWidth = cumulativeOffset;
@@ -851,6 +964,8 @@ function updateSlidePositions() {
             // Initial setup - important to start at the first "real" slide (index 1)
             applyTransform(false); // Start without transition to position correctly
             setSlideClasses(); // Apply initial classes
+           
+
 
             // Recalculate position on window resize to ensure correct centering
             window.addEventListener('resize', () => {
@@ -858,6 +973,7 @@ function updateSlidePositions() {
                 framelessWrapper.classList.add('no-transition');
                 applyTransform(false); 
                 setSlideClasses(); 
+         
                 // Force a reflow to apply no-transition immediately
                 framelessWrapper.offsetWidth; 
                 // Re-enable transition after a very short delay
@@ -867,7 +983,7 @@ function updateSlidePositions() {
             // Start auto-advance after initial setup
             framelessSlideshowTimer = setTimeout(() => {
                 framelessPlusSlides(1);
-            }, 5000);
+            }, 10000);
         });
     </script>
 </body>
