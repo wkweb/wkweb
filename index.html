@@ -159,6 +159,32 @@
                 -2px  2px 0 #000,
                  2px  2px 0 #000;
         }
+        
+        
+     .gallery-item {
+          transition: transform 0.4s ease, opacity 0.4s ease, z-index 0.4s;
+          transform: scale(1);
+          z-index: 1;
+          opacity: 1;
+          pointer-events: auto;
+      }
+
+      .gallery-item.focused {
+            transform: scale(1.75) translateZ(0);
+          z-index: 50;
+          opacity: 1;
+          position: relative;
+          
+      }
+
+.gallery-item.shrunk {
+    transform: scale(0.6); /* Plus petit que 0.8 */
+    opacity: 0.2;
+    filter: blur(2px);
+    z-index: 0;
+}
+
+
     </style>
 </head>
 <body class="min-h-screen">
@@ -454,7 +480,106 @@
             document.querySelectorAll('.manifesto-line').forEach((el, i) => {
                 setTimeout(() => observer.observe(el), i * 200);
             });
+       
+
+
+
+
+
+
+    // === CONFIGURATION DES PROJETS (index des galeries) ===
+    const galleries = [
+        {
+            selector: ".gallery-item:nth-child(1)",
+            images: [
+                "assets/gallery/demo1-1.webp",
+                "assets/gallery/demo1-2.gif",
+                "assets/gallery/demo1-3.webp"
+            ]
+        },
+        {
+            selector: ".gallery-item:nth-child(2)",
+            images: [
+                "assets/gallery/demo2-1.webp",
+                "assets/gallery/demo2-2.gif"
+            ]
+        },
+        {
+            selector: ".gallery-item:nth-child(3)",
+            images: [
+                "assets/gallery/demo3-1.webp",
+                "assets/gallery/demo3-2.webp"
+            ]
+        },
+        {
+            selector: ".gallery-item:nth-child(4)",
+            images: [
+                "assets/gallery/demo4-1.webp",
+                "assets/gallery/demo4-2.gif"
+            ]
+        },
+        {
+            selector: ".gallery-item:nth-child(5)",
+            images: [
+                "assets/gallery/demo5-1.webp",
+                "assets/gallery/demo5-2.webp"
+            ]
+        },
+        {
+            selector: ".gallery-item:nth-child(6)",
+            images: [
+                "assets/gallery/demo6-1.webp",
+                "assets/gallery/demo6-2.gif"
+            ]
+        }
+    ];
+
+    // === CHARGEMENT & CYCLAGE ===
+    galleries.forEach(gallery => {
+        const container = document.querySelector(gallery.selector);
+        const imgEl = container.querySelector("img");
+        let index = 0;
+
+        if (!imgEl || !container) return;
+
+        // Charge la première image
+        imgEl.src = gallery.images[0];
+
+        // Précharge les suivantes (non bloquant)
+        for (let i = 1; i < gallery.images.length; i++) {
+            const preload = new Image();
+            preload.src = gallery.images[i];
+        }
+
+        // Lance le cycle
+        setInterval(() => {
+            index = (index + 1) % gallery.images.length;
+            imgEl.src = gallery.images[index];
+        }, 3000 + Math.random() * 2000); // Délai aléatoire entre 3 et 5s
+    });
+
+    // === HOVER FOCUS EFFECT ===
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    galleryItems.forEach(item => {
+        item.addEventListener("mouseenter", () => {
+            galleryItems.forEach(other => {
+                if (other !== item) {
+                    other.classList.add("shrunk");
+                    other.classList.remove("focused");
+                } else {
+                    other.classList.add("focused");
+                }
+            });
         });
-    </script>
+        item.addEventListener("mouseleave", () => {
+            galleryItems.forEach(el => {
+                el.classList.remove("shrunk", "focused");
+            });
+        });
+    });
+});
+</script>
+
+
 </body>
 </html>
