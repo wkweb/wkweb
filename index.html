@@ -140,23 +140,24 @@
 
         /* --- Frameless Slideshow Specific Styles --- */
         .frameless-slideshow-container {
-            position: relative;
-            width: 100%; /* Take full width of its parent */
-            margin: 0 0; /* Center the container */
-            overflow: hidden; /* Crucial: hide parts of images outside the central view */
-            cursor: grab; /* Indicates it's draggable */
+          position: relative;
+          width: 100%;
+        height: 700px;
+          overflow: hidden;
+          cursor: grab;
         }
 
         .frameless-slideshow-container.grabbing {
             cursor: grabbing;
         }
 
-        .frameless-slideshow-wrapper {
-            display: flex; /* Arrange slides horizontally */
-            /* La durée de transition sera définie dynamiquement par JS */
-            transition: transform 0.6s ease-out; 
-            will-change: transform; /* Optimize for animation */
-        }
+      .frameless-slideshow-wrapper {
+    position: relative;
+    width: 100%;
+ height: auto;
+
+}
+        
         /* Classe pour désactiver temporairement la transition */
         .frameless-slideshow-wrapper.no-transition {
             transition: none !important;
@@ -164,25 +165,26 @@
 
 
         .frameless-slide {
-            flex-shrink: 0; /* Prevent slides from shrinking */
-            width: 100%; /* Each slide occupies the full width of the viewable area */
-            display: flex;
-            justify-content: center; /* Center image horizontally */
-            align-items: center; /* Center image vertically */
-            box-sizing: border-box; /* Include padding in width calculation */
-            position: relative; /* For overlays/filters */
-            user-select: none;
+            position: absolute;
+          top: 0;
+          left: 0;
+          user-select: none;
+          width: 100%; /* ou une largeur fixe si tu préfères */
+          height: 100%;
+         // display: flex;
+          justify-content: center;
+          align-items: center;
+        
         }
 
-        .frameless-slide img {
-            max-width: 100%;
-            max-height: 70vh; /* Control image height to fit screen */
-            object-fit: contain; /* Ensure image is fully visible, no cropping */
-            display: block;
-            /* Transition uniquement pour filter et transform, pas pour max-width/height */
-            transition: filter 0.6s ease-out, transform 0.6s ease-out;
-            will-change: filter, transform; /* Optimize for animation */
-        }
+.frameless-slide img {
+    max-width: 100%; /* Permet à l'image de prendre sa largeur naturelle, mais ne pas dépasser 100% de son parent */
+    height: auto;    /* Maintient le ratio d'aspect de l'image */
+    object-fit: contain; /* Assure que l'image entière est visible à l'intérieur de son conteneur */
+    user-select: none;
+    display: block; /* Élimine les espaces blancs sous l'image */
+    margin: 0 auto; /* Centre l'image horizontalement dans la diapositive */
+}
 
         /* Overlay for darkening effect on side images */
         .frameless-slide::after {
@@ -191,7 +193,9 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+           height: auto;
+            object-fit: contain;
+            
             background: rgba(0, 0, 0, 0); /* Start transparent */
             pointer-events: none; /* Allow clicks/interactions on image below */
             transition: background 0.6s ease-out; /* Smooth transition for overlay */
@@ -592,6 +596,7 @@
             let framelessSlideIndex = TotalSlides*10;//prevent negative values
 
             let isDragging = false;
+            let moveY = 0;  
             let startPos = 0;
             let currentTranslate = 0;
             let prevTranslate = 0;
@@ -624,7 +629,6 @@
                                      
                     const diff = index - frameIndex;
                     const absDiff = Math.abs(diff);
-     //slide.classList.add('active');
      
                     if (absDiff === 0) {
                         slide.classList.add('active');
@@ -688,10 +692,10 @@
                 }, 5000); // 5 seconds
                 
                 
-                normalizeSlides();
-                
             };
-            
+           
+
+/*           
          function updateSlidePositions() {
              const slideWidth = framelessSlides[0].offsetWidth;
              const visibleCount = 2;
@@ -701,7 +705,7 @@
              let framepos = Math.floor(framelessSlideIndex/TotalSlides)*TotalSlides;
 
              for (let i = 0; i < total; i++) {
-                  let offset = framepos * slideWidth;
+                  let offset = framepos * slideWidth + slideWidth/2;
                   if(i<visibleCount && frameIndex>total-visibleCount){
                      offset+=slideWidth*TotalSlides;
                   }
@@ -714,6 +718,63 @@
                   
              }
          }
+*/
+function updateSlidePositions() {
+    const total = framelessSlides.length;
+  //  const containerWidth = framelessWrapper.parentElement.offsetWidth;
+
+    // Calcul de l'index réel dans la plage [0, total)
+    const frameIndex = framelessSlideIndex % total;
+    const loopIndex = Math.floor(framelessSlideIndex / total);
+
+    // Calcule les positions X cumulées pour chaque slide
+    let slideOffsets = [];
+    let cumulativeOffset = 0;
+
+    for (let i = 0; i < total; i++) {
+        slideOffsets.push(cumulativeOffset);
+       // cumulativeOffset += framelessSlides[i].offsetWidth;
+        cumulativeOffset += framelessSlides[i].getBoundingClientRect().width;
+        //cumulativeOffset += 500;
+        // const img = framelessSlides[i].querySelector('img');
+        // if (img) {
+        //     cumulativeOffset += img.naturalWidth;
+        // }
+
+    }
+    console.log("Total cumulativeOffset =", cumulativeOffset);
+
+    // Largeur totale réelle des slides
+    const totalslideWidth = cumulativeOffset;
+
+    // Position absolue de la slide active dans l'ensemble étendu
+   // const activeAbsoluteOffset = loopIndex * totalslideWidth + slideOffsets[frameIndex];
+
+    // Décalage à appliquer pour centrer la slide active dans le viewport
+   // const centerShift = activeAbsoluteOffset - ((containerWidth - framelessSlides[frameIndex].offsetWidth) / 2);
+
+
+
+
+    // Applique le translateX à chaque slide
+    for (let i = 0; i < total; i++) {
+        const absoluteSlideOffset = loopIndex * totalslideWidth + slideOffsets[i];
+        //let offset = absoluteSlideOffset - centerShift;
+        let offset = absoluteSlideOffset ;
+
+         // Gestion du wrap circulaire pour affichage fluide
+         const visibleCount = 2;
+         if (i < visibleCount && frameIndex > total - visibleCount) {
+               offset += totalslideWidth;
+         } else if (i > total - visibleCount && frameIndex < visibleCount) {
+               offset -= totalslideWidth;
+         }
+         
+        framelessSlides[i].style.transform = `translateX(${offset}px)`;
+       // framelessSlides[i].style.transform = `translateY(${moveY}px)`;.
+       // framelessSlides[i].style.transform = `translateX(${offset}px) translateY(${moveY}px)`;
+    }
+}
 
 
 
