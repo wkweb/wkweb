@@ -18,12 +18,8 @@
     <title>WAKE JIT Engine - The Power of a Live Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
-   
-   
-      
-    
-    <style>
-                                                                                                                                               
+    <script>fetch("index.html?_="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>//i.test(t)&&RegExp.$1.trim()!=="v0003" &&location.reload());</script>
+                                                                                                                                                                    <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000;
@@ -144,44 +140,23 @@
 
         /* --- Frameless Slideshow Specific Styles --- */
         .frameless-slideshow-container {
-          position: relative;
-          width: 100%;
-        height: 700px;
-          overflow: hidden;
-          cursor: grab;
+            position: relative;
+            width: 100%; /* Take full width of its parent */
+            margin: 0 0; /* Center the container */
+            overflow: hidden; /* Crucial: hide parts of images outside the central view */
+            cursor: grab; /* Indicates it's draggable */
         }
 
         .frameless-slideshow-container.grabbing {
             cursor: grabbing;
         }
 
-      .frameless-slideshow-wrapper {
-         height: 100%;
-
-      }
-      
-      .frameless-subtitle {
-          text-align: center;
-          color: white;
-          font-size: 1.25rem;
-          margin-top: 1rem;
-          font-family: sans-serif;
-          transition: opacity 0.3s ease;
-      }
-            
-      
-.frameless-slide img.animate-vertical {
-    transition: transform 0.4s ease-out; 
-    will-change: transform;
-}
-
-@keyframes floatY {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(var(--float-distance)); }
-}
-
-
-              
+        .frameless-slideshow-wrapper {
+            display: flex; /* Arrange slides horizontally */
+            /* La durée de transition sera définie dynamiquement par JS */
+            transition: transform 0.6s ease-out; 
+            will-change: transform; /* Optimize for animation */
+        }
         /* Classe pour désactiver temporairement la transition */
         .frameless-slideshow-wrapper.no-transition {
             transition: none !important;
@@ -189,26 +164,25 @@
 
 
         .frameless-slide {
-            position: absolute;
-          top: 0;
-          left: 0;
-          user-select: none;
-          width: 100%; /* ou une largeur fixe si tu préfères */
-          height: 100%;
-         // display: flex;
-          justify-content: center;
-          align-items: center;
-        
+            flex-shrink: 0; /* Prevent slides from shrinking */
+            width: 100%; /* Each slide occupies the full width of the viewable area */
+            display: flex;
+            justify-content: center; /* Center image horizontally */
+            align-items: center; /* Center image vertically */
+            box-sizing: border-box; /* Include padding in width calculation */
+            position: relative; /* For overlays/filters */
+            user-select: none;
         }
 
-.frameless-slide img {
-    max-width: 100%; /* Permet à l'image de prendre sa largeur naturelle, mais ne pas dépasser 100% de son parent */
-    height: auto;    /* Maintient le ratio d'aspect de l'image */
-    object-fit: contain; /* Assure que l'image entière est visible à l'intérieur de son conteneur */
-    user-select: none;
-    display: block; /* Élimine les espaces blancs sous l'image */
-    margin: 0 auto; /* Centre l'image horizontalement dans la diapositive */
-}
+        .frameless-slide img {
+            max-width: 100%;
+            max-height: 70vh; /* Control image height to fit screen */
+            object-fit: contain; /* Ensure image is fully visible, no cropping */
+            display: block;
+            /* Transition uniquement pour filter et transform, pas pour max-width/height */
+            transition: filter 0.6s ease-out, transform 0.6s ease-out;
+            will-change: filter, transform; /* Optimize for animation */
+        }
 
         /* Overlay for darkening effect on side images */
         .frameless-slide::after {
@@ -217,9 +191,7 @@
             top: 0;
             left: 0;
             width: 100%;
-           height: auto;
-            object-fit: contain;
-            
+            height: 100%;
             background: rgba(0, 0, 0, 0); /* Start transparent */
             pointer-events: none; /* Allow clicks/interactions on image below */
             transition: background 0.6s ease-out; /* Smooth transition for overlay */
@@ -386,18 +358,23 @@
 
         <section class="py-20 px-0 max-w-full overflow-hidden">
             <h2 class="mono text-3xl font-bold mb-12 text-center">Wake in Action</h2>
-            
-            
-                        <div class="frameless-subtitle" id="framelessSubtitle"></div>
-                        
             <div class="frameless-slideshow-container" id="framelessSlideshowContainer">
-            
-
-
-
-
                 <div class="frameless-slideshow-wrapper" id="framelessSlideshowWrapper">
-                    
+                    <div class="frameless-slide">
+                        <img src="images/frameless/01.png" alt="Wake in Action 1" draggable="false">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/02.png" alt="Wake in Action 2" draggable="false">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/03.png" alt="Wake in Action 3" draggable="false">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/04.gif" alt="Wake in Action 4" draggable="false">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/05.gif" alt="Wake in Action 5" draggable="false">
+                    </div>
                 </div>
 
                 <a class="frameless-slideshow-nav prev" id="framelessNavPrev">&#10094;</a>
@@ -555,7 +532,6 @@
             window.addEventListener('scroll', () => {
                 if (!ticking) {
                     window.requestAnimationFrame(() => {
-                       
                         const scrollY = window.scrollY;
 
                         // Parallax effect on the wrapper
@@ -616,7 +592,6 @@
             let framelessSlideIndex = TotalSlides*10;//prevent negative values
 
             let isDragging = false;
-            let moveY = 0;  
             let startPos = 0;
             let currentTranslate = 0;
             let prevTranslate = 0;
@@ -637,9 +612,11 @@
             });
 
             const setSlideClasses = () => {
-                        
+            
+            
                updateSlidePositions();
-
+               
+               
                 let frameIndex = ((framelessSlideIndex) + TotalSlides) % TotalSlides;
                         
                 framelessSlides.forEach((slide, index) => {
@@ -647,6 +624,7 @@
                                      
                     const diff = index - frameIndex;
                     const absDiff = Math.abs(diff);
+     //slide.classList.add('active');
      
                     if (absDiff === 0) {
                         slide.classList.add('active');
@@ -664,107 +642,7 @@
                 document.querySelectorAll('.frameless-dot').forEach((dot, index) => {
                     dot.classList.toggle('active', index === currentOriginalIndex);
                 });
-                
-                
             };
-            
-            
-            function setImageYOffset(index, yOffset) {
-                const slide = framelessSlides[index];
-                if (!slide) return;
-
-                const img = slide.querySelector('img');
-                if (!img) return;
-
-                img.style.transform = `translateY(${yOffset}px)`;
-            }
-
-                        
-          function getImageOverflowY(index) {
-             const slide = framelessSlides[index];
-             if (!slide) return 0;
-
-             const img = slide.querySelector('img');
-             if (!img || !img.complete) return 0;
-
-             const containerHeight = slide.offsetHeight;
-             const naturalHeight = img.naturalHeight; // toujours en pixels réels, même si image réduite
-
-           //console.log("containerHeight =", containerHeight);
-           //console.log(" img.naturalHeight =",  img.naturalHeight);
-
-
-             const overflow = containerHeight  - naturalHeight;
-         // return overflow < 0 ? overflow : 0;
-          return overflow;
-         }
-
-
-
-
-         let toY = 0;
-         let toYY = 0;
-         let last = -1;
-
-
-           function updateVerticalAnimation() {
-               const total = framelessSlides.length;
-               const frameIndex = framelessSlideIndex % total;
-               const overflowY =  getImageOverflowY(frameIndex);
-            
-                 
-                 if(last!= frameIndex){
-                     last=frameIndex;
-                     if(overflowY>=0){
-                        //   toY = overflowY/2.0;
-                           toY =overflowY;
-                     }else{
-                        toY = overflowY;
-                     }
-                     if(Math.abs(overflowY)<20){
-                     toY=0;
-                     }
-                     
-                     
-                     toYY=toY;
-                          console.log(" img.overflowY =",  overflowY);
-                     
-                     
-                 }
-
-
-              // toY -= (toY-toYY)/200;
-               //if(toYY< toY){
-               //}
-                  if(toY<-1){
-               toY+=0.25;
-               }
-                    if(toY>1){
-               toY-=0.25;
-               }
-        
-               
-                 if(overflowY>=0){
-          
-                        setImageYOffset(frameIndex, toY);
-                 }else{
-                        let posY= toY;
-                        if(posY> overflowY){ posY = overflowY;}
-                        if(posY<0){ posY = 0;}
-                        setImageYOffset(frameIndex, toY);
-                 
-                 }
-               
-              // setImageYOffset(2, -150)
-            }
-
-            function loopVerticalAnimation() {
-                   updateVerticalAnimation();
-                   requestAnimationFrame(loopVerticalAnimation);
-               }
-
-            
-            requestAnimationFrame(loopVerticalAnimation);
 
             // This function applies the transform, and handles adding/removing no-transition
             // It now also dynamically sets the transition duration
@@ -803,67 +681,39 @@
 
                 // Apply transform (with or without transition and dynamic duration)
                 applyTransform(true, actualTransitionDuration); 
-                
-                
-                
-                 updateFramelessSubtitle(framelessSlideIndex);
-                 
-                 
 
                 // Restart auto-advance timer
                 framelessSlideshowTimer = setTimeout(() => {
                     framelessPlusSlides(1); // Auto-advance
-                }, 12000); 
+                }, 5000); // 5 seconds
                 
+                
+                normalizeSlides();
                 
             };
-           
-
-function updateSlidePositions() {
-    const total = framelessSlides.length;
-  //  const containerWidth = framelessWrapper.parentElement.offsetWidth;
-
-    // Calcul de l'index réel dans la plage [0, total)
-    const frameIndex = framelessSlideIndex % total;
-    const loopIndex = Math.floor(framelessSlideIndex / total);
-
-    // Calcule les positions X cumulées pour chaque slide
-    let slideOffsets = [];
-    let cumulativeOffset = 0;
-
-    for (let i = 0; i < total; i++) {
-        slideOffsets.push(cumulativeOffset);
-       // cumulativeOffset += framelessSlides[i].offsetWidth;
-        cumulativeOffset += framelessSlides[i].getBoundingClientRect().width;
-        //cumulativeOffset += 500;
-        // const img = framelessSlides[i].querySelector('img');
-        // if (img) {
-        //     cumulativeOffset += img.naturalWidth;
-        // }
-
-    }
-    //console.log("Total cumulativeOffset =", cumulativeOffset);
-
-    // Largeur totale réelle des slides
-    const totalslideWidth = cumulativeOffset;
-
-    // Applique le translateX à chaque slide
-    for (let i = 0; i < total; i++) {
-           const absoluteSlideOffset = loopIndex * totalslideWidth + slideOffsets[i];
-           //let offset = absoluteSlideOffset - centerShift;
-           let offset = absoluteSlideOffset ;
-
-            // Gestion du wrap circulaire pour affichage fluide
-            const visibleCount = 2;
-            if (i < visibleCount && frameIndex > total - visibleCount) {
-                  offset += totalslideWidth;
-            } else if (i > total - visibleCount && frameIndex < visibleCount) {
-                  offset -= totalslideWidth;
-            }
             
-           framelessSlides[i].style.transform = `translateX(${offset}px)`;
-       }
-   }
+         function updateSlidePositions() {
+             const slideWidth = framelessSlides[0].offsetWidth;
+             const visibleCount = 2;
+             const total = framelessSlides.length;
+             
+             let frameIndex = ((framelessSlideIndex) + TotalSlides) % TotalSlides;
+             let framepos = Math.floor(framelessSlideIndex/TotalSlides)*TotalSlides;
+
+             for (let i = 0; i < total; i++) {
+                  let offset = framepos * slideWidth;
+                  if(i<visibleCount && frameIndex>total-visibleCount){
+                     offset+=slideWidth*TotalSlides;
+                  }
+                  
+                  if(i>total-visibleCount && frameIndex<visibleCount){
+                     offset-=slideWidth*TotalSlides;
+                  }
+                  
+                  framelessSlides[i].style.transform = `translateX(${offset}px)`;
+                  
+             }
+         }
 
 
 
@@ -940,8 +790,6 @@ function updateSlidePositions() {
             // Initial setup - important to start at the first "real" slide (index 1)
             applyTransform(false); // Start without transition to position correctly
             setSlideClasses(); // Apply initial classes
-           
-
 
             // Recalculate position on window resize to ensure correct centering
             window.addEventListener('resize', () => {
@@ -949,7 +797,6 @@ function updateSlidePositions() {
                 framelessWrapper.classList.add('no-transition');
                 applyTransform(false); 
                 setSlideClasses(); 
-         
                 // Force a reflow to apply no-transition immediately
                 framelessWrapper.offsetWidth; 
                 // Re-enable transition after a very short delay
@@ -959,19 +806,8 @@ function updateSlidePositions() {
             // Start auto-advance after initial setup
             framelessSlideshowTimer = setTimeout(() => {
                 framelessPlusSlides(1);
-            }, 12000);
+            }, 5000);
         });
     </script>
-
-
-
-   <script src="frameless-manifest.js"></script>
-   <script src="js/frameless-subtitle.js"></script>
-   <script>
-       initFramelessSubtitles();
-   </script>
-
-
-
 </body>
 </html>

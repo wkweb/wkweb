@@ -1,0 +1,27 @@
+[
+  {
+    "src": "images/frameless/01.png",
+    "title": "Wake in Action 1",
+    "description": "Clavier repositionnable avec suivi en temps réel."
+  },
+  {
+    "src": "images/frameless/02.png",
+    "title": "Wake in Action 2",
+    "description": "Assignation dynamique des régions tactiles."
+  },
+  {
+    "src": "images/frameless/03.png",
+    "title": "Wake in Action 3",
+    "description": "Fonctionnement sur écran tactile horizontal."
+  },
+  {
+    "src": "images/frameless/04.gif",
+    "title": "Wake in Action 4",
+    "description": "Support du glisser et multi-input simultané."
+  },
+  {
+    "src": "images/frameless/05.gif",
+    "title": "Wake in Action 5",
+    "description": "Démonstration rapide de la fluidité de Wake."
+  }
+]
