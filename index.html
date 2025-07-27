@@ -56,25 +56,24 @@
             transform: translateY(0);
         }
         .gallery-item {
-            /* Garde la transition pour toutes les propriétés */
-            transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out; /* Transition douce pour toutes les propriétés */
             border: 2px solid #0066CC;
             box-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
             background-color: rgba(0, 0, 0, 0.8);
-            position: relative;
+            position: relative; /* Restez dans le flux */
             z-index: 1; /* Z-index par default */
             pointer-events: auto; /* Permet les interactions par default */
-            /* transform-origin par défaut est center center, parfait pour l'agrandissement */
+            /* transform-origin sera défini dynamiquement par JS */
         }
 
         /* Conteneur d'images pour la transition */
         .gallery-image-container {
-            position: absolute;
+            position: absolute; /* Permet la superposition */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow: hidden; /* S'assure que les images ne dépassent pas */
         }
 
         .gallery-item .image-slide {
@@ -86,7 +85,7 @@
             object-fit: cover;
             mix-blend-mode: luminosity;
             opacity: 0.8;
-            transition: opacity 0.6s ease-in-out;
+            transition: opacity 0.6s ease-in-out; /* Transition de fondu */
         }
 
         .gallery-item .image-slide.active {
@@ -96,8 +95,9 @@
 
         /* Effets hover sur l'image */
         .gallery-item:hover .image-slide {
-            mix-blend-mode: normal;
+            mix-blend-mode: normal; /* Normalise le blend mode au survol */
         }
+
 
         .module-card {
             background-color: rgba(0, 0, 0, 0.2);
@@ -188,6 +188,7 @@
             gap: 1.5rem;
             position: relative;
             transition: all 0.4s ease-in-out;
+            /* Pas besoin de min-height si on ne met plus en absolute */
         }
 
         @media (min-width: 768px) {
@@ -216,10 +217,10 @@
             filter: blur(2px);
             pointer-events: none; /* Désactive les clics sur les éléments rétrécis */
             z-index: 5; /* Moins que le focused */
-            transform: scale(0.8); /* Base de rétrécissement */
+            /* La transformation sera appliquée via JS pour la direction */
         }
 
-        /* Classes pour les directions spécifiques (modifie la base de shrunk) */
+        /* Classes pour les directions spécifiques */
         .gallery-item.shrunk.shrunk-left {
             transform: translateX(-30%) scale(0.8); /* Décaler à gauche et rétrécir */
         }
@@ -230,12 +231,7 @@
         
         /* Assure que l'image à l'intérieur ne soit pas coupée si la transition est trop rapide */
         .gallery-item.focused .gallery-image-container .image-slide {
-             object-fit: contain;
-        }
-
-        /* Nouvelle classe pour gérer la réinitialisation fluide */
-        .gallery-item.reset-transform {
-            transform: none !important; /* Force la réinitialisation sans transition instantanée */
+             object-fit: contain; /* ou fill, scale-down selon l'effet désiré */
         }
     </style>
 </head>
@@ -592,30 +588,37 @@
                 let currentImgElement = null;
 
                 const showImage = (indexToShow) => {
+                    // Supprime la classe 'active' de l'image précédente
                     if (currentImgElement) {
                         currentImgElement.classList.remove('active');
                     }
 
+                    // Crée ou récupère la nouvelle image
                     let nextImgElement = imgContainer.querySelector(`img[data-src="${gallery.images[indexToShow]}"]`);
                     if (!nextImgElement) {
                         nextImgElement = new Image();
                         nextImgElement.src = gallery.images[indexToShow];
                         nextImgElement.alt = `Wake demo image ${indexToShow + 1}`;
                         nextImgElement.className = 'image-slide';
-                        nextImgElement.setAttribute('data-src', gallery.images[indexToShow]);
+                        nextImgElement.setAttribute('data-src', gallery.images[indexToShow]); // Pour la retrouver facilement
                         imgContainer.appendChild(nextImgElement);
                     }
 
+                    // S'assure que l'image est chargée avant d'appliquer 'active'
                     if (nextImgElement.complete) {
+                        // Donne un court délai pour que la transition se déclenche
+                        // (sinon si l'opacité initiale est 0, elle ne transitionnera pas)
                         setTimeout(() => {
                             nextImgElement.classList.add('active');
                             currentImgElement = nextImgElement;
+                            // Retire les images inactives après un délai pour qu'elles ne s'accumulent pas
+                            // et n'affectent pas les performances, ou juste la laisser avec opacity:0
                             Array.from(imgContainer.children).forEach(img => {
                                 if (img !== currentImgElement) {
                                     img.classList.remove('active');
                                 }
                             });
-                        }, 50);
+                        }, 50); // Petit délai
                     } else {
                         nextImgElement.onload = () => {
                             setTimeout(() => {
@@ -631,11 +634,12 @@
                     }
                 };
 
+                // Lance le cycle initial
                 showImage(currentIndex);
                 setInterval(() => {
                     currentIndex = (currentIndex + 1) % gallery.images.length;
                     showImage(currentIndex);
-                }, 3000 + Math.random() * 2000);
+                }, 3000 + Math.random() * 2000); // Délai aléatoire entre 3 et 5s
             });
 
             // === HOVER FOCUS EFFECT (Improved for correct directional shrinking and smooth transitions) ===
@@ -643,88 +647,101 @@
             const galleryGridContainer = document.querySelector(".gallery-grid-container");
 
             let currentHoveredItem = null;
-            let hoverEnterTimeout = null;
-            let hoverLeaveTimeout = null;
+            let hoverTimeout = null;
+            let lastHoveredItem = null; // Variable pour suivre le dernier élément réellement survolé
 
             galleryGridContainer.addEventListener("mouseover", (event) => {
                 const targetItem = event.target.closest(".gallery-item");
 
+                // Si la souris n'est pas sur un gallery-item ou si c'est le même élément déjà survolé, ne rien faire
                 if (!targetItem || targetItem === currentHoveredItem) {
                     return;
                 }
 
-                // Clear any pending leave actions
-                if (hoverLeaveTimeout) {
-                    clearTimeout(hoverLeaveTimeout);
-                    hoverLeaveTimeout = null;
+                // Annule tout timeout précédent (pour éviter un "flicker" si on passe rapidement sur les éléments)
+                if (hoverTimeout) {
+                    clearTimeout(hoverTimeout);
                 }
 
-                // If we're entering a new item, ensure the previous one (if any)
-                // has its reset-transform class removed
+                // 1. Réinitialiser les classes de l'ancien élément survolé (s'il existe et est différent du nouveau)
                 if (currentHoveredItem && currentHoveredItem !== targetItem) {
                     currentHoveredItem.classList.remove("focused");
-                    currentHoveredItem.style.zIndex = ''; // Reset z-index
-                    // No need to reset transform-origin here, it's always center
+                    currentHoveredItem.style.zIndex = '';
+                    currentHoveredItem.style.transformOrigin = '';
                 }
 
-                // Remove all state classes from all items immediately to prepare for new state
-                // This ensures a clean slate before applying new classes.
+                // 2. Préparer TOUS les éléments à l'état non-focus avant de les re-classifier
                 galleryItems.forEach(el => {
-                    el.classList.remove("focused", "shrunk", "shrunk-left", "shrunk-right");
-                    el.style.zIndex = ''; // Reset Z-index for all
+                    el.classList.remove("shrunk", "shrunk-left", "shrunk-right");
+                    // On ne réinitialise pas le zIndex ou transform-origin ici globalement
+                    // car ils seront définis spécifiquement pour le focused ou shrunk.
+                    // On s'assure juste que les classes de direction sont enlevées.
+                    el.style.transform = ''; // Réinitialise la transformation pour les non-focus
                 });
 
-                // Set the current hovered item
+
+                // 3. Appliquer les classes au nouvel élément survolé
                 currentHoveredItem = targetItem;
                 currentHoveredItem.classList.add("focused");
-                currentHoveredItem.style.zIndex = '100'; // Bring to front
+                currentHoveredItem.style.zIndex = '100';
 
-                // Determine grid layout for directional shrinking
+                // Déterminer le nombre de colonnes actuel
                 const computedStyle = window.getComputedStyle(galleryGridContainer);
                 const gridTemplateColumns = computedStyle.gridTemplateColumns;
                 const numberOfColumns = gridTemplateColumns.split(' ').length;
-                const itemsInGrid = Array.from(galleryGridContainer.children);
+
+                // Trouver l'index de la colonne de l'élément survolé
+                const itemsInGrid = Array.from(galleryGridContainer.children); // Récupère tous les enfants directs pour un index fiable
                 const itemIndex = itemsInGrid.indexOf(currentHoveredItem);
-                const itemColumn = itemIndex % numberOfColumns;
+                let itemColumn = itemIndex % numberOfColumns;
                 
-                // Apply shrinking and directional classes to other items
+                // Set transform-origin for the focused item to make it grow towards the center
+                if (itemColumn === 0 && numberOfColumns > 1) { // Première colonne (gauche)
+                    currentHoveredItem.style.transformOrigin = 'left center'; // Grandit vers la droite (centre de la grille)
+                } else if (itemColumn === (numberOfColumns - 1) && numberOfColumns > 1) { // Dernière colonne (droite)
+                    currentHoveredItem.style.transformOrigin = 'right center'; // Grandit vers la gauche (centre de la grille)
+                } else { // Colonne(s) du milieu ou une seule colonne
+                    currentHoveredItem.style.transformOrigin = 'center center'; // Grandit depuis son propre centre
+                }
+
+                // 4. Appliquer les classes "shrunk" aux autres éléments
                 galleryItems.forEach(otherItem => {
                     if (otherItem !== currentHoveredItem) {
                         otherItem.classList.add("shrunk");
-                        otherItem.style.zIndex = '5'; // Keep shrunk items behind focused one
+                        otherItem.style.zIndex = '5';
 
                         const otherItemIndex = itemsInGrid.indexOf(otherItem);
                         const otherItemColumn = otherItemIndex % numberOfColumns;
 
-                        if (otherItemColumn < itemColumn) {
+                        if (otherItemColumn < itemColumn) { // Autre élément est à gauche de l'élément survolé
                             otherItem.classList.add("shrunk-left");
-                        } else if (otherItemColumn > itemColumn) {
+                        } else if (otherItemColumn > itemColumn) { // Autre élément est à droite de l'élément survolé
                             otherItem.classList.add("shrunk-right");
+                        } else { // Autre élément est dans la même colonne (au-dessus/en-dessous)
+                            otherItem.style.transform = 'scale(0.8)'; // Juste le rétrécir
                         }
-                        // If same column (above/below), only 'shrunk' applies the scale(0.8)
                     }
                 });
+                lastHoveredItem = currentHoveredItem; // Met à jour le dernier élément survolé
             });
 
             galleryGridContainer.addEventListener("mouseout", (event) => {
-                // Check if the mouse is truly leaving the grid or moving to a non-gallery-item
+                // Vérifie si la souris a quitté la grille ou est allée vers un élément non-galerie-item
                 if (!event.relatedTarget || !event.relatedTarget.closest(".gallery-item")) {
-                    // Use a short timeout to allow for rapid transitions between items
-                    hoverLeaveTimeout = setTimeout(() => {
+                    hoverTimeout = setTimeout(() => {
                         galleryItems.forEach(el => {
-                            el.classList.remove("focused", "shrunk", "shrunk-left", "shrunk-right");
-                            el.style.zIndex = ''; // Reset Z-index
-                            // Adding a temporary class to ensure the 'transform: none' is applied
-                            // then removed to allow CSS transitions to take over.
-                            el.classList.add('reset-transform');
-                            setTimeout(() => {
-                                el.classList.remove('reset-transform');
-                            }, 50); // Small delay to let the browser process the removal
+                            el.classList.remove("shrunk", "focused", "shrunk-left", "shrunk-right");
+                            el.style.zIndex = '';
+                            el.style.transformOrigin = '';
+                            el.style.transform = ''; // Réinitialise toutes les transformations
                         });
                         currentHoveredItem = null;
-                        hoverEnterTimeout = null; // Clear potential pending enter timeouts
-                    }, 50); // Adjusted delay for smooth exit
+                        lastHoveredItem = null; // Réinitialise aussi lastHoveredItem
+                    }, 100); // Court délai pour permettre la transition hors de l'élément
                 }
+                // Si la souris quitte un gallery-item et entre dans un AUTRE gallery-item,
+                // la logique de mouseover sur le nouvel item gérera la transition.
+                // Donc pas besoin d'une action spécifique ici, le timeout suffira si on sort.
             });
         });
     </script>
