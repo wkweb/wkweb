@@ -18,9 +18,8 @@
     <title>WAKE JIT Engine - The Power of a Live Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
-    <script>fetch("index.html?_="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>//i.test(t)&&RegExp.$1.trim()
-             !=="v0003" &&location.reload());</script>
-    <!-- version:v0003 -->
+    <script>fetch("index.html?_="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>//i.test(t)&&RegExp.$1.trim()!=="v0003" &&location.reload());</script>
+                                                                                                               <!-- version:v0003 -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -83,7 +82,7 @@
              left: 0;
              width: 100%;
              height: 100%;
-             object-fit: contain; /* cover*/
+             object-fit: cover; /* cover*/
              mix-blend-mode: normal;
              opacity: 0; /* Changed to 0 */
              transition: opacity 0.6s ease-in-out; /* Transition de fondu */
@@ -232,7 +231,7 @@
         
         /* Assure que l'image à l'intérieur ne soit pas coupée si la transition est trop rapide */
         .gallery-item.focused .gallery-image-container .image-slide {
-             object-fit: contain; /* ou fill, scale-down selon l'effet désiré */
+             object-fit: cover; /* ou fill, scale-down selon l'effet désiré */
         }
     </style>
 </head>
