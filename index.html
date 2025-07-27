@@ -171,6 +171,7 @@
             align-items: center; /* Center image vertically */
             box-sizing: border-box; /* Include padding in width calculation */
             position: relative; /* For overlays/filters */
+            user-select: none;
         }
 
         .frameless-slide img {
@@ -602,6 +603,10 @@
 
             const setSlideClasses = () => {
             
+            
+               updateSlidePositions();
+               
+               
                 let frameIndex = (Math.abs(framelessSlideIndex) + TotalSlides) % TotalSlides;
                         
                 framelessSlides.forEach((slide, index) => {
@@ -613,16 +618,17 @@
                      
                     const diff = index - frameIndex;
                     const absDiff = Math.abs(diff);
-
-                    if (index === framelessSlideIndex) {
-                        slide.classList.add('active');
-                    } else if (absDiff === 1 || absDiff==TotalSlides-1) {
-                        slide.classList.add('side-1');
-                    } else if (absDiff === 2 || absDiff==TotalSlides-2) {
-                        slide.classList.add('side-2');
-                    } else if (absDiff >= 3 || absDiff==TotalSlides-3) {
-                        slide.classList.add('side-3');
-                    }
+     slide.classList.add('active');
+     
+                   // if (index === framelessSlideIndex) {
+                   //     slide.classList.add('active');
+                   // } else if (absDiff === 1 || absDiff==TotalSlides-1) {
+                   //     slide.classList.add('side-1');
+                   // } else if (absDiff === 2 || absDiff==TotalSlides-2) {
+                   //     slide.classList.add('side-2');
+                   // } else if (absDiff >= 3 || absDiff==TotalSlides-3) {
+                   //     slide.classList.add('side-3');
+                   // }
                 });
 
                 let currentOriginalIndex = (frameIndex );
@@ -691,7 +697,52 @@
                 framelessSlideshowTimer = setTimeout(() => {
                     framelessPlusSlides(1); // Auto-advance
                 }, 5000); // 5 seconds
+                
+                
+                normalizeSlides();
+                
             };
+            
+         function updateSlidePositions() {
+             const slideWidth = framelessSlides[0].offsetWidth;
+             const visibleCount = 3;
+             const total = framelessSlides.length;
+
+
+             let frameIndex = (Math.abs(framelessSlideIndex) + TotalSlides) % TotalSlides;
+             let framepos = Math.floor(framelessSlideIndex/TotalSlides)*TotalSlides;
+             
+             
+
+             for (let i = 0; i < total; i++) {
+                  let offset = framepos * slideWidth;
+                  framelessSlides[i].style.transform = `translateX(${offset}px)`;
+                  
+                 // if(i < total/2){
+                 //    
+                 //    
+                 // }else{
+                 // 
+                 //    
+                 // }
+                 //
+                 //
+                 //let offset = (i - framelessSlideIndex) * slideWidth;
+                 //
+                 //// Boucle infinie : si l’image est trop à gauche, on la téléporte à droite
+                 //if (offset < -((visibleCount / 2) * slideWidth)) {
+                 //    offset += total * slideWidth;
+                 //}
+                 //// Trop à droite → on la téléporte à gauche
+                 //else if (offset > ((visibleCount / 2) * slideWidth)) {
+                 //    offset -= total * slideWidth;
+                 //}
+                 //
+                 //framelessSlides[i].style.transform = `translateX(${offset}px)`;
+             }
+         }
+
+
 
 
             // Event listeners for nav buttons 
