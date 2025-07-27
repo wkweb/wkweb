@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--“Wake modules are portable .wpkg packages: signed, reproducible, and ready to run instantly. No build. No runtime. Just execution.”-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -16,13 +15,11 @@
     <meta name="twitter:description" content="Wake is a real-time JIT engine for building interfaces, tools, and creative systems.">
     <meta name="twitter:image" content="https://wake.tools/assets/wake-preview.png">
 
-
     <title>WAKE JIT Engine - The Power of a Live Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
-    <script>fetch("index.html?_="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>/<!--\s*version:\s*(.*?)\s*-->/i.test(t)&&RegExp.$1.trim()
+    <script>fetch("index.html?_="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>//i.test(t)&&RegExp.$1.trim()
              !=="v0002" &&location.reload());</script>
-    <!-- version:v0002 -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -59,24 +56,49 @@
             transform: translateY(0);
         }
         .gallery-item {
-            transition: all 0.3s ease;
+            /* Garde la transition pour toutes les propriétés */
+            transition: all 0.4s ease-in-out;
             border: 2px solid #0066CC;
             box-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
             background-color: rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1; /* Z-index par default */
+            pointer-events: auto; /* Permet les interactions par default */
+            /* transform-origin par défaut est center center, parfait pour l'agrandissement */
         }
-        .gallery-item:hover {
-            transform: scale(1.05) rotate(1deg);
-            box-shadow: 0 0 20px rgba(0, 102, 204, 0.6);
-            z-index: 10;
+
+        /* Conteneur d'images pour la transition */
+        .gallery-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
-        .gallery-item img {
+
+        .gallery-item .image-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             mix-blend-mode: luminosity;
             opacity: 0.8;
+            transition: opacity 0.6s ease-in-out;
         }
-        .gallery-item:hover img {
-            mix-blend-mode: normal;
+
+        .gallery-item .image-slide.active {
             opacity: 1;
+            mix-blend-mode: normal;
         }
+
+        /* Effets hover sur l'image */
+        .gallery-item:hover .image-slide {
+            mix-blend-mode: normal;
+        }
+
         .module-card {
             background-color: rgba(0, 0, 0, 0.2);
             border: 1px solid #0066CC;
@@ -131,8 +153,7 @@
             pointer-events: none;
             z-index: 1;
             background-color: rgba(0, 0, 0, 0.5);
-            /* Ajout d'une transition pour le backdrop-filter pour plus de douceur */
-            transition: backdrop-filter 0.1s ease-out; 
+            transition: backdrop-filter 0.1s ease-out;
         }
 
         #console-container #console-output {
@@ -159,32 +180,63 @@
                 -2px  2px 0 #000,
                  2px  2px 0 #000;
         }
+
+        /* Styles pour l'effet de survol de la galerie */
+        .gallery-grid-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+            position: relative;
+            transition: all 0.4s ease-in-out;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-grid-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* La case survolée */
+        .gallery-item.focused {
+            transform: scale(1.4); /* Agrandir */
+            z-index: 100; /* Assure qu'il est au-dessus de tout */
+            box-shadow: 0 0 30px rgba(0, 102, 204, 0.8);
+            border-color: #00AACC; /* Changement de couleur de bordure au focus */
+        }
+
+        /* Les cases non survolées (mais dans le même contexte de survol) */
+        .gallery-item.shrunk {
+            opacity: 0.3;
+            filter: blur(2px);
+            pointer-events: none; /* Désactive les clics sur les éléments rétrécis */
+            z-index: 5; /* Moins que le focused */
+            transform: scale(0.8); /* Base de rétrécissement */
+        }
+
+        /* Classes pour les directions spécifiques (modifie la base de shrunk) */
+        .gallery-item.shrunk.shrunk-left {
+            transform: translateX(-30%) scale(0.8); /* Décaler à gauche et rétrécir */
+        }
+
+        .gallery-item.shrunk.shrunk-right {
+            transform: translateX(30%) scale(0.8); /* Décaler à droite et rétrécir */
+        }
         
-        
-     .gallery-item {
-          transition: transform 0.4s ease, opacity 0.4s ease, z-index 0.4s;
-          transform: scale(1);
-          z-index: 1;
-          opacity: 1;
-          pointer-events: auto;
-      }
+        /* Assure que l'image à l'intérieur ne soit pas coupée si la transition est trop rapide */
+        .gallery-item.focused .gallery-image-container .image-slide {
+             object-fit: contain;
+        }
 
-      .gallery-item.focused {
-            transform: scale(1.75) translateZ(0);
-          z-index: 50;
-          opacity: 1;
-          position: relative;
-          
-      }
-
-.gallery-item.shrunk {
-    transform: scale(0.6); /* Plus petit que 0.8 */
-    opacity: 0.2;
-    filter: blur(2px);
-    z-index: 0;
-}
-
-
+        /* Nouvelle classe pour gérer la réinitialisation fluide */
+        .gallery-item.reset-transform {
+            transform: none !important; /* Force la réinitialisation sans transition instantanée */
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -240,9 +292,10 @@
 
         <section class="py-20 px-4 max-w-6xl mx-auto">
             <h2 class="mono text-3xl font-bold mb-12 text-center">Wake in Action</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="gallery-grid-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="gallery-item relative rounded-lg overflow-hidden aspect-video">
-                    <img src="https://via.placeholder.com/600x400?text=Code+Programming" alt="Wake demo" class="w-full h-full object-cover">
+                    <div class="gallery-image-container">
+                        </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 hover:opacity-100 transition flex items-end p-4">
                         <div class="w-full">
                             <div class="mono text-wake-blue text-lg font-bold mb-1">WAKE MEME #1</div>
@@ -252,31 +305,36 @@
                     </div>
                 </div>
                 <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <img src="https://via.placeholder.com/600x400?text=Shader+Graphics" alt="Wake demo" class="w-full h-full object-cover">
+                    <div class="gallery-image-container">
+                        </div>
                     <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition flex items-center justify-center">
                         <span class="mono text-wake-blue">Built in Wake</span>
                     </div>
                 </div>
                 <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <img src="https://via.placeholder.com/600x400?text=Interface+UI" alt="Wake demo" class="w-full h-full object-cover">
+                    <div class="gallery-image-container">
+                        </div>
                     <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition flex items-center justify-center">
                         <span class="mono text-wake-blue">Built in Wake</span>
                     </div>
                 </div>
                 <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <img src="https://via.placeholder.com/600x400?text=Animation+Design" alt="Wake demo" class="w-full h-full object-cover">
+                    <div class="gallery-image-container">
+                        </div>
                     <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition flex items-center justify-center">
                         <span class="mono text-wake-blue">Built in Wake</span>
                     </div>
                 </div>
                 <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <img src="https://via.placeholder.com/600x400?text=Visual+Effect" alt="Wake demo" class="w-full h-full object-cover">
+                    <div class="gallery-image-container">
+                        </div>
                     <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition flex items-center justify-center">
                         <span class="mono text-wake-blue">Built in Wake</span>
                     </div>
                 </div>
                 <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <img src="https://via.placeholder.com/600x400?text=Creative+Technology" alt="Wake demo" class="w-full h-full object-cover">
+                    <div class="gallery-image-container">
+                        </div>
                     <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition flex items-center justify-center">
                         <span class="mono text-wake-blue">Built in Wake</span>
                     </div>
@@ -369,10 +427,10 @@
                     </div>
                 </div>
                 <div class="mt-8 pt-8 border-t border-gray-900 text-center text-gray-500 text-sm">
-                  <a href="https://majify.tech" target="_blank" class="hover:underline">© 2025 Majify Technologies</a>
+                    <a href="https://majify.tech" target="_blank" class="hover:underline">© 2025 Majify Technologies</a>
                     <p class="mt-2">Powered by Wake. No trackers. No analytics. Just execution.</p>
                 </div>
-                
+
             </div>
         </footer>
     </div>
@@ -452,8 +510,6 @@
                         }
 
                         consoleBlurOverlay.style.backdropFilter = `blur(${blurAmount}px)`;
-                        // consoleBlurOverlay.style.webkitBackdropFilter = `blur(${blurAmount}px)`; // Pour Safari
-
                         ticking = false; // Réinitialise le flag après la mise à jour
                     });
                     ticking = true; // Empêche d'autres mises à jour tant que le cadre n'est pas rendu
@@ -480,106 +536,197 @@
             document.querySelectorAll('.manifesto-line').forEach((el, i) => {
                 setTimeout(() => observer.observe(el), i * 200);
             });
-       
 
+            // === CONFIGURATION DES PROJETS (index des galeries) ===
+            const galleries = [
+                {
+                    selector: ".gallery-item:nth-child(1)",
+                    images: [
+                        "https://via.placeholder.com/600x400?text=Code+Programming+1",
+                        "https://via.placeholder.com/600x400?text=Code+Programming+2",
+                        "https://via.placeholder.com/600x400?text=Code+Programming+3"
+                    ]
+                },
+                {
+                    selector: ".gallery-item:nth-child(2)",
+                    images: [
+                        "https://via.placeholder.com/600x400?text=Shader+Graphics+1",
+                        "https://via.placeholder.com/600x400?text=Shader+Graphics+2"
+                    ]
+                },
+                {
+                    selector: ".gallery-item:nth-child(3)",
+                    images: [
+                        "https://via.placeholder.com/600x400?text=Interface+UI+1",
+                        "https://via.placeholder.com/600x400?text=Interface+UI+2"
+                    ]
+                },
+                {
+                    selector: ".gallery-item:nth-child(4)",
+                    images: [
+                        "https://via.placeholder.com/600x400?text=Animation+Design+1",
+                        "https://via.placeholder.com/600x400?text=Animation+Design+2"
+                    ]
+                },
+                {
+                    selector: ".gallery-item:nth-child(5)",
+                    images: [
+                        "https://via.placeholder.com/600x400?text=Visual+Effect+1",
+                        "https://via.placeholder.com/600x400?text=Visual+Effect+2"
+                    ]
+                },
+                {
+                    selector: ".gallery-item:nth-child(6)",
+                    images: [
+                        "https://via.placeholder.com/600x400?text=Creative+Technology+1",
+                        "https://via.placeholder.com/600x400?text=Creative+Technology+2"
+                    ]
+                }
+            ];
 
+            // === CHARGEMENT & CYCLAGE DES IMAGES ===
+            galleries.forEach(gallery => {
+                const container = document.querySelector(gallery.selector);
+                const imgContainer = container.querySelector(".gallery-image-container");
+                let currentIndex = 0;
+                let currentImgElement = null;
 
+                const showImage = (indexToShow) => {
+                    if (currentImgElement) {
+                        currentImgElement.classList.remove('active');
+                    }
 
+                    let nextImgElement = imgContainer.querySelector(`img[data-src="${gallery.images[indexToShow]}"]`);
+                    if (!nextImgElement) {
+                        nextImgElement = new Image();
+                        nextImgElement.src = gallery.images[indexToShow];
+                        nextImgElement.alt = `Wake demo image ${indexToShow + 1}`;
+                        nextImgElement.className = 'image-slide';
+                        nextImgElement.setAttribute('data-src', gallery.images[indexToShow]);
+                        imgContainer.appendChild(nextImgElement);
+                    }
 
+                    if (nextImgElement.complete) {
+                        setTimeout(() => {
+                            nextImgElement.classList.add('active');
+                            currentImgElement = nextImgElement;
+                            Array.from(imgContainer.children).forEach(img => {
+                                if (img !== currentImgElement) {
+                                    img.classList.remove('active');
+                                }
+                            });
+                        }, 50);
+                    } else {
+                        nextImgElement.onload = () => {
+                            setTimeout(() => {
+                                nextImgElement.classList.add('active');
+                                currentImgElement = nextImgElement;
+                                Array.from(imgContainer.children).forEach(img => {
+                                    if (img !== currentImgElement) {
+                                        img.classList.remove('active');
+                                    }
+                                });
+                            }, 50);
+                        };
+                    }
+                };
 
-    // === CONFIGURATION DES PROJETS (index des galeries) ===
-    const galleries = [
-        {
-            selector: ".gallery-item:nth-child(1)",
-            images: [
-                "assets/gallery/demo1-1.webp",
-                "assets/gallery/demo1-2.gif",
-                "assets/gallery/demo1-3.webp"
-            ]
-        },
-        {
-            selector: ".gallery-item:nth-child(2)",
-            images: [
-                "assets/gallery/demo2-1.webp",
-                "assets/gallery/demo2-2.gif"
-            ]
-        },
-        {
-            selector: ".gallery-item:nth-child(3)",
-            images: [
-                "assets/gallery/demo3-1.webp",
-                "assets/gallery/demo3-2.webp"
-            ]
-        },
-        {
-            selector: ".gallery-item:nth-child(4)",
-            images: [
-                "assets/gallery/demo4-1.webp",
-                "assets/gallery/demo4-2.gif"
-            ]
-        },
-        {
-            selector: ".gallery-item:nth-child(5)",
-            images: [
-                "assets/gallery/demo5-1.webp",
-                "assets/gallery/demo5-2.webp"
-            ]
-        },
-        {
-            selector: ".gallery-item:nth-child(6)",
-            images: [
-                "assets/gallery/demo6-1.webp",
-                "assets/gallery/demo6-2.gif"
-            ]
-        }
-    ];
+                showImage(currentIndex);
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % gallery.images.length;
+                    showImage(currentIndex);
+                }, 3000 + Math.random() * 2000);
+            });
 
-    // === CHARGEMENT & CYCLAGE ===
-    galleries.forEach(gallery => {
-        const container = document.querySelector(gallery.selector);
-        const imgEl = container.querySelector("img");
-        let index = 0;
+            // === HOVER FOCUS EFFECT (Improved for correct directional shrinking and smooth transitions) ===
+            const galleryItems = document.querySelectorAll(".gallery-item");
+            const galleryGridContainer = document.querySelector(".gallery-grid-container");
 
-        if (!imgEl || !container) return;
+            let currentHoveredItem = null;
+            let hoverEnterTimeout = null;
+            let hoverLeaveTimeout = null;
 
-        // Charge la première image
-        imgEl.src = gallery.images[0];
+            galleryGridContainer.addEventListener("mouseover", (event) => {
+                const targetItem = event.target.closest(".gallery-item");
 
-        // Précharge les suivantes (non bloquant)
-        for (let i = 1; i < gallery.images.length; i++) {
-            const preload = new Image();
-            preload.src = gallery.images[i];
-        }
+                if (!targetItem || targetItem === currentHoveredItem) {
+                    return;
+                }
 
-        // Lance le cycle
-        setInterval(() => {
-            index = (index + 1) % gallery.images.length;
-            imgEl.src = gallery.images[index];
-        }, 3000 + Math.random() * 2000); // Délai aléatoire entre 3 et 5s
-    });
+                // Clear any pending leave actions
+                if (hoverLeaveTimeout) {
+                    clearTimeout(hoverLeaveTimeout);
+                    hoverLeaveTimeout = null;
+                }
 
-    // === HOVER FOCUS EFFECT ===
-    const galleryItems = document.querySelectorAll(".gallery-item");
-    galleryItems.forEach(item => {
-        item.addEventListener("mouseenter", () => {
-            galleryItems.forEach(other => {
-                if (other !== item) {
-                    other.classList.add("shrunk");
-                    other.classList.remove("focused");
-                } else {
-                    other.classList.add("focused");
+                // If we're entering a new item, ensure the previous one (if any)
+                // has its reset-transform class removed
+                if (currentHoveredItem && currentHoveredItem !== targetItem) {
+                    currentHoveredItem.classList.remove("focused");
+                    currentHoveredItem.style.zIndex = ''; // Reset z-index
+                    // No need to reset transform-origin here, it's always center
+                }
+
+                // Remove all state classes from all items immediately to prepare for new state
+                // This ensures a clean slate before applying new classes.
+                galleryItems.forEach(el => {
+                    el.classList.remove("focused", "shrunk", "shrunk-left", "shrunk-right");
+                    el.style.zIndex = ''; // Reset Z-index for all
+                });
+
+                // Set the current hovered item
+                currentHoveredItem = targetItem;
+                currentHoveredItem.classList.add("focused");
+                currentHoveredItem.style.zIndex = '100'; // Bring to front
+
+                // Determine grid layout for directional shrinking
+                const computedStyle = window.getComputedStyle(galleryGridContainer);
+                const gridTemplateColumns = computedStyle.gridTemplateColumns;
+                const numberOfColumns = gridTemplateColumns.split(' ').length;
+                const itemsInGrid = Array.from(galleryGridContainer.children);
+                const itemIndex = itemsInGrid.indexOf(currentHoveredItem);
+                const itemColumn = itemIndex % numberOfColumns;
+                
+                // Apply shrinking and directional classes to other items
+                galleryItems.forEach(otherItem => {
+                    if (otherItem !== currentHoveredItem) {
+                        otherItem.classList.add("shrunk");
+                        otherItem.style.zIndex = '5'; // Keep shrunk items behind focused one
+
+                        const otherItemIndex = itemsInGrid.indexOf(otherItem);
+                        const otherItemColumn = otherItemIndex % numberOfColumns;
+
+                        if (otherItemColumn < itemColumn) {
+                            otherItem.classList.add("shrunk-left");
+                        } else if (otherItemColumn > itemColumn) {
+                            otherItem.classList.add("shrunk-right");
+                        }
+                        // If same column (above/below), only 'shrunk' applies the scale(0.8)
+                    }
+                });
+            });
+
+            galleryGridContainer.addEventListener("mouseout", (event) => {
+                // Check if the mouse is truly leaving the grid or moving to a non-gallery-item
+                if (!event.relatedTarget || !event.relatedTarget.closest(".gallery-item")) {
+                    // Use a short timeout to allow for rapid transitions between items
+                    hoverLeaveTimeout = setTimeout(() => {
+                        galleryItems.forEach(el => {
+                            el.classList.remove("focused", "shrunk", "shrunk-left", "shrunk-right");
+                            el.style.zIndex = ''; // Reset Z-index
+                            // Adding a temporary class to ensure the 'transform: none' is applied
+                            // then removed to allow CSS transitions to take over.
+                            el.classList.add('reset-transform');
+                            setTimeout(() => {
+                                el.classList.remove('reset-transform');
+                            }, 50); // Small delay to let the browser process the removal
+                        });
+                        currentHoveredItem = null;
+                        hoverEnterTimeout = null; // Clear potential pending enter timeouts
+                    }, 50); // Adjusted delay for smooth exit
                 }
             });
         });
-        item.addEventListener("mouseleave", () => {
-            galleryItems.forEach(el => {
-                el.classList.remove("shrunk", "focused");
-            });
-        });
-    });
-});
-</script>
-
-
+    </script>
 </body>
 </html>
