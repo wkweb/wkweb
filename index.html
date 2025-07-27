@@ -710,35 +710,23 @@
 
 
              let frameIndex = (Math.abs(framelessSlideIndex) + TotalSlides) % TotalSlides;
-             let framepos = Math.floor(framelessSlideIndex/TotalSlides)*TotalSlides;
+             let framepos = Math.floor(framelessSlideIndex/TotalSlides);
              
              
 
              for (let i = 0; i < total; i++) {
-                  let offset = framepos * slideWidth;
+                  let offset = framepos * slideWidth*TotalSlides;
+                  if(i<visibleCount && frameIndex>total-visibleCount){
+                     offset+=slideWidth*TotalSlides;
+                  }
+                  
+                  if(i>total-visibleCount && frameIndex<visibleCount){
+                     offset-=slideWidth*TotalSlides;
+                  }
+                  
                   framelessSlides[i].style.transform = `translateX(${offset}px)`;
                   
-                 // if(i < total/2){
-                 //    
-                 //    
-                 // }else{
-                 // 
-                 //    
-                 // }
-                 //
-                 //
-                 //let offset = (i - framelessSlideIndex) * slideWidth;
-                 //
-                 //// Boucle infinie : si l’image est trop à gauche, on la téléporte à droite
-                 //if (offset < -((visibleCount / 2) * slideWidth)) {
-                 //    offset += total * slideWidth;
-                 //}
-                 //// Trop à droite → on la téléporte à gauche
-                 //else if (offset > ((visibleCount / 2) * slideWidth)) {
-                 //    offset -= total * slideWidth;
-                 //}
-                 //
-                 //framelessSlides[i].style.transform = `translateX(${offset}px)`;
+             
              }
          }
 
