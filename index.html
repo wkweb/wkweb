@@ -19,8 +19,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
     <script>fetch("index.html?_="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>//i.test(t)&&RegExp.$1.trim()!=="v0003" &&location.reload());</script>
-                                                                                                               <!-- version:v0003 -->
-    <style>
+                                                                                                                                                                    <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000;
@@ -55,50 +54,8 @@
             opacity: 1;
             transform: translateY(0);
         }
-        .gallery-item {
-            transition: all 0.4s ease-in-out; /* Transition douce pour toutes les propriétés */
-            border: 2px solid #0066CC;
-            box-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
-            background-color: rgba(0, 0, 0, 0.8);
-            position: relative; /* Restez dans le flux */
-            z-index: 1; /* Z-index par default */
-            pointer-events: auto; /* Permet les interactions par default */
-            /* transform-origin sera défini dynamiquement par JS */
-        }
 
-        /* Conteneur d'images pour la transition */
-        .gallery-image-container {
-            position: absolute; /* Permet la superposition */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* S'assure que les images ne dépassent pas */
-        }
-
-        .gallery-item .image-slide {
-             position: absolute;
-             top: 0;
-             left: 0;
-             width: 100%;
-             height: 100%;
-             object-fit: cover; /* cover*/
-             mix-blend-mode: normal;
-             opacity: 0; /* Changed to 0 */
-             transition: opacity 0.6s ease-in-out; /* Transition de fondu */
-         }
-
-         .gallery-item .image-slide.active {
-             opacity: 1;
-             mix-blend-mode: normal;
-         }
-
-        /* Effets hover sur l'image */
-        .gallery-item:hover .image-slide {
-            mix-blend-mode: normal; /* Normalise le blend mode au survol */
-        }
-
-
+        /* --- Global Gallery Styles (cleaned up) --- */
         .module-card {
             background-color: rgba(0, 0, 0, 0.2);
             border: 1px solid #0066CC;
@@ -176,63 +133,164 @@
         .title-outline {
             text-shadow:
                 -2px -2px 0 #000,
-                 2px -2px 0 #000,
+                2px -2px 0 #000,
                 -2px  2px 0 #000,
-                 2px  2px 0 #000;
+                2px  2px 0 #000;
         }
 
-        /* Styles pour l'effet de survol de la galerie */
-        .gallery-grid-container {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 1.5rem;
+        /* --- Frameless Slideshow Specific Styles --- */
+        .frameless-slideshow-container {
             position: relative;
-            transition: all 0.4s ease-in-out;
-            /* Pas besoin de min-height si on ne met plus en absolute */
+            width: 100%; /* Take full width of its parent */
+            max-width: 1200px; /* Optional: limit max width */
+            margin: 2rem auto; /* Center the container */
+            overflow: hidden; /* Crucial: hide parts of images outside the central view */
+            cursor: grab; /* Indicates it's draggable */
         }
 
-        @media (min-width: 768px) {
-            .gallery-grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .frameless-slideshow-container.grabbing {
+            cursor: grabbing;
         }
 
-        @media (min-width: 1024px) {
-            .gallery-grid-container {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .frameless-slideshow-wrapper {
+            display: flex; /* Arrange slides horizontally */
+            transition: transform 0.6s ease-out; /* Smooth slide animation */
+            will-change: transform; /* Optimize for animation */
         }
 
-        /* La case survolée */
-        .gallery-item.focused {
-            transform: scale(2.2); /* Agrandir */
-            z-index: 100; /* Assure qu'il est au-dessus de tout */
-            box-shadow: 0 0 30px rgba(0, 102, 204, 0.8);
-            border-color: #00AACC; /* Changement de couleur de bordure au focus */
+        .frameless-slide {
+            flex-shrink: 0; /* Prevent slides from shrinking */
+            width: 100%; /* Each slide occupies the full width of the viewable area */
+            display: flex;
+            justify-content: center; /* Center image horizontally */
+            align-items: center; /* Center image vertically */
+            box-sizing: border-box; /* Include padding in width calculation */
+            position: relative; /* For overlays/filters */
         }
 
-        /* Les cases non survolées (mais dans le même contexte de survol) */
-        .gallery-item.shrunk {
-            opacity: 0.3;
-            filter: blur(2px);
-            pointer-events: none; /* Désactive les clics sur les éléments rétrécis */
-            z-index: 5; /* Moins que le focused */
-            /* La transformation sera appliquée via JS pour la direction */
+        .frameless-slide img {
+            max-width: 100%;
+            max-height: 70vh; /* Control image height to fit screen */
+            object-fit: contain; /* Ensure image is fully visible, no cropping */
+            display: block;
+            transition: filter 0.3s ease-out, transform 0.3s ease-out; /* Smooth filter/scale changes */
+            will-change: filter, transform; /* Optimize for animation */
         }
 
-        /* Classes pour les directions spécifiques */
-        .gallery-item.shrunk.shrunk-left {
-            transform: translateX(-30%) scale(0.8); /* Décaler à gauche et rétrécir */
+        /* Overlay for darkening effect on side images */
+        .frameless-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0); /* Start transparent */
+            pointer-events: none; /* Allow clicks/interactions on image below */
+            transition: background 0.3s ease-out; /* Smooth transition for overlay */
         }
 
-        .gallery-item.shrunk.shrunk-right {
-            transform: translateX(30%) scale(0.8); /* Décaler à droite et rétrécir */
+        /* Active (center) slide styles */
+        .frameless-slide.active img {
+            filter: brightness(1); /* Full brightness */
+            transform: scale(1); /* Full scale */
         }
-        
-        /* Assure que l'image à l'intérieur ne soit pas coupée si la transition est trop rapide */
-        .gallery-item.focused .gallery-image-container .image-slide {
-             object-fit: cover; /* ou fill, scale-down selon l'effet désiré */
+
+        .frameless-slide.active::after {
+            background: rgba(0, 0, 0, 0); /* No overlay */
         }
+
+        /* Side previews - first level */
+        .frameless-slide.side-1 img {
+            filter: brightness(0.7); /* Slightly darker */
+            transform: scale(0.9); /* Slightly smaller */
+        }
+        .frameless-slide.side-1::after {
+            background: rgba(0, 0, 0, 0.3); /* Slight overlay */
+        }
+
+        /* Side previews - second level */
+        .frameless-slide.side-2 img {
+            filter: brightness(0.5); /* More darker */
+            transform: scale(0.8); /* More smaller */
+        }
+        .frameless-slide.side-2::after {
+            background: rgba(0, 0, 0, 0.5); /* More overlay */
+        }
+
+        /* Side previews - third level (and beyond) */
+        .frameless-slide.side-3 img,
+        .frameless-slide:not(.active):not(.side-1):not(.side-2) img {
+            filter: brightness(0.3); /* Much darker */
+            transform: scale(0.7); /* Much smaller */
+        }
+        .frameless-slide.side-3::after,
+        .frameless-slide:not(.active):not(.side-1):not(.side-2)::after {
+            background: rgba(0, 0, 0, 0.7); /* Heavy overlay */
+        }
+
+        /* Navigation Arrows */
+        .frameless-slideshow-nav {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            padding: 1rem;
+            color: white;
+            font-weight: bold;
+            font-size: 2rem;
+            transition: 0.3s ease;
+            border-radius: 0.5rem; /* Rounded corners for buttons */
+            user-select: none;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10; /* Above slides and wrappers */
+            display: flex; /* For centering content inside */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frameless-slideshow-nav.prev {
+            left: 1rem;
+        }
+
+        .frameless-slideshow-nav.next {
+            right: 1rem;
+        }
+
+        .frameless-slideshow-nav:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #0066CC; /* Highlight on hover */
+        }
+
+        /* Optional Dots Indicators */
+        .frameless-slideshow-dots {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+        }
+
+        .frameless-dot {
+            cursor: pointer;
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #777;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .frameless-dot.active, .frameless-dot:hover {
+            background-color: #0066CC;
+        }
+
     </style>
 </head>
 <body class="min-h-screen">
@@ -266,75 +324,32 @@
             </div>
         </section>
 
-        <section class="py-20 px-4 max-w-6xl mx-auto">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="slide-up p-6 rounded-lg">
-                    <div class="text-2xl mb-4">⚡</div>
-                    <h3 class="mono text-xl font-bold mb-3">Live Interface Execution</h3>
-                    <p class="text-gray-300">Edit code. See results instantly. No rebuilds. No reloads.</p>
-                </div>
-                <div class="slide-up p-6 rounded-lg">
-                    <div class="text-2xl mb-4">🔷</div>
-                    <h3 class="mono text-xl font-bold mb-3">GLSL & Compute Shaders in Real Time</h3>
-                    <p class="text-gray-300">Live rendering. Transparent compute. Visual logic as a language.</p>
-                </div>
-                <div class="slide-up p-6 rounded-lg">
-                    <div class="text-2xl mb-4">🧠</div>
-                    <h3 class="mono text-xl font-bold mb-3">C99 Core</h3>
-                    <p class="text-gray-300">Wake is built in pure C. Lightweight. Native. Yours.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="py-20 px-4 max-w-6xl mx-auto">
+        <section class="py-20 px-0 max-w-full overflow-hidden">
             <h2 class="mono text-3xl font-bold mb-12 text-center">Wake in Action</h2>
-            <div class="gallery-grid-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="gallery-item relative rounded-lg overflow-hidden aspect-video">
-                    <div class="gallery-image-container">
-                        </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 hover:opacity-100 transition flex items-end p-4">
-                        <div class="w-full">
-                            <div class="mono text-wake-blue text-lg font-bold mb-1">WAKE MEME #1</div>
-                            <div class="text-white text-sm">"when the JIT compiles"</div>
-                            <div class="mt-2 text-xs text-gray-400">#wakeengine #codingmemes</div>
-                        </div>
+            <div class="frameless-slideshow-container" id="framelessSlideshowContainer">
+                <div class="frameless-slideshow-wrapper" id="framelessSlideshowWrapper">
+                    <div class="frameless-slide">
+                        <img src="images/frameless/01.png" alt="Wake in Action 1">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/02.png" alt="Wake in Action 2">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/03.png" alt="Wake in Action 3">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/04.gif" alt="Wake in Action 4">
+                    </div>
+                    <div class="frameless-slide">
+                        <img src="images/frameless/05.gif" alt="Wake in Action 5">
                     </div>
                 </div>
-                <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <div class="gallery-image-container">
-                        </div>
-                    <div class="absolute inset-0 bg-black bg-opacity-0 opacity-0 hover:opacity-100 transition flex items-center justify-center">
-                        <span class="mono text-wake-blue">Built in Wake</span>
+
+                <a class="frameless-slideshow-nav prev" onclick="framelessPlusSlides(-1)">&#10094;</a>
+                <a class="frameless-slideshow-nav next" onclick="framelessPlusSlides(1)">&#10095;</a>
+
+                <div class="frameless-slideshow-dots" id="framelessSlideshowDots">
                     </div>
-                </div>
-                <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <div class="gallery-image-container">
-                        </div>
-                    <div class="absolute inset-0 bg-black bg-opacity-0 opacity-0 hover:opacity-100 transition flex items-center justify-center">
-                        <span class="mono text-wake-blue">Built in Wake</span>
-                    </div>
-                </div>
-                <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <div class="gallery-image-container">
-                        </div>
-                    <div class="absolute inset-0 bg-black bg-opacity-100 opacity-0 hover:opacity-100 transition flex items-center justify-center">
-                        <span class="mono text-wake-blue">Built in Wake</span>
-                    </div>
-                </div>
-                <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <div class="gallery-image-container">
-                        </div>
-                    <div class="absolute inset-0 bg-black bg-opacity-100 opacity-0 hover:opacity-100 transition flex items-center justify-center">
-                        <span class="mono text-wake-blue">Built in Wake</span>
-                    </div>
-                </div>
-                <div class="gallery-item relative rounded-lg overflow-hidden aspect-video bg-gray-900">
-                    <div class="gallery-image-container">
-                        </div>
-                    <div class="absolute inset-0 bg-black bg-opacity-100 opacity-0 hover:opacity-100 transition flex items-center justify-center">
-                        <span class="mono text-wake-blue">Built in Wake</span>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -533,216 +548,204 @@
                 setTimeout(() => observer.observe(el), i * 200);
             });
 
-            // === CONFIGURATION DES PROJETS (index des galeries) ===
-            const galleries = [
-                {
-                    selector: ".gallery-item:nth-child(1)",
-                    images: [
-                        "images/selector1/01.png",
-                        "images/selector1/02.png",
-                        "images/selector1/03.png",
-  
-                    ]
-                },
-                {
-                    selector: ".gallery-item:nth-child(2)",
-                    images: [
-                        "images/selector2/01.gif",
-                        "images/selector2/02.gif",
-                    ]
-                },
-                {
-                    selector: ".gallery-item:nth-child(3)",
-                    images: [
-                        "https://via.placeholder.com/600x400?text=Interface+UI+1",
-                        "https://via.placeholder.com/600x400?text=Interface+UI+2"
-                    ]
-                },
-                {
-                    selector: ".gallery-item:nth-child(4)",
-                    images: [
-                        "https://via.placeholder.com/600x400?text=Animation+Design+1",
-                        "https://via.placeholder.com/600x400?text=Animation+Design+2"
-                    ]
-                },
-                {
-                    selector: ".gallery-item:nth-child(5)",
-                    images: [
-                        "https://via.placeholder.com/600x400?text=Visual+Effect+1",
-                        "https://via.placeholder.com/600x400?text=Visual+Effect+2"
-                    ]
-                },
-                {
-                    selector: ".gallery-item:nth-child(6)",
-                    images: [
-                        "https://via.placeholder.com/600x400?text=Creative+Technology+1",
-                        "https://via.placeholder.com/600x400?text=Creative+Technology+2"
-                    ]
-                }
-            ];
+            // --- Frameless Slideshow Logic (Infinite Loop) ---
+            let framelessSlideIndex = 1; // Start at the first cloned slide
+            let framelessSlideshowTimer;
+            const framelessWrapper = document.getElementById('framelessSlideshowWrapper');
+            let framelessSlides = Array.from(document.querySelectorAll('.frameless-slide')); // Convert NodeList to Array
+            const framelessDotsContainer = document.getElementById('framelessSlideshowDots');
+            let originalTotalSlides = framelessSlides.length;
 
-            // === CHARGEMENT & CYCLAGE DES IMAGES ===
-            galleries.forEach(gallery => {
-                const container = document.querySelector(gallery.selector);
-                const imgContainer = container.querySelector(".gallery-image-container");
-                let currentIndex = 0;
-                let currentImgElement = null;
+            let isDragging = false;
+            let startPos = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
+            let animationID;
 
-                const showImage = (indexToShow) => {
-                    // Supprime la classe 'active' de l'image précédente
-                    if (currentImgElement) {
-                        currentImgElement.classList.remove('active');
+            // Clone first and last slides for infinite loop effect
+            const firstClone = framelessSlides[0].cloneNode(true);
+            const lastClone = framelessSlides[originalTotalSlides - 1].cloneNode(true);
+
+            framelessWrapper.appendChild(firstClone);
+            framelessWrapper.prepend(lastClone);
+
+            // Re-select all slides including clones
+            framelessSlides = Array.from(document.querySelectorAll('.frameless-slide'));
+            const totalSlidesWithClones = framelessSlides.length;
+
+            // Generate dots dynamically for original slides only
+            for (let i = 0; i < originalTotalSlides; i++) {
+                const dot = document.createElement("span");
+                dot.classList.add("frameless-dot");
+                dot.setAttribute("onclick", `framelessCurrentSlide(${i})`); // Dots refer to original index
+                framelessDotsContainer.appendChild(dot);
+            }
+
+            const setSlideClasses = () => {
+                framelessSlides.forEach((slide, index) => {
+                    slide.classList.remove('active', 'side-1', 'side-2', 'side-3');
+
+                    // Adjust index for display and dot synchronization
+                    let effectiveIndex = framelessSlideIndex;
+                    // When on the last clone, treat as if we are on the first original slide for side-classing
+                    if (framelessSlideIndex === totalSlidesWithClones - 1) {
+                         effectiveIndex = 1;
+                    }
+                    // When on the first clone, treat as if we are on the last original slide for side-classing
+                    else if (framelessSlideIndex === 0) {
+                        effectiveIndex = originalTotalSlides;
                     }
 
-                    // Crée ou récupère la nouvelle image
-                    let nextImgElement = imgContainer.querySelector(`img[data-src="${gallery.images[indexToShow]}"]`);
-                    if (!nextImgElement) {
-                        nextImgElement = new Image();
-                        nextImgElement.src = gallery.images[indexToShow];
-                        nextImgElement.alt = `Wake demo image ${indexToShow + 1}`;
-                        nextImgElement.className = 'image-slide';
-                        nextImgElement.setAttribute('data-src', gallery.images[indexToShow]); // Pour la retrouver facilement
-                        imgContainer.appendChild(nextImgElement);
+
+                    // Calculate diff for side classes (relative to the currently active slide, including clones)
+                    const diff = index - framelessSlideIndex;
+                    const absDiff = Math.abs(diff);
+
+                    if (index === framelessSlideIndex) {
+                        slide.classList.add('active');
+                    } else if (absDiff === 1) {
+                        slide.classList.add('side-1');
+                    } else if (absDiff === 2) {
+                        slide.classList.add('side-2');
+                    } else if (absDiff >= 3) {
+                        slide.classList.add('side-3');
                     }
-
-                    // S'assure que l'image est chargée avant d'appliquer 'active'
-                    if (nextImgElement.complete) {
-                        // Donne un court délai pour que la transition se déclenche
-                        // (sinon si l'opacité initiale est 0, elle ne transitionnera pas)
-                        setTimeout(() => {
-                            nextImgElement.classList.add('active');
-                            currentImgElement = nextImgElement;
-                            // Retire les images inactives après un délai pour qu'elles ne s'accumulent pas
-                            // et n'affectent pas les performances, ou juste la laisser avec opacity:0
-                            Array.from(imgContainer.children).forEach(img => {
-                                if (img !== currentImgElement) {
-                                    img.classList.remove('active');
-                                }
-                            });
-                        }, 50); // Petit délai
-                    } else {
-                        nextImgElement.onload = () => {
-                            setTimeout(() => {
-                                nextImgElement.classList.add('active');
-                                currentImgElement = nextImgElement;
-                                Array.from(imgContainer.children).forEach(img => {
-                                    if (img !== currentImgElement) {
-                                        img.classList.remove('active');
-                                    }
-                                });
-                            }, 50);
-                        };
-                    }
-                };
-
-                // Lance le cycle initial
-                showImage(currentIndex);
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % gallery.images.length;
-                    showImage(currentIndex);
-                }, 3000 + Math.random() * 2000); // Délai aléatoire entre 3 et 5s
-            });
-
-            // === HOVER FOCUS EFFECT (Improved for correct directional shrinking and smooth transitions) ===
-            const galleryItems = document.querySelectorAll(".gallery-item");
-            const galleryGridContainer = document.querySelector(".gallery-grid-container");
-
-            let currentHoveredItem = null;
-            let hoverTimeout = null;
-            let lastHoveredItem = null; // Variable pour suivre le dernier élément réellement survolé
-
-            galleryGridContainer.addEventListener("mouseover", (event) => {
-                const targetItem = event.target.closest(".gallery-item");
-
-                // Si la souris n'est pas sur un gallery-item ou si c'est le même élément déjà survolé, ne rien faire
-                if (!targetItem || targetItem === currentHoveredItem) {
-                    return;
-                }
-
-                // Annule tout timeout précédent (pour éviter un "flicker" si on passe rapidement sur les éléments)
-                if (hoverTimeout) {
-                    clearTimeout(hoverTimeout);
-                }
-
-                // 1. Réinitialiser les classes de l'ancien élément survolé (s'il existe et est différent du nouveau)
-                if (currentHoveredItem && currentHoveredItem !== targetItem) {
-                    currentHoveredItem.classList.remove("focused");
-                    currentHoveredItem.style.zIndex = '';
-                    currentHoveredItem.style.transformOrigin = '';
-                }
-
-                // 2. Préparer TOUS les éléments à l'état non-focus avant de les re-classifier
-                galleryItems.forEach(el => {
-                    el.classList.remove("shrunk", "shrunk-left", "shrunk-right");
-                    // On ne réinitialise pas le zIndex ou transform-origin ici globalement
-                    // car ils seront définis spécifiquement pour le focused ou shrunk.
-                    // On s'assure juste que les classes de direction sont enlevées.
-                    el.style.transform = ''; // Réinitialise la transformation pour les non-focus
                 });
 
+                // Update dots based on original index
+                const currentOriginalIndex = (framelessSlideIndex - 1 + originalTotalSlides) % originalTotalSlides;
+                document.querySelectorAll('.frameless-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentOriginalIndex);
+                });
+            };
 
-                // 3. Appliquer les classes au nouvel élément survolé
-                currentHoveredItem = targetItem;
-                currentHoveredItem.classList.add("focused");
-                currentHoveredItem.style.zIndex = '100';
 
-                // Déterminer le nombre de colonnes actuel
-                const computedStyle = window.getComputedStyle(galleryGridContainer);
-                const gridTemplateColumns = computedStyle.gridTemplateColumns;
-                const numberOfColumns = gridTemplateColumns.split(' ').length;
+            const setPositionByIndex = (smooth = true) => {
+                currentTranslate = -framelessSlideIndex * framelessSlides[0].offsetWidth;
+                if (smooth) {
+                    framelessWrapper.style.transition = 'transform 0.6s ease-out';
+                } else {
+                    framelessWrapper.style.transition = 'none';
+                }
+                framelessWrapper.style.transform = `translateX(${currentTranslate}px)`;
+                setSlideClasses();
+            };
 
-                // Trouver l'index de la colonne de l'élément survolé
-                const itemsInGrid = Array.from(galleryGridContainer.children); // Récupère tous les enfants directs pour un index fiable
-                const itemIndex = itemsInGrid.indexOf(currentHoveredItem);
-                let itemColumn = itemIndex % numberOfColumns;
+            const framelessShowSlides = (index, smooth = true) => {
+                clearTimeout(framelessSlideshowTimer);
+
+                // This is the new index that includes clones
+                framelessSlideIndex = index;
+                setPositionByIndex(smooth);
+
+                // Reset timer for auto-advance only after potential jump
+                framelessSlideshowTimer = setTimeout(() => {
+                    framelessPlusSlides(1); // Auto-advance
+                }, 5000); // 5 seconds
+            };
+
+            window.framelessPlusSlides = (n) => {
+                // If moving forward from the last original slide, or backward from the first original slide
+                // we want to move to the clone first, then immediately jump.
+                let nextIndex = framelessSlideIndex + n;
+
+                if (nextIndex > totalSlidesWithClones - 1) { // Moving past the last clone (1st original)
+                    framelessShowSlides(totalSlidesWithClones - 1); // Move to the cloned first slide
+                    setTimeout(() => { // Then jump back to the actual first slide
+                        framelessShowSlides(1, false);
+                    }, 600); // Small delay to allow transition to finish
+                } else if (nextIndex < 0) { // Moving before the first clone (last original)
+                    framelessShowSlides(0); // Move to the cloned last slide
+                    setTimeout(() => { // Then jump back to the actual last slide
+                        framelessShowSlides(originalTotalSlides, false);
+                    }, 600); // Small delay
+                } else {
+                    framelessShowSlides(nextIndex);
+                }
+            };
+
+            window.framelessCurrentSlide = (n) => {
+                // When clicking a dot, we want to go to the original slide + 1 (because of the prepended clone)
+                framelessShowSlides(n + 1);
+            };
+
+            // Remove the previous transitionend listener and implement a more controlled logic
+            // The logic for jumping is now mostly handled within framelessPlusSlides to avoid race conditions.
+
+            // --- Dragging Logic ---
+            const framelessSlideshowContainer = document.getElementById('framelessSlideshowContainer');
+
+            framelessSlideshowContainer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startPos = e.clientX;
+                framelessSlideshowContainer.classList.add('grabbing');
+                framelessWrapper.style.transition = 'none'; // Disable transition during drag
+                prevTranslate = currentTranslate;
+                cancelAnimationFrame(animationID); // Stop any ongoing animation
+            });
+
+            framelessSlideshowContainer.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const currentPosition = e.clientX;
+                const diff = currentPosition - startPos;
+                currentTranslate = prevTranslate + diff;
+                framelessWrapper.style.transform = `translateX(${currentTranslate}px)`;
+            });
+
+            framelessSlideshowContainer.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                framelessSlideshowContainer.classList.remove('grabbing');
+
+                const movedBy = currentTranslate - prevTranslate;
+                const slideWidth = framelessSlides[0].offsetWidth;
+
+                let targetIndex = framelessSlideIndex;
+
+                if (movedBy < -slideWidth / 4) { // Swiped left, go to next
+                    targetIndex++;
+                } else if (movedBy > slideWidth / 4) { // Swiped right, go to previous
+                    targetIndex--;
+                }
                 
-                // Set transform-origin for the focused item to make it grow towards the center
-                if (itemColumn === 0 && numberOfColumns > 1) { // Première colonne (gauche)
-                    currentHoveredItem.style.transformOrigin = 'left center'; // Grandit vers la droite (centre de la grille)
-                } else if (itemColumn === (numberOfColumns - 1) && numberOfColumns > 1) { // Dernière colonne (droite)
-                    currentHoveredItem.style.transformOrigin = 'right center'; // Grandit vers la gauche (centre de la grille)
-                } else { // Colonne(s) du milieu ou une seule colonne
-                    currentHoveredItem.style.transformOrigin = 'center center'; // Grandit depuis son propre centre
+                // Handle wrapping for drag
+                if (targetIndex > originalTotalSlides) { // If dragged past the last original slide (now at clone of first)
+                    targetIndex = 1; // Snap back to the true first slide
+                    framelessShowSlides(targetIndex, false); // Instant jump
+                } else if (targetIndex < 1) { // If dragged before the first original slide (now at clone of last)
+                    targetIndex = originalTotalSlides; // Snap back to the true last slide
+                    framelessShowSlides(targetIndex, false); // Instant jump
+                } else {
+                    framelessShowSlides(targetIndex, true); // Smooth transition for regular slides
                 }
-
-                // 4. Appliquer les classes "shrunk" aux autres éléments
-                galleryItems.forEach(otherItem => {
-                    if (otherItem !== currentHoveredItem) {
-                        otherItem.classList.add("shrunk");
-                        otherItem.style.zIndex = '5';
-
-                        const otherItemIndex = itemsInGrid.indexOf(otherItem);
-                        const otherItemColumn = otherItemIndex % numberOfColumns;
-
-                        if (otherItemColumn < itemColumn) { // Autre élément est à gauche de l'élément survolé
-                            otherItem.classList.add("shrunk-left");
-                        } else if (otherItemColumn > itemColumn) { // Autre élément est à droite de l'élément survolé
-                            otherItem.classList.add("shrunk-right");
-                        } else { // Autre élément est dans la même colonne (au-dessus/en-dessous)
-                            otherItem.style.transform = 'scale(0.8)'; // Juste le rétrécir
-                        }
-                    }
-                });
-                lastHoveredItem = currentHoveredItem; // Met à jour le dernier élément survolé
+                
+                // Restart auto-advance after manual interaction
+                clearTimeout(framelessSlideshowTimer);
+                framelessSlideshowTimer = setTimeout(() => {
+                    framelessPlusSlides(1);
+                }, 5000);
             });
 
-            galleryGridContainer.addEventListener("mouseout", (event) => {
-                // Vérifie si la souris a quitté la grille ou est allée vers un élément non-galerie-item
-                if (!event.relatedTarget || !event.relatedTarget.closest(".gallery-item")) {
-                    hoverTimeout = setTimeout(() => {
-                        galleryItems.forEach(el => {
-                            el.classList.remove("shrunk", "focused", "shrunk-left", "shrunk-right");
-                            el.style.zIndex = '';
-                            el.style.transformOrigin = '';
-                            el.style.transform = ''; // Réinitialise toutes les transformations
-                        });
-                        currentHoveredItem = null;
-                        lastHoveredItem = null; // Réinitialise aussi lastHoveredItem
-                    }, 100); // Court délai pour permettre la transition hors de l'élément
+            framelessSlideshowContainer.addEventListener('mouseleave', () => {
+                if (isDragging) { // If mouse leaves while dragging, treat as mouseup
+                    isDragging = false;
+                    framelessSlideshowContainer.classList.remove('grabbing');
+                    framelessWrapper.style.transition = 'transform 0.6s ease-out';
+                    setPositionByIndex(); // Snap to current framelessSlideIndex
+                    clearTimeout(framelessSlideshowTimer);
+                    framelessSlideshowTimer = setTimeout(() => {
+                        framelessPlusSlides(1);
+                    }, 5000);
                 }
-                // Si la souris quitte un gallery-item et entre dans un AUTRE gallery-item,
-                // la logique de mouseover sur le nouvel item gérera la transition.
-                // Donc pas besoin d'une action spécifique ici, le timeout suffira si on sort.
+            });
+
+            // Initial setup - important to start at the first "real" slide (index 1)
+            // Ensure initial positioning is instant to avoid seeing the clones load
+            setPositionByIndex(false); // Start without transition to position correctly
+
+            // Recalculate position on window resize to ensure correct centering
+            window.addEventListener('resize', () => {
+                setPositionByIndex(false); // No smooth transition on resize
             });
         });
     </script>
