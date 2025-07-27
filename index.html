@@ -708,35 +708,46 @@
                  if(last!= frameIndex){
                      last=frameIndex;
                      if(overflowY>=0){
-                           toY = overflowY/2.0;
+                        //   toY = overflowY/2.0;
+                           toY =overflowY;
                      }else{
-                        toY = 0.0;
+                        toY = overflowY;
                      }
-                     toYY=0;
+                     if(Math.abs(overflowY)<20){
+                     toY=0;
+                     }
+                     
+                     
+                     toYY=toY;
                           console.log(" img.overflowY =",  overflowY);
                      
                      
                  }
                  
-               
-               if(overflowY>0){
-                    //toYY =  0;
-                    //toY=overflowY;
-               }else{
-               
-                 if(toYY >= 0 && toY >=-5){
-                     toYY =  overflowY-20;
-                  }
-                // if(toYY < overflowY && toY < overflowY-5){
-                //    toYY = 20;
-                // }
-             }
+             //  
+             //  if(overflowY>0){
+             //       //toYY =  0;
+             //       //toY=overflowY;
+             //  }else{
+             //  
+             //    if(toYY >= 0 && toY >=-5){
+             //        toYY =  overflowY-20;
+             //     }
+             //   // if(toYY < overflowY && toY < overflowY-5){
+             //   //    toYY = 20;
+             //   // }
+             //}
              
 
               // toY -= (toY-toYY)/200;
                //if(toYY< toY){
                //}
+                  if(toY<-1){
+               toY+=0.25;
+               }
+                    if(toY>1){
                toY-=0.25;
+               }
         
                
                  if(overflowY>=0){
@@ -802,7 +813,7 @@
                 // Restart auto-advance timer
                 framelessSlideshowTimer = setTimeout(() => {
                     framelessPlusSlides(1); // Auto-advance
-                }, 5000); // 5 seconds
+                }, 10000); 
                 
                 
             };
