@@ -47,17 +47,7 @@ window.FRAMELESS_MANIFEST = [
     description: "A JIT plaground on Wake"
   },
   
-  {
-    image: "https://wkweb.github.io/wkspell/images/showcase/playground02.png",
-    title: "JIT playground",
-    description: "A JIT plaground on Wake"
-  },
-  
-  {
-    image: "https://wkweb.github.io/wkspell/images/showcase/playground03.png",
-    title: "JIT playground",
-    description: "A JIT plaground on Wake"
-  },
+
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/normals02.png",
@@ -72,6 +62,13 @@ window.FRAMELESS_MANIFEST = [
   },
 
   {
+    image: "https://wkweb.github.io/wkspell/images/showcase/playground02.png",
+    title: "JIT playground",
+    description: "A JIT plaground on Wake"
+  },
+  
+  
+  {
     image: "https://wkweb.github.io/wkspell/images/showcase/3dArt04.png",
     title: "3d art",
     description: "Art experiment on Wake"
@@ -83,6 +80,14 @@ window.FRAMELESS_MANIFEST = [
     description: "This is a rendering of a perfectly spherical sphere, illuminated by multiple lights"
   },
 
+  {
+    image: "https://wkweb.github.io/wkspell/images/showcase/playground03.png",
+    title: "JIT playground",
+    description: "A JIT plaground on Wake"
+  },
+  
+  
+  
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/face_mesh.gif",
     title: "Media Pipe",
@@ -102,21 +107,9 @@ window.FRAMELESS_MANIFEST = [
   },
  
   {
-    image: "https://wkweb.github.io/wkspell/images/showcase/3dArt02.png",
-    title: "Wake in Action 5",
-    description: "Mode démonstration haute fluidité en boucle."
-  },
-  
-  {
     image: "https://wkweb.github.io/wkspell/images/showcase/muti-render02.png",
     title: "Multiple Render Targets",
     description: "Combine colors, depth, nomrals, in one GPU pass"
-  },
-
-  {
-    image: "https://wkweb.github.io/wkspell/images/showcase/3dArt02.png",
-    title: "Wake in Action 5",
-    description: "Mode démonstration haute fluidité en boucle."
   }
   
 ];
