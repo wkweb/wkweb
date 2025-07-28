@@ -63,8 +63,8 @@ window.FRAMELESS_MANIFEST = [
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/3dArt02.png",
-    title: "3d art",
-    description: "Art experiment on Wake"
+    title: "2 millions of triangles",
+    description: "Unlimited power, live-compiled in Wake"
   },
 
   {
