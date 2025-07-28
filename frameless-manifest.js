@@ -1,6 +1,6 @@
 window.FRAMELESS_MANIFEST = [
   {
-    image: "images/frameless/01.png",
+    image: "https://github.com/wkweb/wkspell/blob/d78e0625c9b3885087db69fad4b878107ce8d541/images/showcase/3dArt02.png",
     title: "Wake in Action 1",
     description: "Clavier repositionnable avec suivi en temps réel."
   },
