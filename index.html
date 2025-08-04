@@ -394,6 +394,50 @@
 }
 
 
+/* Plus fad pulse */
+.typewriter-rotate {
+  display: inline-block;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #2196f3;
+  animation: typing 2s steps(20, end), blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+
+/* Type writter */
+.typewriter-fixed {
+  display: inline-block;
+  width: 20ch; /* largeur fixe selon la phrase la plus longue */
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: baseline;
+  margin-left: 0.4ch;
+  font-weight: 500;
+  color: #444;
+  font-family: monospace;
+}
+
+.cursor {
+  display: inline-block;
+  width: 1ch;
+  color: #2196f3;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
 
 
 
@@ -416,55 +460,102 @@
             </h1>
             <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-12">
                
-				Live JIT C99<span class="plus-blue-fade">+</span> code >> Zero build time. <br>
-			
+				Live JIT C99<span class="plus-blue-fade">+</span> code
+				
+				
+	
+				
+	
+	
+			<br>
 				
 				
 				
 			<span>Deploy<span class="rotating-container">
 			  <span class="rotating-word visible">instantly</span>
 			</span></span>
-
+			
+	
+			
 				
-				
-				
-				  using a never-fail build idiom.
-				
+				  using a never-fail build idiom
+				  
+				  
+				     			
+			  <span class="typewriter-fixed">
+				<span id="typewriter-text"></span><span class="cursor">|</span>
+			  </span>
 
 		   </p>
 		   
-		  <script>
-			  const words = [ "natively", "securely", "instantly"];
-			  const container = document.querySelector(".rotating-container");
-			  let index = 0;
+		
+<script>
+(function() {
+  const words = [ "natively", "securely", "instantly" ];
+  const container = document.querySelector(".rotating-container");
+  let wordIndex = 0;
 
-			  function rotateWord() {
-				const oldWord = container.querySelector(".rotating-word");
-				const newWord = document.createElement("span");
-				newWord.className = "rotating-word";
-				newWord.textContent = words[index];
+  function rotateWord() {
+    const oldWord = container.querySelector(".rotating-word");
+    const newWord = document.createElement("span");
+    newWord.className = "rotating-word";
+    newWord.textContent = words[wordIndex];
 
-				container.appendChild(newWord);
+    container.appendChild(newWord);
+    void newWord.offsetWidth; // trigger reflow
 
-				// Trigger reflow to restart transition
-				void newWord.offsetWidth;
+    oldWord.classList.remove("visible");
+    newWord.classList.add("visible");
 
-				oldWord.classList.remove("visible");
-				newWord.classList.add("visible");
+    setTimeout(() => {
+      if (oldWord.parentNode) {
+        container.removeChild(oldWord);
+      }
+    }, 500);
 
-				// Clean up old word after fade-out
-				setTimeout(() => {
-				  if (oldWord.parentNode) {
-					container.removeChild(oldWord);
-				  }
-				}, 500); // match fade duration
+    wordIndex = (wordIndex + 1) % words.length;
+  }
 
-				index = (index + 1) % words.length;
-			  }
+  setInterval(rotateWord, 2500);
+})();
+</script>
 
-			  setInterval(rotateWord, 2500); // Change every 2.5s
-			</script>
+<script>
+(function() {
+  const phrases = ["Zero build time", "GPU shaders", "Hot reload"];
+  const textEl = document.getElementById("typewriter-text");
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+
+  function type() {
+    const currentPhrase = phrases[phraseIndex];
+    const delay = deleting ? 40 : 60;
+
+    if (!deleting) {
+      textEl.textContent = currentPhrase.slice(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === currentPhrase.length) {
+        setTimeout(() => deleting = true, 1200);
+      }
+    } else {
+      textEl.textContent = currentPhrase.slice(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+      }
+    }
+
+    setTimeout(type, delay);
+  }
+
+  type();
+})();
+</script>
+
 		   
+
 		   
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="#" class="bg-wake-blue hover-bg-wake-blue text-white px-6 py-3 rounded-md font-medium transition flex items-center">
