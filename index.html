@@ -438,8 +438,13 @@
   50% { opacity: 0; }
 }
 
-
-
+.seo-only {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 
 
     </style>
@@ -488,7 +493,14 @@
 
 		   </p>
 		   
-		
+			<span class="seo-only">
+				  Deploy instantly with our never-fail build system.
+				  Deploy securely using a battle-tested JIT idiom.
+				  Deploy natively, with zero friction.
+			</span>
+			<span class="seo-only">
+				Zero build time. GPU shaders. Hot reload.
+			</span>		
 <script>
 (function() {
   const words = [ "natively", "securely", "instantly" ];
