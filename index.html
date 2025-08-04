@@ -351,6 +351,53 @@
 }
 
 
+/* Rotating word */
+.rotating-container {
+  display: inline-block;
+  position: relative;
+  width: 7.5ch;
+  height: 1em;                /* épouse la hauteur de la ligne */
+  vertical-align: baseline;  /* aligne avec "Deploy" */
+  margin-left: 0.4ch;
+  line-height: inherit;
+  font-size: inherit;
+}
+
+.rotating-word {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  color: #2196f3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  line-height: inherit;
+  font-size: inherit;
+}
+
+.rotating-word.visible {
+  opacity: 1;
+}
+
+/* Plus fad pulse */
+@keyframes fadePulse {
+  0%   { opacity: 0.7; }
+  50%  { opacity: 0.8; }
+  100% { opacity: 0.7; }
+}
+
+.plus-blue-fade {
+  color: #2196f3;
+  animation: fadePulse 0.8s infinite ease-in-out;
+}
+
+
+
+
+
+
     </style>
 </head>
 <body class="min-h-screen">
@@ -368,9 +415,57 @@
                 <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
             </h1>
             <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-12">
-                The Instant Native Engine.<br>
-                Run live C99 & shaders, package securely, and deploy instantly.
-            </p>
+               
+				Live JIT C99<span class="plus-blue-fade">+</span> code >> Zero build time. <br>
+			
+				
+				
+				
+			<span>Deploy<span class="rotating-container">
+			  <span class="rotating-word visible">instantly</span>
+			</span></span>
+
+				
+				
+				
+				  using a never-fail build idiom.
+				
+
+		   </p>
+		   
+		  <script>
+			  const words = [ "natively", "securely", "instantly"];
+			  const container = document.querySelector(".rotating-container");
+			  let index = 0;
+
+			  function rotateWord() {
+				const oldWord = container.querySelector(".rotating-word");
+				const newWord = document.createElement("span");
+				newWord.className = "rotating-word";
+				newWord.textContent = words[index];
+
+				container.appendChild(newWord);
+
+				// Trigger reflow to restart transition
+				void newWord.offsetWidth;
+
+				oldWord.classList.remove("visible");
+				newWord.classList.add("visible");
+
+				// Clean up old word after fade-out
+				setTimeout(() => {
+				  if (oldWord.parentNode) {
+					container.removeChild(oldWord);
+				  }
+				}, 500); // match fade duration
+
+				index = (index + 1) % words.length;
+			  }
+
+			  setInterval(rotateWord, 2500); // Change every 2.5s
+			</script>
+		   
+		   
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="#" class="bg-wake-blue hover-bg-wake-blue text-white px-6 py-3 rounded-md font-medium transition flex items-center">
                     ⬇ Download Wake
