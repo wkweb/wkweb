@@ -19,7 +19,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
    
-   
+    <script defer src="version.js"></script>
       
     
     <style>
@@ -351,6 +351,102 @@
 }
 
 
+/* Rotating word */
+.rotating-container {
+  display: inline-block;
+  position: relative;
+  width: 7.5ch;
+  height: 1em;                /* épouse la hauteur de la ligne */
+  vertical-align: baseline;  /* aligne avec "Deploy" */
+  margin-left: 0.4ch;
+  line-height: inherit;
+  font-size: inherit;
+}
+
+.rotating-word {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  color: #2196f3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  line-height: inherit;
+  font-size: inherit;
+}
+
+.rotating-word.visible {
+  opacity: 1;
+}
+
+/* Plus fad pulse */
+@keyframes fadePulse {
+  0%   { opacity: 0.7; }
+  50%  { opacity: 0.8; }
+  100% { opacity: 0.7; }
+}
+
+.plus-blue-fade {
+  color: #2196f3;
+  animation: fadePulse 0.8s infinite ease-in-out;
+}
+
+
+/* Plus fad pulse */
+.typewriter-rotate {
+  display: inline-block;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #2196f3;
+  animation: typing 2s steps(20, end), blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+
+/* Type writter */
+.typewriter-fixed {
+  display: inline-block;
+  width: 20ch; /* largeur fixe selon la phrase la plus longue */
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: baseline;
+  margin-left: 0.4ch;
+  font-weight: 500;
+  color: #444;
+  font-family: monospace;
+}
+
+.cursor {
+  display: inline-block;
+  width: 1ch;
+  color: #2196f3;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.seo-only {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+
     </style>
 </head>
 <body class="min-h-screen">
@@ -368,9 +464,136 @@
                 <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
             </h1>
             <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-12">
-                The Instant Native Engine.<br>
-                Run live C99 & shaders, package securely, and deploy instantly.
-            </p>
+               
+				Live JIT C99<span class="plus-blue-fade">+</span> code
+				
+				
+	
+				
+	
+	
+			<br>
+				
+				
+				
+			<span>Deploy<span class="rotating-container">
+			  <span class="rotating-word visible">instantly</span>
+			</span></span>
+			
+	
+			
+				
+				  using a never-fail build idiom
+				  
+				  
+				     			
+			  <span class="typewriter-fixed">
+				<span id="typewriter-text"></span><span class="cursor">|</span>
+			  </span>
+
+		   </p>
+		   
+			<span class="seo-only">
+				  Deploy instantly with our never-fail build system.
+				  Deploy securely using a battle-tested JIT idiom.
+				  Deploy natively, with zero friction.
+			</span>
+			<span class="seo-only">
+				Zero build time. GPU shaders. Hot reload.
+			</span>
+			<span class="seo-only">
+			  Wake is a zero-build JIT engine for C99 and GPU shaders.
+			  Run native C code live. Deploy instantly, securely, and natively.
+			  C99+ live code execution. Just-In-Time compilation for native apps.
+			  Instant deployment of JIT-compiled modules.
+			  Secure native packaging. Hot reload for C modules and shaders.
+			  No build system required. No setup. Just code and run.
+			  Real-time shader editing. GLSL and HLSL support.
+			  Wake is an alternative to scripting languages with native speed.
+			  Use Wake to develop tools, games, simulations, and interactive software.
+			  Portable JIT runtime for native C code.
+			  Lightweight native execution engine. Replace scripting with real code.
+			  Wake enables instant feedback for low-level development.
+			  Wake supports live-reloading of compiled native code and shaders.
+			  A native-first dev experience. Live C99 modules with GPU integration.
+			  Wake compiles and runs your C99+ code instantly without makefiles.
+			  Build tools in pure C and distribute securely with Wake.
+			  Empower your local-first workflows with signed native packages.
+			  Wake enables interactive development with true native performance.
+			  No Docker. No VM. No runtime overhead. Just native execution.
+			  Compatible with embedded systems, real-time applications, and desktop tools.
+			  Ideal for indie developers, tool builders, and shader artists.
+			  Wake is a developer-first JIT engine for native modular software.
+			</span>
+			
+<script>
+(function() {
+  const words = [ "natively", "securely", "instantly" ];
+  const container = document.querySelector(".rotating-container");
+  let wordIndex = 0;
+
+  function rotateWord() {
+    const oldWord = container.querySelector(".rotating-word");
+    const newWord = document.createElement("span");
+    newWord.className = "rotating-word";
+    newWord.textContent = words[wordIndex];
+
+    container.appendChild(newWord);
+    void newWord.offsetWidth; // trigger reflow
+
+    oldWord.classList.remove("visible");
+    newWord.classList.add("visible");
+
+    setTimeout(() => {
+      if (oldWord.parentNode) {
+        container.removeChild(oldWord);
+      }
+    }, 500);
+
+    wordIndex = (wordIndex + 1) % words.length;
+  }
+
+  setInterval(rotateWord, 2500);
+})();
+</script>
+
+<script>
+(function() {
+  const phrases = ["Zero build time", "GPU shaders", "Hot reload"];
+  const textEl = document.getElementById("typewriter-text");
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+
+  function type() {
+    const currentPhrase = phrases[phraseIndex];
+    const delay = deleting ? 40 : 60;
+
+    if (!deleting) {
+      textEl.textContent = currentPhrase.slice(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === currentPhrase.length) {
+        setTimeout(() => deleting = true, 1200);
+      }
+    } else {
+      textEl.textContent = currentPhrase.slice(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+      }
+    }
+
+    setTimeout(type, delay);
+  }
+
+  type();
+})();
+</script>
+
+		   
+
+		   
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="#" class="bg-wake-blue hover-bg-wake-blue text-white px-6 py-3 rounded-md font-medium transition flex items-center">
                     ⬇ Download Wake

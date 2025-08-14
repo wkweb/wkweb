@@ -73,13 +73,13 @@ window.FRAMELESS_MANIFEST = [
     description: "A JIT plaground on Wake"
   },
   
-  
   {
-    image: "https://wkweb.github.io/wkspell/images/showcase/3dArt04.png",
-    title: "3d art",
-    description: "Art experiment on Wake"
+    image: "https://wkweb.github.io/wkspell/images/showcase/muti-render01.png",
+    title: "Multiple Render Targets",
+    description: "Combine colors, depth, nomrals, in one GPU pass"
   },
-
+ 
+ 
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/lightballs.gif",
     title: "Lights",
@@ -106,12 +106,7 @@ window.FRAMELESS_MANIFEST = [
     description: "Mathematical PI Art experiment on Wake"
   },
 
-  {
-    image: "https://wkweb.github.io/wkspell/images/showcase/muti-render01.png",
-    title: "Multiple Render Targets",
-    description: "Combine colors, depth, nomrals, in one GPU pass"
-  },
- 
+
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/muti-render02.png",
     title: "Multiple Render Targets",
