@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Wake JIT Engine — Early Access</title>
+  <meta name="description" content="Join the Wake Early Access list to receive your download link and insider builds."/>
+  <style>
+    :root { --fg:#111; --muted:#666; --line:#e5e7eb; --ok:#0a7f2e; --err:#b00020; --bg:#fff; --accent:#111; }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .wrap{max-width:780px;margin:48px auto;padding:0 16px}
+    h1{font-size:clamp(28px,4vw,40px);margin:0 0 8px}
+    p.lead{color:var(--muted);margin-top:0}
+    .card{border:1px solid var(--line);border-radius:14px;padding:22px;margin:20px 0}
+    label{display:block;font-weight:600;margin:10px 0 6px}
+    input[type=email]{width:100%;padding:12px 14px;border:1px solid #bbb;border-radius:10px;font:inherit}
+    .row{display:flex;align-items:flex-start;gap:10px;margin-top:10px}
+    .row input[type=checkbox]{margin-top:3px}
+    button{margin-top:14px;padding:12px 16px;border:0;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+    button[disabled]{opacity:.6;cursor:wait}
+    .note{font-size:13px;color:var(--muted);margin-top:8px}
+    .status{margin-top:14px;font-weight:600}
+    .status.ok{color:var(--ok)}
+    .status.err{color:var(--err)}
+    .hp{position:absolute;left:-5000px;opacity:0} /* honeypot */
+    footer{margin-top:32px;color:var(--muted);font-size:13px}
+    .small{font-size:12px}
+    .divider{height:1px;background:var(--line);margin:24px 0}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Wake JIT Engine — Early Access</h1>
+    <p class="lead">Enter your email to receive your exclusive download link and insider updates.</p>
+
+    <div class="card">
+      <!--
+        Progressive enhancement:
+        - Sans JS: POST classique (urlencoded) vers /subscribe.
+        - Avec JS: interception + fetch JSON; même endpoint.
+      -->
+      <form id="wakeForm" action="/subscribe" method="post" novalidate>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email"
+               placeholder="you@company.com" required />
+
+        <!-- Consentement simple (bonne pratique CASL/GDPR) -->
+        <div class="row">
+          <input id="consent" name="consent" type="checkbox" required />
+          <label for="consent" style="font-weight:400">
+            I agree to receive Early Access emails from Wake (one-click unsubscribe anytime).
+          </label>
+        </div>
+
+        <!-- Honeypot anti-bots -->
+        <div aria-hidden="true" class="hp">
+          <label for="website">Your website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off"/>
+        </div>
+
+        <!-- Placeholder si tu ajoutes plus tard Turnstile/recaptcha
+        <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY"></div>
+        -->
+
+        <button id="submitBtn" type="submit">Get Access</button>
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+        <p class="note small">We’ll send the download link to this address. Check spam if you don’t see it within a minute.</p>
+
+        <div class="divider"></div>
+        <p class="small">By joining, you’ll get Early Access emails (releases, insider builds). Unsubscribe anytime from any email.</p>
+      </form>
+    </div>
+
+    <footer>
+      © <span id="y"></span> Wake — Early Access Program.
+    </footer>
+  </main>
+
+<script>
+(function(){
+  document.getElementById('y').textContent = new Date().getFullYear();
+
+  const form = document.getElementById('wakeForm');
+  const btn  = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('status');
+
+  // Petit helper UX
+  function setStatus(msg, ok){
+    statusEl.textContent = msg || '';
+    statusEl.className = 'status ' + (ok===true ? 'ok' : ok===false ? 'err' : '');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    // Si JS est actif, on intercepte pour utiliser fetch JSON
+    if (window.fetch) {
+      e.preventDefault();
+      setStatus('');
+      if (!form.email.value || !form.email.checkValidity()) {
+        setStatus('Enter a valid email.', false); return;
+      }
+      if (!form.consent.checked) {
+        setStatus('Please accept Early Access emails to proceed.', false); return;
+      }
+      // Honeypot
+      if (form.website.value) { setStatus('Blocked (bot detected).', false); return; }
+
+      btn.disabled = true;
+      setStatus('Sending…');
+
+      try {
+        const res = await fetch(form.action || '/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: form.email.value.trim(),
+            consent: true
+          })
+        });
+
+        // On accepte deux formats de réponse backend:
+        // 1) JSON { ok:bool, message:string, directUrl?:string }
+        // 2) Plain text
+        let ok = res.ok;
+        let msg = 'Check your inbox for the download link 🚀';
+        let directUrl = '';
+
+        const ct = res.headers.get('content-type') || '';
+        if (ct.includes('application/json')) {
+          const data = await res.json().catch(()=>({}));
+          ok = ('ok' in data) ? !!data.ok : res.ok;
+          msg = (data.message || msg);
+          directUrl = data.directUrl || '';
+        } else {
+          const txt = await res.text();
+          if (txt) msg = txt;
+        }
+
+        if (ok) {
+          setStatus(msg, true);
+          // Si ton backend renvoie un lien direct (fallback quota), on l’affiche proprement
+          if (directUrl) {
+            statusEl.innerHTML = `Download ready: <a href="${directUrl}">click here</a>.`;
+            statusEl.className = 'status ok';
+          }
+          form.reset();
+        } else {
+          setStatus(msg || 'Error. Please try again in a moment.', false);
+        }
+      } catch(err){
+        setStatus('Network error. Please try again.', false);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+    // Sinon: pas de JS → le navigateur fera un POST classique (urlencoded) vers /subscribe
+  });
+})();
+</script>
+</body>
+</html>
