@@ -23,10 +23,11 @@
     .status{margin-top:14px;font-weight:600}
     .status.ok{color:var(--ok)}
     .status.err{color:var(--err)}
-    .hp{position:absolute;left:-5000px;opacity:0} /* honeypot */
+    .hp{position:absolute;left:-5000px;opacity:0}
     footer{margin-top:32px;color:var(--muted);font-size:13px}
     .small{font-size:12px}
     .divider{height:1px;background:var(--line);margin:24px 0}
+    noscript{display:block;color:#b00020;margin-top:8px}
   </style>
 </head>
 <body>
@@ -35,17 +36,14 @@
     <p class="lead">Enter your email to receive your exclusive download link and insider updates.</p>
 
     <div class="card">
-      <!--
-        Progressive enhancement:
-        - Sans JS: POST classique (urlencoded) vers /subscribe.
-        - Avec JS: interception + fetch JSON; même endpoint.
-      -->
+      <!-- Progressive enhancement:
+           - No JS: classic urlencoded POST to the endpoint.
+           - With JS: intercept + fetch JSON to the same endpoint. -->
       <form id="wakeForm" action="/subscribe" method="post" novalidate>
         <label for="email">Email</label>
         <input id="email" name="email" type="email" autocomplete="email"
                placeholder="you@company.com" required />
 
-        <!-- Consentement simple (bonne pratique CASL/GDPR) -->
         <div class="row">
           <input id="consent" name="consent" type="checkbox" required />
           <label for="consent" style="font-weight:400">
@@ -53,15 +51,14 @@
           </label>
         </div>
 
-        <!-- Honeypot anti-bots -->
+        <!-- Honeypot anti-bot -->
         <div aria-hidden="true" class="hp">
           <label for="website">Your website</label>
           <input id="website" name="website" type="text" tabindex="-1" autocomplete="off"/>
         </div>
 
-        <!-- Placeholder si tu ajoutes plus tard Turnstile/recaptcha
-        <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY"></div>
-        -->
+        <!-- Optional Turnstile can be injected later -->
+        <div id="turnstile-box" style="margin-top:12px"></div>
 
         <button id="submitBtn" type="submit">Get Access</button>
         <div id="status" class="status" role="status" aria-live="polite"></div>
@@ -69,6 +66,8 @@
 
         <div class="divider"></div>
         <p class="small">By joining, you’ll get Early Access emails (releases, insider builds). Unsubscribe anytime from any email.</p>
+
+        <noscript>JavaScript is disabled. The form will still submit, but you won't see inline status messages.</noscript>
       </form>
     </div>
 
@@ -79,48 +78,73 @@
 
 <script>
 (function(){
-  document.getElementById('y').textContent = new Date().getFullYear();
+  // ===== CONFIG =====
+  // While your Worker is only on workers.dev:
+  const ACTION_URL = "https://wake-ea.waketools-dev.workers.dev/subscribe";
+  // After you add a Cloudflare Worker Route on your domain, switch to:
+  // const ACTION_URL = "/subscribe";
 
+  // Optional Turnstile site key (leave empty "" to hide widget here)
+  const TURNSTILE_SITE_KEY = ""; // e.g. "0x4AAAAA...."
+
+  // ===== INIT =====
+  document.getElementById('y').textContent = new Date().getFullYear();
   const form = document.getElementById('wakeForm');
   const btn  = document.getElementById('submitBtn');
   const statusEl = document.getElementById('status');
 
-  // Petit helper UX
+  // Force the action to the Worker endpoint to avoid 404 on your own server
+  form.action = ACTION_URL;
+
+  // Optionally render Turnstile if you set a site key (not required)
+  if (TURNSTILE_SITE_KEY) {
+    const s = document.createElement('script');
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    s.async = true; s.defer = true;
+    document.head.appendChild(s);
+
+    const box = document.getElementById('turnstile-box');
+    const div = document.createElement('div');
+    div.className = 'cf-turnstile';
+    div.setAttribute('data-sitekey', TURNSTILE_SITE_KEY);
+    box.appendChild(div);
+  }
+
   function setStatus(msg, ok){
     statusEl.textContent = msg || '';
     statusEl.className = 'status ' + (ok===true ? 'ok' : ok===false ? 'err' : '');
   }
 
   form.addEventListener('submit', async (e) => {
-    // Si JS est actif, on intercepte pour utiliser fetch JSON
+    // With JS, use fetch to keep the user on the page
     if (window.fetch) {
       e.preventDefault();
       setStatus('');
+
       if (!form.email.value || !form.email.checkValidity()) {
         setStatus('Enter a valid email.', false); return;
       }
       if (!form.consent.checked) {
         setStatus('Please accept Early Access emails to proceed.', false); return;
       }
-      // Honeypot
-      if (form.website.value) { setStatus('Blocked (bot detected).', false); return; }
+      if (form.website.value) { // honeypot
+        setStatus('Blocked (bot detected).', false); return;
+      }
 
       btn.disabled = true;
       setStatus('Sending…');
 
       try {
-        const res = await fetch(form.action || '/subscribe', {
+        const payload = { email: form.email.value.trim(), consent: true };
+        const tsField = form.querySelector('input[name="cf-turnstile-response"]');
+        if (tsField && tsField.value) payload["cf-turnstile-response"] = tsField.value;
+
+        const res = await fetch(form.action, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: form.email.value.trim(),
-            consent: true
-          })
+          body: JSON.stringify(payload)
         });
 
-        // On accepte deux formats de réponse backend:
-        // 1) JSON { ok:bool, message:string, directUrl?:string }
-        // 2) Plain text
         let ok = res.ok;
         let msg = 'Check your inbox for the download link 🚀';
         let directUrl = '';
@@ -138,7 +162,6 @@
 
         if (ok) {
           setStatus(msg, true);
-          // Si ton backend renvoie un lien direct (fallback quota), on l’affiche proprement
           if (directUrl) {
             statusEl.innerHTML = `Download ready: <a href="${directUrl}">click here</a>.`;
             statusEl.className = 'status ok';
@@ -153,7 +176,7 @@
         btn.disabled = false;
       }
     }
-    // Sinon: pas de JS → le navigateur fera un POST classique (urlencoded) vers /subscribe
+    // Without JS, the browser will do a classic urlencoded POST to ACTION_URL
   });
 })();
 </script>
