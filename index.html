@@ -18,37 +18,26 @@
     <title>WAKE JIT Engine - The Power of a Live Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
-   
     <script defer src="version.js"></script>
-      
-    
+
     <style>
-                                                                                                                                               
         body {
             font-family: 'Inter', sans-serif;
             background-color: #000000;
             color: #EAEAEA;
             overflow-x: hidden;
         }
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .wake-blue {
-            color: #0066CC;
-        }
-        .bg-wake-blue {
-            background-color: #0066CC;
-        }
-        .hover-bg-wake-blue:hover {
-            background-color: #0055AA;
-        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .wake-blue { color: #0066CC; }
+        .bg-wake-blue { background-color: #0066CC; }
+        .hover-bg-wake-blue:hover { background-color: #0055AA; }
+
         .console-text {
             opacity: 0;
             animation: fadeIn 0.3s forwards;
         }
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { to { opacity: 1; } }
+
         .slide-up {
             opacity: 0;
             transform: translateY(20px);
@@ -59,7 +48,7 @@
             transform: translateY(0);
         }
 
-        /* --- Global Gallery Styles (cleaned up) --- */
+        /* --- Global Gallery Styles --- */
         .module-card {
             background-color: rgba(0, 0, 0, 0.2);
             border: 1px solid #0066CC;
@@ -91,7 +80,6 @@
             z-index: 0;
             pointer-events: none;
         }
-
         #console-container {
             position: absolute;
             top: 0;
@@ -103,20 +91,18 @@
             will-change: transform;
             pointer-events: auto;
         }
-
         #console-blur-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(0px); /* Initial blur, will be updated by JS */
+            backdrop-filter: blur(0px);
             pointer-events: none;
             z-index: 1;
             background-color: rgba(0, 0, 0, 0.5);
             transition: backdrop-filter 0.1s ease-out;
         }
-
         #console-container #console-output {
             background-color: transparent;
             padding: 0;
@@ -125,7 +111,6 @@
             position: relative;
             z-index: 0;
         }
-
         #main-content {
             opacity: 0;
             transition: opacity 0.8s ease-in;
@@ -133,171 +118,100 @@
             z-index: 1;
         }
 
-        /* Style pour le contour du titre */
         .title-outline {
             text-shadow:
                 -2px -2px 0 #000,
-                2px -2px 0 #000,
+                 2px -2px 0 #000,
                 -2px  2px 0 #000,
-                2px  2px 0 #000;
+                 2px  2px 0 #000;
         }
 
-        /* --- Frameless Slideshow Specific Styles --- */
+        /* --- Frameless Slideshow Styles --- */
         .frameless-slideshow-container {
-          position: relative;
-          width: 100%;
-        height: 700px;
-          overflow: hidden;
-          cursor: grab;
+            position: relative;
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            cursor: grab;
         }
-
-        .frameless-slideshow-container.grabbing {
-            cursor: grabbing;
+        .frameless-slideshow-container.grabbing { cursor: grabbing; }
+        .frameless-slideshow-wrapper { height: 100%; }
+        .frameless-subtitle {
+            text-align: center;
+            color: white;
+            font-size: 1.25rem;
+            margin-top: 1rem;
+            font-family: sans-serif;
+            transition: opacity 0.3s ease;
         }
-
-      .frameless-slideshow-wrapper {
-         height: 100%;
-
-      }
-      
-      .frameless-subtitle {
-          text-align: center;
-          color: white;
-          font-size: 1.25rem;
-          margin-top: 1rem;
-          font-family: sans-serif;
-          transition: opacity 0.3s ease;
-      }
-            
-      
-.frameless-slide img.animate-vertical {
-    transition: transform 0.4s ease-out; 
-    will-change: transform;
-}
-
-@keyframes floatY {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(var(--float-distance)); }
-}
-
-
-              
-        /* Classe pour désactiver temporairement la transition */
-        .frameless-slideshow-wrapper.no-transition {
-            transition: none !important;
-        }
-
 
         .frameless-slide {
             position: absolute;
-          top: 0;
-          left: 0;
-          user-select: none;
-          width: 100%; /* ou une largeur fixe si tu préfères */
-          height: 100%;
-         // display: flex;
-          justify-content: center;
-          align-items: center;
-        
+            top: 0;
+            left: 0;
+            user-select: none;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
         }
-
-.frameless-slide img {
-    max-width: 100%; /* Permet à l'image de prendre sa largeur naturelle, mais ne pas dépasser 100% de son parent */
-    height: auto;    /* Maintient le ratio d'aspect de l'image */
-    object-fit: contain; /* Assure que l'image entière est visible à l'intérieur de son conteneur */
-    user-select: none;
-    display: block; /* Élimine les espaces blancs sous l'image */
-    margin: 0 auto; /* Centre l'image horizontalement dans la diapositive */
-}
-
-        /* Overlay for darkening effect on side images */
+        .frameless-slide img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            user-select: none;
+            display: block;
+            margin: 0 auto;
+        }
         .frameless-slide::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-           height: auto;
-            object-fit: contain;
-            
-            background: rgba(0, 0, 0, 0); /* Start transparent */
-            pointer-events: none; /* Allow clicks/interactions on image below */
-            transition: background 0.6s ease-out; /* Smooth transition for overlay */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0);
+            pointer-events: none;
+            transition: background 0.6s ease-out;
         }
-
-        /* Active (center) slide styles */
-        .frameless-slide.active img {
-            filter: brightness(1); /* Full brightness */
-            transform: scale(1); /* Full scale */
-        }
-
-        .frameless-slide.active::after {
-            background: rgba(0, 0, 0, 0); /* No overlay */
-        }
-
-        /* Side previews - first level */
-        .frameless-slide.side-1 img {
-            filter: brightness(0.7); /* Slightly darker */
-            transform: scale(0.9); /* Slightly smaller */
-        }
-        .frameless-slide.side-1::after {
-            background: rgba(0, 0, 0, 0.3); /* Slight overlay */
-        }
-
-        /* Side previews - second level */
-        .frameless-slide.side-2 img {
-            filter: brightness(0.5); /* More darker */
-            transform: scale(0.8); /* More smaller */
-        }
-        .frameless-slide.side-2::after {
-            background: rgba(0, 0, 0, 0.5); /* More overlay */
-        }
-
-        /* Side previews - third level (and beyond) */
+        .frameless-slide.active img { filter: brightness(1); transform: scale(1); }
+        .frameless-slide.active::after { background: rgba(0,0,0,0); }
+        .frameless-slide.side-1 img { filter: brightness(0.7); transform: scale(0.9); }
+        .frameless-slide.side-1::after { background: rgba(0,0,0,0.3); }
+        .frameless-slide.side-2 img { filter: brightness(0.5); transform: scale(0.8); }
+        .frameless-slide.side-2::after { background: rgba(0,0,0,0.5); }
         .frameless-slide.side-3 img,
         .frameless-slide:not(.active):not(.side-1):not(.side-2) img {
-            filter: brightness(0.3); /* Much darker */
-            transform: scale(0.7); /* Much smaller */
+            filter: brightness(0.3);
+            transform: scale(0.7);
         }
         .frameless-slide.side-3::after,
         .frameless-slide:not(.active):not(.side-1):not(.side-2)::after {
-            background: rgba(0, 0, 0, 0.7); /* Heavy overlay */
+            background: rgba(0,0,0,0.7);
         }
 
-        /* Navigation Arrows */
         .frameless-slideshow-nav {
             cursor: pointer;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: auto;
             padding: 1rem;
             color: white;
             font-weight: bold;
             font-size: 2rem;
             transition: 0.3s ease;
-            border-radius: 0.5rem; /* Rounded corners for buttons */
+            border-radius: 0.5rem;
             user-select: none;
             background-color: rgba(0, 0, 0, 0.5);
-            z-index: 10; /* Above slides and wrappers */
-            display: flex; /* For centering content inside */
+            z-index: 10;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
-
-        .frameless-slideshow-nav.prev {
-            left: 1rem;
-        }
-
-        .frameless-slideshow-nav.next {
-            right: 1rem;
-        }
-
+        .frameless-slideshow-nav.prev { left: 1rem; }
+        .frameless-slideshow-nav.next { right: 1rem; }
         .frameless-slideshow-nav:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #0066CC; /* Highlight on hover */
+            background-color: rgba(0,0,0,0.8);
+            color: #0066CC;
         }
-        /* Ajouté: style pour les flèches désactivées */
         .frameless-slideshow-nav.disabled {
             pointer-events: none;
             opacity: 0.5;
@@ -305,295 +219,196 @@
         }
 
         .frameless-slideshow-dots {
-             position: relative;
-             margin-top: 1.5rem;
-             text-align: center;
-              //background-color: rgba(0, 0, 0, 0.4);
-             z-index: 1; /* Optionnel : s’assurer que c’est au-dessus du footer */
-         }
+            position: relative;
+            margin-top: 1.5rem;
+            text-align: center;
+            z-index: 1;
+        }
+        .frameless-dot {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+            cursor: pointer;
+            display: inline-block;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .frameless-dot::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 10px; height: 10px;
+            background-color: #222;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease;
+            pointer-events: none;
+        }
+        .frameless-dot:hover::after {
+            background-color: #11AAFF;
+            width: 14px; height: 14px;
+        }
+        .frameless-dot.active::after { background-color: #0066CC; }
 
-.frameless-dot {
-    position: relative;
-    width: 30px;
-    height: 30px;
-    margin: 0 5px;
-    cursor: pointer;
-    display: inline-block;
-    background: none;
-    border: none;
-    padding: 0;
-}
+        /* Rotating word */
+        .rotating-container {
+            display: inline-block;
+            position: relative;
+            width: 7.5ch;
+            height: 1em;
+            vertical-align: baseline;
+            margin-left: 0.4ch;
+            line-height: inherit;
+            font-size: inherit;
+        }
+        .rotating-word {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            text-align: center;
+            white-space: nowrap;
+            color: #2196f3;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            line-height: inherit;
+            font-size: inherit;
+        }
+        .rotating-word.visible { opacity: 1; }
 
-.frameless-dot::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    background-color: #222;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: background-color 0.3s ease;
-    pointer-events: none;
-}
+        @keyframes fadePulse { 0%{opacity:.7} 50%{opacity:.8} 100%{opacity:.7} }
+        .plus-blue-fade { color:#2196f3; animation: fadePulse 0.8s infinite ease-in-out; }
 
-/* Survol = point bleu */
-.frameless-dot:hover::after {
-    background-color: #11AAFF;
-       width: 14px;
-    height: 14px;
-}
+        /* Typewriter */
+        .typewriter-fixed {
+            display: inline-block;
+            width: 20ch;
+            overflow: hidden;
+            white-space: nowrap;
+            vertical-align: baseline;
+            margin-left: 0.4ch;
+            font-weight: 500;
+            color: #444;
+            font-family: monospace;
+        }
+        .cursor { display: inline-block; width: 1ch; color: #2196f3; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
 
-/* Actif = point bleu aussi */
-.frameless-dot.active::after {
-    background-color: #0066CC;
-}
-
-
-/* Rotating word */
-.rotating-container {
-  display: inline-block;
-  position: relative;
-  width: 7.5ch;
-  height: 1em;                /* épouse la hauteur de la ligne */
-  vertical-align: baseline;  /* aligne avec "Deploy" */
-  margin-left: 0.4ch;
-  line-height: inherit;
-  font-size: inherit;
-}
-
-.rotating-word {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  white-space: nowrap;
-  color: #2196f3;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  line-height: inherit;
-  font-size: inherit;
-}
-
-.rotating-word.visible {
-  opacity: 1;
-}
-
-/* Plus fad pulse */
-@keyframes fadePulse {
-  0%   { opacity: 0.7; }
-  50%  { opacity: 0.8; }
-  100% { opacity: 0.7; }
-}
-
-.plus-blue-fade {
-  color: #2196f3;
-  animation: fadePulse 0.8s infinite ease-in-out;
-}
-
-
-/* Plus fad pulse */
-.typewriter-rotate {
-  display: inline-block;
-  font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #2196f3;
-  animation: typing 2s steps(20, end), blink 0.75s step-end infinite;
-}
-
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-
-
-/* Type writter */
-.typewriter-fixed {
-  display: inline-block;
-  width: 20ch; /* largeur fixe selon la phrase la plus longue */
-  overflow: hidden;
-  white-space: nowrap;
-  vertical-align: baseline;
-  margin-left: 0.4ch;
-  font-weight: 500;
-  color: #444;
-  font-family: monospace;
-}
-
-.cursor {
-  display: inline-block;
-  width: 1ch;
-  color: #2196f3;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-.seo-only {
-  position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-
+        .seo-only {
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="min-h-screen">
+    <!-- Console overlay -->
     <div id="console-wrapper">
         <div id="console-container">
-            <div id="console-output" class="text-left mono text-base text-gray-300">
-            </div>
+            <div id="console-output" class="text-left mono text-base text-gray-300"></div>
             <div id="console-blur-overlay"></div>
         </div>
     </div>
 
     <div id="main-content">
+        <!-- Hero -->
         <section class="min-h-screen flex flex-col justify-center items-center px-4 py-20 text-center">
             <h1 class="mono text-4xl md:text-6xl font-bold mb-6">
                 <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
             </h1>
             <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-12">
-               
-				Live JIT C99<span class="plus-blue-fade">+</span> code
-				
-				
-	
-				
-	
-	
-			<br>
-				
-				
-				
-			<span>Deploy<span class="rotating-container">
-			  <span class="rotating-word visible">instantly</span>
-			</span></span>
-			
-	
-			
-				
-				  using a never-fail build idiom
-				  
-				  
-				     			
-			  <span class="typewriter-fixed">
-				<span id="typewriter-text"></span><span class="cursor">|</span>
-			  </span>
+                Live JIT C99<span class="plus-blue-fade">+</span> code<br>
+                <span>Deploy
+                    <span class="rotating-container">
+                        <span class="rotating-word visible">instantly</span>
+                    </span>
+                </span>
+                using a never-fail build idiom
+                <span class="typewriter-fixed">
+                    <span id="typewriter-text"></span><span class="cursor">|</span>
+                </span>
+            </p>
 
-		   </p>
-		   
-			<span class="seo-only">
-				  Deploy instantly with our never-fail build system.
-				  Deploy securely using a battle-tested JIT idiom.
-				  Deploy natively, with zero friction.
-			</span>
-			<span class="seo-only">
-				Zero build time. GPU shaders. Hot reload.
-			</span>
-			<span class="seo-only">
-			  Wake is a zero-build JIT engine for C99 and GPU shaders.
-			  Run native C code live. Deploy instantly, securely, and natively.
-			  C99+ live code execution. Just-In-Time compilation for native apps.
-			  Instant deployment of JIT-compiled modules.
-			  Secure native packaging. Hot reload for C modules and shaders.
-			  No build system required. No setup. Just code and run.
-			  Real-time shader editing. GLSL and HLSL support.
-			  Wake is an alternative to scripting languages with native speed.
-			  Use Wake to develop tools, games, simulations, and interactive software.
-			  Portable JIT runtime for native C code.
-			  Lightweight native execution engine. Replace scripting with real code.
-			  Wake enables instant feedback for low-level development.
-			  Wake supports live-reloading of compiled native code and shaders.
-			  A native-first dev experience. Live C99 modules with GPU integration.
-			  Wake compiles and runs your C99+ code instantly without makefiles.
-			  Build tools in pure C and distribute securely with Wake.
-			  Empower your local-first workflows with signed native packages.
-			  Wake enables interactive development with true native performance.
-			  No Docker. No VM. No runtime overhead. Just native execution.
-			  Compatible with embedded systems, real-time applications, and desktop tools.
-			  Ideal for indie developers, tool builders, and shader artists.
-			  Wake is a developer-first JIT engine for native modular software.
-			</span>
-			
-<script>
-(function() {
-  const words = [ "natively", "securely", "instantly" ];
-  const container = document.querySelector(".rotating-container");
-  let wordIndex = 0;
+            <span class="seo-only">
+                Deploy instantly with our never-fail build system.
+                Deploy securely using a battle-tested JIT idiom.
+                Deploy natively, with zero friction.
+            </span>
+            <span class="seo-only">Zero build time. GPU shaders. Hot reload.</span>
+            <span class="seo-only">
+                Wake is a zero-build JIT engine for C99 and GPU shaders.
+                Run native C code live. Deploy instantly, securely, and natively.
+                C99+ live code execution. Just-In-Time compilation for native apps.
+                Instant deployment of JIT-compiled modules.
+                Secure native packaging. Hot reload for C modules and shaders.
+                No build system required. No setup. Just code and run.
+                Real-time shader editing. GLSL and HLSL support.
+                Wake is an alternative to scripting languages with native speed.
+                Use Wake to develop tools, games, simulations, and interactive software.
+                Portable JIT runtime for native C code.
+                Lightweight native execution engine. Replace scripting with real code.
+                Wake enables instant feedback for low-level development.
+                Wake supports live-reloading of compiled native code and shaders.
+                A native-first dev experience. Live C99 modules with GPU integration.
+                Wake compiles and runs your C99+ code instantly without makefiles.
+                Build tools in pure C and distribute securely with Wake.
+                Empower your local-first workflows with signed native packages.
+                Wake enables interactive development with true native performance.
+                No Docker. No VM. No runtime overhead. Just native execution.
+                Compatible with embedded systems, real-time applications, and desktop tools.
+                Ideal for indie developers, tool builders, and shader artists.
+                Wake is a developer-first JIT engine for native modular software.
+            </span>
 
-  function rotateWord() {
-    const oldWord = container.querySelector(".rotating-word");
-    const newWord = document.createElement("span");
-    newWord.className = "rotating-word";
-    newWord.textContent = words[wordIndex];
+            <!-- Rotating word -->
+            <script>
+            (function() {
+              const words = [ "natively", "securely", "instantly" ];
+              const container = document.querySelector(".rotating-container");
+              let wordIndex = 0;
+              function rotateWord() {
+                const oldWord = container.querySelector(".rotating-word");
+                const newWord = document.createElement("span");
+                newWord.className = "rotating-word";
+                newWord.textContent = words[wordIndex];
+                container.appendChild(newWord);
+                void newWord.offsetWidth;
+                oldWord.classList.remove("visible");
+                newWord.classList.add("visible");
+                setTimeout(() => { if (oldWord.parentNode) container.removeChild(oldWord); }, 500);
+                wordIndex = (wordIndex + 1) % words.length;
+              }
+              setInterval(rotateWord, 2500);
+            })();
+            </script>
 
-    container.appendChild(newWord);
-    void newWord.offsetWidth; // trigger reflow
+            <!-- Typewriter -->
+            <script>
+            (function() {
+              const phrases = ["Zero build time", "GPU shaders", "Hot reload"];
+              const textEl = document.getElementById("typewriter-text");
+              let phraseIndex = 0, charIndex = 0, deleting = false;
+              function type() {
+                const currentPhrase = phrases[phraseIndex];
+                const delay = deleting ? 40 : 60;
+                if (!deleting) {
+                  textEl.textContent = currentPhrase.slice(0, charIndex + 1);
+                  charIndex++;
+                  if (charIndex === currentPhrase.length) setTimeout(() => deleting = true, 1200);
+                } else {
+                  textEl.textContent = currentPhrase.slice(0, charIndex - 1);
+                  charIndex--;
+                  if (charIndex === 0) { deleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; }
+                }
+                setTimeout(type, delay);
+              }
+              type();
+            })();
+            </script>
 
-    oldWord.classList.remove("visible");
-    newWord.classList.add("visible");
-
-    setTimeout(() => {
-      if (oldWord.parentNode) {
-        container.removeChild(oldWord);
-      }
-    }, 500);
-
-    wordIndex = (wordIndex + 1) % words.length;
-  }
-
-  setInterval(rotateWord, 2500);
-})();
-</script>
-
-<script>
-(function() {
-  const phrases = ["Zero build time", "GPU shaders", "Hot reload"];
-  const textEl = document.getElementById("typewriter-text");
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let deleting = false;
-
-  function type() {
-    const currentPhrase = phrases[phraseIndex];
-    const delay = deleting ? 40 : 60;
-
-    if (!deleting) {
-      textEl.textContent = currentPhrase.slice(0, charIndex + 1);
-      charIndex++;
-      if (charIndex === currentPhrase.length) {
-        setTimeout(() => deleting = true, 1200);
-      }
-    } else {
-      textEl.textContent = currentPhrase.slice(0, charIndex - 1);
-      charIndex--;
-      if (charIndex === 0) {
-        deleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-      }
-    }
-
-    setTimeout(type, delay);
-  }
-
-  type();
-})();
-</script>
-
-		   
-
-		   
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="#" class="bg-wake-blue hover-bg-wake-blue text-white px-6 py-3 rounded-md font-medium transition flex items-center">
                     ⬇ Download Wake
@@ -607,30 +422,19 @@
             </div>
         </section>
 
+        <!-- Slideshow -->
         <section class="py-20 px-0 max-w-full overflow-hidden">
             <h2 class="mono text-3xl font-bold mb-12 text-center">Wake in Action</h2>
-            
-            
-                        <div class="frameless-subtitle" id="framelessSubtitle"></div>
-                        
+            <div class="frameless-subtitle" id="framelessSubtitle"></div>
             <div class="frameless-slideshow-container" id="framelessSlideshowContainer">
-            
-
-
-
-
-                <div class="frameless-slideshow-wrapper" id="framelessSlideshowWrapper">
-                    
-                </div>
-
+                <div class="frameless-slideshow-wrapper" id="framelessSlideshowWrapper"></div>
                 <a class="frameless-slideshow-nav prev" id="framelessNavPrev">&#10094;</a>
                 <a class="frameless-slideshow-nav next" id="framelessNavNext">&#10095;</a>
-
-               
             </div>
-             <div class="frameless-slideshow-dots" id="framelessSlideshowDots"></div>
+            <div class="frameless-slideshow-dots" id="framelessSlideshowDots"></div>
         </section>
 
+        <!-- Ecosystem -->
         <section class="py-20 px-4 max-w-6xl mx-auto">
             <h2 class="mono text-3xl font-bold mb-12 text-center">Wake Ecosystem</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -640,7 +444,7 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="mono text-xl font-bold mb-2">ShaderPlayground</h3>
-                        <p class="text-gray-300 text-sm mb-4">Écrire et tester des shaders GLSL en live</p>
+                        <p class="text-gray-300 text-sm mb-4">Write and test GLSL shaders live</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xs px-2 py-1 bg-green-900/50 text-green-300 rounded backdrop-blur-sm">Free / Pro</span>
                             <button class="text-xs text-wake-blue">Learn more →</button>
@@ -653,7 +457,7 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="mono text-xl font-bold mb-2">SpinView</h3>
-                        <p class="text-gray-300 text-sm mb-4">Créer des wallpapers dynamiques contrôlés par l'utilisateur</p>
+                        <p class="text-gray-300 text-sm mb-4">Create dynamic, user-driven wallpapers</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xs px-2 py-1 bg-green-900/50 text-green-300 rounded backdrop-blur-sm">Free</span>
                             <button class="text-xs text-wake-blue">Learn more →</button>
@@ -666,7 +470,7 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="mono text-xl font-bold mb-2">WakeFont</h3>
-                        <p class="text-gray-300 text-sm mb-4">Moteur typographique vectoriel animé</p>
+                        <p class="text-gray-300 text-sm mb-4">Animated vector typography engine</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xs px-2 py-1 bg-yellow-900/50 text-yellow-300 rounded backdrop-blur-sm">Coming soon</span>
                             <button class="text-xs text-wake-blue">Learn more →</button>
@@ -679,7 +483,7 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="mono text-xl font-bold mb-2">GlassTyping</h3>
-                        <p class="text-gray-300 text-sm mb-4">Moteur de clavier dynamique ultra-rapide</p>
+                        <p class="text-gray-300 text-sm mb-4">Ultra-fast dynamic keyboard engine</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xs px-2 py-1 bg-purple-900/50 text-purple-300 rounded backdrop-blur-sm">Pro only</span>
                             <button class="text-xs text-wake-blue">Learn more →</button>
@@ -692,6 +496,7 @@
             </div>
         </section>
 
+        <!-- Manifesto -->
         <section class="py-32 px-4 max-w-3xl mx-auto text-center">
             <div class="space-y-8">
                 <p class="manifesto-line mono text-2xl md:text-3xl">You don't wait for your code to compile.</p>
@@ -702,6 +507,7 @@
             </div>
         </section>
 
+        <!-- Footer -->
         <footer class="bg-black py-12 px-4 border-t border-gray-900">
             <div class="max-w-6xl mx-auto">
                 <div class="flex flex-col md:flex-row justify-between items-center">
@@ -712,489 +518,90 @@
                     <div class="flex space-x-6">
                         <a href="#" class="text-gray-400 hover:text-wake-blue transition">GitHub</a>
                         <a href="#" class="text-gray-400 hover:text-wake-blue transition">Discord</a>
-                        <a href="#" class="text-gray-400 hover:text-wake-blue transition">Licence WPL-1.0</a>
+                        <a href="#" class="text-gray-400 hover:text-wake-blue transition">WPL-1.0 License</a>
                     </div>
                 </div>
                 <div class="mt-8 pt-8 border-t border-gray-900 text-center text-gray-500 text-sm">
                     <a href="https://majify.tech" target="_blank" class="hover:underline">© 2025 Majify Technologies</a>
                     <p class="mt-2">Powered by Wake. No trackers. No analytics. Just execution.</p>
                 </div>
-
             </div>
         </footer>
     </div>
 
+    <!-- Page Scripts (non-slideshow) -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const consoleOutput = document.getElementById('console-output');
-            const mainContent = document.getElementById('main-content');
-            const consoleWrapper = document.getElementById('console-wrapper');
-            const consoleBlurOverlay = document.getElementById('console-blur-overlay');
+    document.addEventListener('DOMContentLoaded', () => {
+        const consoleOutput = document.getElementById('console-output');
+        const mainContent = document.getElementById('main-content');
+        const consoleWrapper = document.getElementById('console-wrapper');
+        const consoleBlurOverlay = document.getElementById('console-blur-overlay');
 
-            const introMessages = [
-                '> Wake Runtime v1.0',
-                '> Compiling live interface...',
-                '> Ready.'
-            ];
+        const introMessages = ['> Wake Runtime v1.0', '> Compiling live interface...', '> Ready.'];
+        const backgroundMessages = ['> Running background tasks...', '> <span class="text-yellow-400">Warning, website is under construction</span>...', '> Ready for user input'];
 
-            const backgroundMessages = [
-                '> Running background tasks...',
-                '> <span class="text-yellow-400">Warning, website is under construction</span>...',
-                '> Ready for user input'
-            ];
+        function addConsoleLine(message, targetElement, delay = 0, isHTML = false) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const newLine = document.createElement('div');
+                    newLine.className = 'console-text mt-1';
+                    if (isHTML) newLine.innerHTML = message; else newLine.textContent = message;
+                    targetElement.appendChild(newLine);
+                    targetElement.scrollTop = targetElement.scrollHeight;
+                    resolve();
+                }, delay);
+            });
+        }
 
-            function addConsoleLine(message, targetElement, delay = 0, isYellow = false) {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        const newLine = document.createElement('div');
-                        newLine.className = 'console-text mt-1';
-                        if (isYellow) {
-                            newLine.innerHTML = message;
-                        } else {
-                            newLine.textContent = message;
-                        }
-                        targetElement.appendChild(newLine);
-                        targetElement.scrollTop = targetElement.scrollHeight;
-                        resolve();
-                    }, delay);
+        async function animateIntroConsole() {
+            mainContent.style.opacity = '1.0';
+            for (let i = 0; i < introMessages.length; i++) {
+                await addConsoleLine(introMessages[i], consoleOutput, 1);
+            }
+        }
+        async function animateBackgroundConsole() {
+            await addConsoleLine(backgroundMessages[0], consoleOutput, Math.random() * 500 + 500);
+            await addConsoleLine(backgroundMessages[1], consoleOutput, Math.random() * 500 + 500, true);
+            await addConsoleLine(backgroundMessages[2], consoleOutput, Math.random() * 500 + 500);
+        }
+
+        // Scroll effects (parallax + blur)
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    consoleWrapper.style.transform = `translateY(${scrollY * 0.2}px)`;
+                    // Progressive blur
+                    const minBlur = 0, maxBlur = 10, start = 0, end = 400;
+                    let blur = 0;
+                    if (scrollY <= start) blur = minBlur;
+                    else if (scrollY >= end) blur = maxBlur;
+                    else blur = minBlur + ((scrollY - start) / (end - start)) * (maxBlur - minBlur);
+                    consoleBlurOverlay.style.backdropFilter = `blur(${blur}px)`;
+                    ticking = false;
                 });
+                ticking = true;
             }
-
-            async function animateIntroConsole() {
-                mainContent.style.opacity = '1.0';
-                for (let i = 0; i < introMessages.length; i++) {
-                    await addConsoleLine(introMessages[i], consoleOutput, 1);
-                }
-            }
-
-            async function animateBackgroundConsole() {
-                await addConsoleLine(backgroundMessages[0], consoleOutput, Math.random() * 500 + 500);
-                await addConsoleLine(backgroundMessages[1], consoleOutput, Math.random() * 500 + 500, true);
-                await addConsoleLine(backgroundMessages[2], consoleOutput, Math.random() * 500 + 500);
-            }
-
-            let ticking = false; // Variable pour limiter les mises à jour
-
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                       
-                        const scrollY = window.scrollY;
-
-                        // Parallax effect on the wrapper
-                        consoleWrapper.style.transform = `translateY(${scrollY * 0.2}px)`;
-
-                        // Code pour le blur progressif
-                        const scrollStart = 0;
-                        const scrollEnd = 400; // Augmente le flou sur les 400 premiers pixels
-                        const minBlur = 0;
-                        const maxBlur = 10; // Flou max à 10px
-
-                        let blurAmount = 0;
-                        if (scrollY <= scrollStart) {
-                            blurAmount = minBlur;
-                        } else if (scrollY >= scrollEnd) {
-                            blurAmount = maxBlur;
-                        } else {
-                            blurAmount = minBlur + ((scrollY - scrollStart) / (scrollEnd - scrollStart)) * (maxBlur - minBlur);
-                        }
-
-                        consoleBlurOverlay.style.backdropFilter = `blur(${blurAmount}px)`;
-                        ticking = false; // Réinitialise le flag après la mise à jour
-                    });
-                    ticking = true; // Empêche d'autres mises à jour tant que le cadre n'est pas rendu
-                }
-            });
-
-            // Animation sequence
-            animateIntroConsole().then(() => {
-                animateBackgroundConsole();
-            });
-
-            // Intersection Observer for scroll animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            document.querySelectorAll('.slide-up').forEach(el => observer.observe(el));
-            document.querySelectorAll('.manifesto-line').forEach((el, i) => {
-                setTimeout(() => observer.observe(el), i * 200);
-            });
-
-            // --- Frameless Slideshow Logic (Infinite Loop) ---
-         
-            let framelessSlideshowTimer;
-            const framelessWrapper = document.getElementById('framelessSlideshowWrapper');
-            let framelessSlides = Array.from(document.querySelectorAll('.frameless-slide')); // Convert NodeList to Array
-            const framelessDotsContainer = document.getElementById('framelessSlideshowDots');
-            const framelessNavPrev = document.getElementById('framelessNavPrev');
-            const framelessNavNext = document.getElementById('framelessNavNext');
-            let TotalSlides = framelessSlides.length;
-            let framelessSlideIndex = TotalSlides*10;//prevent negative values
-
-            let isDragging = false;
-            let moveY = 0;  
-            let startPos = 0;
-            let currentTranslate = 0;
-            let prevTranslate = 0;
-            let transitionEndPromiseResolver = null; // To resolve the promise when transition ends
-
-            // Generate dots dynamically for original slides only
-            for (let i = 0; i < TotalSlides; i++) {
-                const dot = document.createElement("span");
-                dot.classList.add("frameless-dot");
-                // Attacher l'événement click aux points pour les sauts multiples
-                dot.addEventListener('click', () => framelessCurrentSlide(i)); 
-                framelessDotsContainer.appendChild(dot);
-            }
-
-            // Empêcher le comportement de glisser-déposer par défaut des images
-            framelessWrapper.addEventListener('dragstart', (e) => {
-                e.preventDefault();
-            });
-
-            const setSlideClasses = () => {
-                        
-               updateSlidePositions();
-
-                let frameIndex = ((framelessSlideIndex) + TotalSlides) % TotalSlides;
-                        
-                framelessSlides.forEach((slide, index) => {
-                    slide.classList.remove('active', 'side-1', 'side-2', 'side-3');
-                                     
-                    const diff = index - frameIndex;
-                    const absDiff = Math.abs(diff);
-     
-                    if (absDiff === 0) {
-                        slide.classList.add('active');
-                    } else if (absDiff === 1 || absDiff==TotalSlides-1) {
-                        slide.classList.add('side-1');
-                    } else if (absDiff === 2 || absDiff==TotalSlides-2) {
-                        slide.classList.add('side-2');
-                    } else if (absDiff >= 3 || absDiff==TotalSlides-3) {
-                        slide.classList.add('side-3');
-                    }
-                });
-
-                let currentOriginalIndex = (frameIndex );
-
-                document.querySelectorAll('.frameless-dot').forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentOriginalIndex);
-                });
-                
-                
-            };
-            
-            
-            function setImageYOffset(index, yOffset) {
-                const slide = framelessSlides[index];
-                if (!slide) return;
-
-                const img = slide.querySelector('img');
-                if (!img) return;
-
-                img.style.transform = `translateY(${yOffset}px)`;
-            }
-
-                        
-          function getImageOverflowY(index) {
-             const slide = framelessSlides[index];
-             if (!slide) return 0;
-
-             const img = slide.querySelector('img');
-             if (!img || !img.complete) return 0;
-
-             const containerHeight = slide.offsetHeight;
-             const naturalHeight = img.naturalHeight; // toujours en pixels réels, même si image réduite
-
-           //console.log("containerHeight =", containerHeight);
-           //console.log(" img.naturalHeight =",  img.naturalHeight);
-
-
-             const overflow = containerHeight  - naturalHeight;
-         // return overflow < 0 ? overflow : 0;
-          return overflow;
-         }
-
-
-
-
-         let toY = 0;
-         let toYY = 0;
-         let last = -1;
-
-
-           function updateVerticalAnimation() {
-               const total = framelessSlides.length;
-               const frameIndex = framelessSlideIndex % total;
-               const overflowY =  getImageOverflowY(frameIndex);
-            
-                 
-                 if(last!= frameIndex){
-                     last=frameIndex;
-                     if(overflowY>=0){
-                        //   toY = overflowY/2.0;
-                           toY =overflowY;
-                     }else{
-                        toY = overflowY;
-                     }
-                     if(Math.abs(overflowY)<20){
-                     toY=0;
-                     }
-                     
-                     
-                     toYY=toY;
-                          console.log(" img.overflowY =",  overflowY);
-                     
-                     
-                 }
-
-
-              // toY -= (toY-toYY)/200;
-               //if(toYY< toY){
-               //}
-                  if(toY<-1){
-               toY+=0.25;
-               }
-                    if(toY>1){
-               toY-=0.25;
-               }
-        
-               
-                 if(overflowY>=0){
-          
-                        setImageYOffset(frameIndex, toY);
-                 }else{
-                        let posY= toY;
-                        if(posY> overflowY){ posY = overflowY;}
-                        if(posY<0){ posY = 0;}
-                        setImageYOffset(frameIndex, toY);
-                 
-                 }
-               
-              // setImageYOffset(2, -150)
-            }
-
-            function loopVerticalAnimation() {
-                   updateVerticalAnimation();
-                   requestAnimationFrame(loopVerticalAnimation);
-               }
-
-            
-            requestAnimationFrame(loopVerticalAnimation);
-
-            // This function applies the transform, and handles adding/removing no-transition
-            // It now also dynamically sets the transition duration
-            const applyTransform = (smooth = true, duration = 600) => {
-            
-                currentTranslate = -framelessSlideIndex * framelessSlides[0].offsetWidth;
-                
-                // Set transition duration dynamically
-                framelessWrapper.style.transitionDuration = `${duration}ms`;
-
-                if (smooth) {
-                    framelessWrapper.classList.remove('no-transition');
-                } else {
-                    framelessWrapper.classList.add('no-transition');
-                }
-                framelessWrapper.style.transform = `translateX(${currentTranslate}px)`;
-            };
-            
-
-
-            // Main function to move the slides
-            const framelessShowSlides = async (targetIndex, smooth = true) => {
-                clearTimeout(framelessSlideshowTimer); // Stop auto-advance for now
-
-                const oldIndex = framelessSlideIndex;
-                const slidesMoved = Math.abs(targetIndex - oldIndex);
-                
-                // Calculate dynamic duration: faster for bigger jumps
-                // Base duration for 1 slide: 600ms. Max speed up to 300ms for many slides.
-                const dynamicDuration = Math.max(300, 600 - (slidesMoved * 50)); // Example calculation
-                // Cap duration to a reasonable max/min
-                const actualTransitionDuration =  Math.min(600, Math.max(300, dynamicDuration)) ;
-                
-                framelessSlideIndex = targetIndex; // Update current index immediately
-                setSlideClasses(); // Update classes instantly for visual feedback
-
-                // Apply transform (with or without transition and dynamic duration)
-                applyTransform(true, actualTransitionDuration); 
-                
-                
-                
-                 updateFramelessSubtitle(framelessSlideIndex);
-                 
-                 
-
-                // Restart auto-advance timer
-                framelessSlideshowTimer = setTimeout(() => {
-                    framelessPlusSlides(1); // Auto-advance
-                }, 12000); 
-                
-                
-            };
-           
-
-function updateSlidePositions() {
-    const total = framelessSlides.length;
-  //  const containerWidth = framelessWrapper.parentElement.offsetWidth;
-
-    // Calcul de l'index réel dans la plage [0, total)
-    const frameIndex = framelessSlideIndex % total;
-    const loopIndex = Math.floor(framelessSlideIndex / total);
-
-    // Calcule les positions X cumulées pour chaque slide
-    let slideOffsets = [];
-    let cumulativeOffset = 0;
-
-    for (let i = 0; i < total; i++) {
-        slideOffsets.push(cumulativeOffset);
-       // cumulativeOffset += framelessSlides[i].offsetWidth;
-        cumulativeOffset += framelessSlides[i].getBoundingClientRect().width;
-        //cumulativeOffset += 500;
-        // const img = framelessSlides[i].querySelector('img');
-        // if (img) {
-        //     cumulativeOffset += img.naturalWidth;
-        // }
-
-    }
-    //console.log("Total cumulativeOffset =", cumulativeOffset);
-
-    // Largeur totale réelle des slides
-    const totalslideWidth = cumulativeOffset;
-
-    // Applique le translateX à chaque slide
-    for (let i = 0; i < total; i++) {
-           const absoluteSlideOffset = loopIndex * totalslideWidth + slideOffsets[i];
-           //let offset = absoluteSlideOffset - centerShift;
-           let offset = absoluteSlideOffset ;
-
-            // Gestion du wrap circulaire pour affichage fluide
-            const visibleCount = 2;
-            if (i < visibleCount && frameIndex > total - visibleCount) {
-                  offset += totalslideWidth;
-            } else if (i > total - visibleCount && frameIndex < visibleCount) {
-                  offset -= totalslideWidth;
-            }
-            
-           framelessSlides[i].style.transform = `translateX(${offset}px)`;
-       }
-   }
-
-
-
-
-            // Event listeners for nav buttons 
-            framelessNavPrev.addEventListener('click', () => framelessPlusSlides(-1));
-            framelessNavNext.addEventListener('click', () => framelessPlusSlides(1));
-            
-            window.framelessPlusSlides = (n) => {
-                framelessShowSlides(framelessSlideIndex + n, true);
-            };
-
-            window.framelessCurrentSlide = (dotIndex) => {
-                // When clicking a dot, go directly to the corresponding real slide (+1 because of prepended clone)
-                 let framepos = Math.floor(framelessSlideIndex/TotalSlides)*TotalSlides;
-                framelessShowSlides(framepos + dotIndex , true);
-            };
-
-            // --- Dragging Logic ---
-            const framelessSlideshowContainer = document.getElementById('framelessSlideshowContainer');
-
-            framelessSlideshowContainer.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                startPos = e.clientX;
-                framelessSlideshowContainer.classList.add('grabbing');
-                // Apply no-transition immediately for drag smoothness
-                framelessWrapper.classList.add('no-transition'); 
-                prevTranslate = currentTranslate;
-                clearTimeout(framelessSlideshowTimer); 
-                // Abort any ongoing CSS transition immediately for drag
-                framelessWrapper.style.transform = `translateX(${currentTranslate}px)`;
-            });
-
-            framelessSlideshowContainer.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                e.preventDefault(); // Prevent default browser drag behavior
-                const currentPosition = e.clientX;
-                const diff = currentPosition - startPos;
-                currentTranslate = prevTranslate + diff;
-                framelessWrapper.style.transform = `translateX(${currentTranslate}px)`;
-            });
-
-            const endDrag = () => {
-                if (!isDragging) return; // Only run if actually dragging
-                isDragging = false;
-                framelessSlideshowContainer.classList.remove('grabbing');
-                
-                // Calculate target index based on drag distance
-                const slideWidth = framelessSlides[0].offsetWidth;
-                const movedBy = currentTranslate - prevTranslate;
-
-                let targetIndex = framelessSlideIndex; 
-
-                // Determine the direction of the drag and adjust targetIndex
-                if (movedBy < -slideWidth / 4) { // Swiped left enough (go next)
-                    targetIndex++;
-                } else if (movedBy > slideWidth / 4) { // Swiped right enough (go prev)
-                    targetIndex--;
-                }
-                
-              //  // Ensure target index stays within the "cloned" bounds for the snap calculation
-              //  // The framelessShowSlides function will then handle the jump to real index
-              //  if (targetIndex < 0) targetIndex = 0;
-              //  if (targetIndex >= TotalSlides) targetIndex = TotalSlides - 1;
-
-
-                // Call framelessShowSlides to snap to the target index with a smooth transition
-                framelessShowSlides(targetIndex, true); 
-            };
-
-            framelessSlideshowContainer.addEventListener('mouseup', endDrag);
-            framelessSlideshowContainer.addEventListener('mouseleave', endDrag); // Crucial for when mouse leaves container
-
-            // Initial setup - important to start at the first "real" slide (index 1)
-            applyTransform(false); // Start without transition to position correctly
-            setSlideClasses(); // Apply initial classes
-           
-
-
-            // Recalculate position on window resize to ensure correct centering
-            window.addEventListener('resize', () => {
-                // Ensure no transition during resize to prevent visual glitches
-                framelessWrapper.classList.add('no-transition');
-                applyTransform(false); 
-                setSlideClasses(); 
-         
-                // Force a reflow to apply no-transition immediately
-                framelessWrapper.offsetWidth; 
-                // Re-enable transition after a very short delay
-                setTimeout(() => framelessWrapper.classList.remove('no-transition'), 50);
-            });
-
-            // Start auto-advance after initial setup
-            framelessSlideshowTimer = setTimeout(() => {
-                framelessPlusSlides(1);
-            }, 12000);
         });
+
+        // Reveal manifesto lines on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.slide-up').forEach(el => observer.observe(el));
+        document.querySelectorAll('.manifesto-line').forEach((el, i) => { setTimeout(() => observer.observe(el), i * 200); });
+
+        animateIntroConsole().then(animateBackgroundConsole);
+    });
     </script>
 
+    <!-- Slideshow data + subtitles -->
+    <script src="frameless-manifest.js"></script>
+    <script src="js/frameless-subtitle.js"></script>
 
-
-   <script src="frameless-manifest.js"></script>
-   <script src="js/frameless-subtitle.js"></script>
-   <script>
-       initFramelessSubtitles();
-   </script>
-
-
-
+    <!-- Slideshow logic (extracted) -->
+    <script src="slideshow.js"></script>
+    <script>initFramelessSubtitles();</script>
 </body>
 </html>
