@@ -12,64 +12,40 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
 
   <style>
-    :root {
-      --wake-blue: #0066CC;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #000000;
-      color: #EAEAEA;
-    }
-    .mono { font-family: 'JetBrains Mono', monospace; }
+    :root { --wake-blue:#0066CC; }
+    body { font-family:'Inter',sans-serif; background:#000; color:#EAEAEA; }
+    .mono { font-family:'JetBrains Mono',monospace; }
     .wake-blue { color: var(--wake-blue); }
     .bg-wake-blue { background-color: var(--wake-blue); }
-    .hover-bg-wake-blue:hover { background-color: #0055AA; }
-
+    .hover-bg-wake-blue:hover { background-color:#0055AA; }
     .title-outline {
       text-shadow:
-        -2px -2px 0 #000,
-         2px -2px 0 #000,
-        -2px  2px 0 #000,
-         2px  2px 0 #000;
+        -2px -2px 0 #000, 2px -2px 0 #000,
+        -2px  2px 0 #000, 2px  2px 0 #000;
     }
-
-    /* Card look consistent with main page modules */
-    .glass-card {
-      background-color: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--wake-blue);
+    .glass-card{
+      background:rgba(0,0,0,.35);
+      border:1px solid var(--wake-blue);
       backdrop-filter: blur(6px);
-      transition: all 0.25s ease;
+      transition: all .25s ease;
     }
-    .glass-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 18px rgba(0, 102, 204, 0.25);
-      background-color: rgba(0, 0, 0, 0.45);
+    .glass-card:hover{ transform:translateY(-3px); box-shadow:0 0 18px rgba(0,102,204,.25); background:rgba(0,0,0,.45); }
+    #console-strip{
+      border-bottom:1px solid #0b0b0b;
+      background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));
     }
-
-    /* Console top strip (visual continuity, optional) */
-    #console-strip {
-      border-bottom: 1px solid #0b0b0b;
-      background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.25));
+    .muted{ color:#a9a9a9; }
+    .small-note{ color:#9aa0a6; font-size:.85rem; }
+    .input-dark{
+      background:#0b0b0b; border:1px solid #1f2937; color:#EAEAEA;
     }
-
-    .small-note { color: #9aa0a6; font-size: 0.85rem; }
-    .muted     { color: #a9a9a9; }
-    .input-dark {
-      background-color: #0b0b0b;
-      border: 1px solid #1f2937;
-      color: #EAEAEA;
+    .input-dark:focus{
+      outline:none; border-color:var(--wake-blue); box-shadow:0 0 0 2px rgba(0,102,204,.25);
     }
-    .input-dark:focus {
-      outline: none;
-      border-color: var(--wake-blue);
-      box-shadow: 0 0 0 2px rgba(0,102,204,0.25);
-    }
-    .status {
-      font-weight: 600; margin-top: .5rem;
-    }
-    .status.ok  { color: #25d366; }
-    .status.err { color: #ff6b6b; }
-    .hp { position: absolute; left: -5000px; opacity: 0; }
+    .status{ font-weight:600; margin-top:.5rem; }
+    .status.ok{ color:#25d366; }
+    .status.err{ color:#ff6b6b; }
+    .hp{ position:absolute; left:-5000px; opacity:0; }
   </style>
 </head>
 <body class="min-h-screen">
@@ -127,8 +103,8 @@
         <!-- Optional Turnstile can be injected later -->
         <div id="turnstile-box" class="mt-3"></div>
 
-        <button id="submitBtn" type="submit"
-                class="mt-5 inline-flex items-center justify-center bg-wake-blue hover-bg-wake-blue text-white font-semibold px-5 py-3 rounded-lg transition">
+        <button id="submitBtn" type="submit" disabled
+                class="mt-5 inline-flex items-center justify-center bg-wake-blue hover-bg-wake-blue text-white font-semibold px-5 py-3 rounded-lg transition opacity-50 cursor-not-allowed">
           Join the Waiting List
         </button>
 
@@ -171,9 +147,10 @@
     document.getElementById('y').textContent = new Date().getFullYear();
     const form = document.getElementById('wakeForm');
     const btn  = document.getElementById('submitBtn');
+    const consent = document.getElementById('consent');
     const statusEl = document.getElementById('status');
 
-    // Force the action to the Worker endpoint to avoid 404 on your own server
+    // Force the action to the Worker endpoint
     form.action = ACTION_URL;
 
     // Optionally render Turnstile if you set a site key (not required)
@@ -190,13 +167,27 @@
       box.appendChild(div);
     }
 
+    // ===== Enable/disable button based on consent checkbox =====
+    function updateButtonState() {
+      if (consent.checked) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-50','cursor-not-allowed');
+      } else {
+        btn.disabled = true;
+        btn.classList.add('opacity-50','cursor-not-allowed');
+      }
+    }
+    consent.addEventListener('change', updateButtonState);
+    updateButtonState();
+
+    // ===== Status helper =====
     function setStatus(msg, ok){
       statusEl.textContent = msg || '';
       statusEl.className = 'status ' + (ok===true ? 'ok' : ok===false ? 'err' : '');
     }
 
+    // ===== Submit handler =====
     form.addEventListener('submit', async (e) => {
-      // With JS, use fetch to keep the user on the page
       if (window.fetch) {
         e.preventDefault();
         setStatus('');
@@ -213,6 +204,8 @@
 
         btn.disabled = true;
         btn.textContent = 'Sending…';
+        btn.classList.add('opacity-50','cursor-not-allowed');
+
         try {
           const payload = { email: form.email.value.trim(), consent: true };
           const tsField = form.querySelector('input[name="cf-turnstile-response"]');
@@ -225,7 +218,6 @@
           });
 
           let ok = res.ok;
-          // New message: clarify that download won’t be immediate.
           let msg = 'You’re on the waiting list. We’ll email you when Early Access downloads open.';
           let directUrl = '';
 
@@ -242,20 +234,20 @@
 
           if (ok) {
             setStatus(msg, true);
-            // If backend still decides to return a direct link later, we keep support:
             if (directUrl) {
               statusEl.innerHTML = `Download ready: <a class="underline text-white" href="${directUrl}">click here</a>.`;
               statusEl.className = 'status ok';
             }
             form.reset();
+            updateButtonState();
           } else {
             setStatus(msg || 'Error. Please try again in a moment.', false);
           }
         } catch(err){
           setStatus('Network error. Please try again.', false);
         } finally {
-          btn.disabled = false;
           btn.textContent = 'Join the Waiting List';
+          updateButtonState();
         }
       }
       // Without JS, the browser will do a classic urlencoded POST to ACTION_URL
