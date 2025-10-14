@@ -24,6 +24,19 @@ window.FRAMELESS_MANIFEST = [
     description: "Live Shaders Editor"
   },
   
+
+  {
+    image: "https://wkweb.github.io/wkspell/images/showcase/playground04.gif",
+    title: "JIT playground",
+    description: "A JIT plaground on Wake"
+  },
+ 
+  {
+    image: "https://wkweb.github.io/wkspell/images/showcase/macOS_build.png",
+    title: "Wake live on macOS",
+    description: "Built once, running everywhere — Wake brings real-time native execution to any OS"
+  },
+  
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/self-editor.png",
@@ -32,16 +45,19 @@ window.FRAMELESS_MANIFEST = [
   },
   
   {
-    image: "https://wkweb.github.io/wkspell/images/showcase/concepts01.png",
-    title: "Concept",
-    description: "Create custom mechanical rigs and simulate articulated joints with Wake’s live engine"
+    image: "https://wkweb.github.io/wkspell/images/showcase/playground01.gif",
+    title: "JIT playground",
+    description: "A JIT plaground on Wake"
   },
+  
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/3dArt01.gif",
     title: "3d art",
     description: "Art experiment on Wake"
   },
+  
+
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/font.gif",
@@ -56,12 +72,16 @@ window.FRAMELESS_MANIFEST = [
   },
   
   {
-    image: "https://wkweb.github.io/wkspell/images/showcase/playground01.gif",
-    title: "JIT playground",
-    description: "A JIT plaground on Wake"
+    image: "https://wkweb.github.io/wkspell/images/showcase/3dArt02.png",
+    title: "2 millions of triangles",
+    description: "Unlimited power, live-compiled in Wake"
   },
   
-
+  {
+    image: "https://wkweb.github.io/wkspell/images/showcase/concepts01.png",
+    title: "Concept",
+    description: "Create custom mechanical rigs and simulate articulated joints with Wake’s live engine"
+  },
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/normals02.png",
@@ -69,11 +89,6 @@ window.FRAMELESS_MANIFEST = [
     description: "Playing with normals on Wake"
   },
   
-  {
-    image: "https://wkweb.github.io/wkspell/images/showcase/3dArt02.png",
-    title: "2 millions of triangles",
-    description: "Unlimited power, live-compiled in Wake"
-  },
 
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/playground02.png",
@@ -112,6 +127,13 @@ window.FRAMELESS_MANIFEST = [
     image: "https://wkweb.github.io/wkspell/images/showcase/pi.gif",
     title: "3d art",
     description: "Mathematical PI Art experiment on Wake"
+  },
+
+
+  {
+    image: "https://wkweb.github.io/wkspell/images/showcase/SpellCaster.png",
+    title: "Spell Caster",
+    description: "Unleash your power"
   },
 
 
