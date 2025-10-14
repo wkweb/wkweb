@@ -89,12 +89,6 @@ window.FRAMELESS_MANIFEST = [
     description: "Playing with normals on Wake"
   },
   
-
-  {
-    image: "https://wkweb.github.io/wkspell/images/showcase/playground02.png",
-    title: "JIT playground",
-    description: "A JIT plaground on Wake"
-  },
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/muti-render01.png",
