@@ -12,10 +12,17 @@ window.FRAMELESS_MANIFEST = [
   },
   
   {
+    image: "https://wkweb.github.io/wkspell/images/showcase/shader_editor01.gif",
+    title: "Shadertoy",
+    description: "Live Shaders Editor"
+  },
+  
+  {
     image: "https://wkweb.github.io/wkspell/images/showcase/shadertoy01.gif",
     title: "Shadertoy",
     description: "Create Shadetoy GLSL directly in your native environement"
   },
+  
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/self-editor.png",
