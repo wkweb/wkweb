@@ -10,7 +10,6 @@ window.FRAMELESS_MANIFEST = [
     title: "Transparency",
     description: "Wake support semi-transparency composition directly from the GPU"
   },
-  
 
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/shadertoy01.gif",
@@ -24,7 +23,6 @@ window.FRAMELESS_MANIFEST = [
     description: "Live Shaders Editor"
   },
   
-
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/playground04.gif",
     title: "JIT playground",
@@ -36,7 +34,6 @@ window.FRAMELESS_MANIFEST = [
     title: "Wake live on macOS",
     description: "Built once, running everywhere — Wake brings real-time native execution to any OS"
   },
-  
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/self-editor.png",
@@ -50,14 +47,11 @@ window.FRAMELESS_MANIFEST = [
     description: "A JIT plaground on Wake"
   },
   
-  
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/3dArt01.gif",
     title: "3d art",
     description: "Art experiment on Wake"
   },
-  
-
   
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/font.gif",
@@ -77,19 +71,23 @@ window.FRAMELESS_MANIFEST = [
     description: "Unlimited power, live-compiled in Wake"
   },
   
+ // {
+ //   image: "https://wkweb.github.io/wkspell/images/showcase/concepts01.png",
+ //   title: "Concept",
+ //   description: "Create custom mechanical rigs and simulate articulated joints with Wake’s live engine"
+ // },
+  
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/normals02.png",
     title: "Normals",
     description: "Playing with normals on Wake"
   },
   
-  
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/muti-render01.png",
     title: "Multiple Render Targets",
     description: "Combine colors, depth, nomrals, in one GPU pass"
   },
- 
  
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/lightballs.gif",
@@ -103,8 +101,6 @@ window.FRAMELESS_MANIFEST = [
     description: "A JIT plaground on Wake"
   },
   
-  
-  
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/face_mesh.gif",
     title: "Media Pipe",
@@ -117,13 +113,11 @@ window.FRAMELESS_MANIFEST = [
     description: "Mathematical PI Art experiment on Wake"
   },
 
-
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/SpellCaster.png",
-    title: "Spell Caster",
-    description: "Unleash your power"
+    title: "Spell JIT Caster",
+    description: "Unleash your power, with direct live coding"
   },
-
 
   {
     image: "https://wkweb.github.io/wkspell/images/showcase/muti-render02.png",
