@@ -679,7 +679,17 @@
     </script>
 
     <!-- Slideshow data + subtitles -->
-    <script src="frameless-manifest.js"></script>
+	<script>
+	(function () {
+	  var v = new URL(location.href).searchParams.get('_v')
+			|| (function(){ try { return localStorage.getItem('siteVersion'); } catch(_) { return null; } })()
+			|| String(Date.now());
+	  var s = document.createElement('script');
+	  s.src = '/frameless-manifest.js?_v=' + encodeURIComponent(v);
+	  s.defer = true;
+	  document.head.appendChild(s);
+	})();
+	</script>
     <script src="js/frameless-subtitle.js"></script>
 
     <!-- Slideshow logic (extracted) -->
