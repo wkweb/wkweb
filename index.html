@@ -501,60 +501,53 @@
 		<section id="wake-lang" class="py-20 px-4 max-w-5xl mx-auto">
 		  <h2 class="mono text-3xl font-bold mb-4 text-center">Wake Lang — Branchless by Design</h2>
 		  <p class="text-gray-300 text-center max-w-3xl mx-auto mb-10">
-			A tiny, <span class="wake-blue">branchless</span> language for live execution. 
+			A tiny, <span class="wake-blue">branchless</span> language for live execution.
 			Two operators, huge leverage: a <span class="mono">linear</span>, predictable flow you can read like a book.
 		  </p>
 
 		  <!-- Operators -->
 		  <div class="grid md:grid-cols-3 gap-6 mb-10">
 			<div class="module-card p-6 rounded-lg">
-			  <div class="mono text-lg font-bold mb-1">`&gt;`</div>
+			  <div class="mono text-lg font-bold mb-1"><code>&gt;</code></div>
 			  <div class="text-sm text-gray-300">Sequence</div>
 			  <p class="text-gray-400 text-sm mt-3">
 				Runs commands in order and waits for completion. Perfect for explicit, human-traceable pipelines.
 			  </p>
 			</div>
 			<div class="module-card p-6 rounded-lg">
-			  <div class="mono text-lg font-bold mb-1">`|`</div>
+			  <div class="mono text-lg font-bold mb-1"><code>|</code></div>
 			  <div class="text-sm text-gray-300">Parallel</div>
 			  <p class="text-gray-400 text-sm mt-3">
 				Runs commands simultaneously, then continues once all are done. Simple, safe parallelism.
 			  </p>
 			</div>
 			<div class="module-card p-6 rounded-lg">
-			  <div class="mono text-lg font-bold mb-1">{ }</div>
+			  <div class="mono text-lg font-bold mb-1"><span class="mono">{ }</span></div>
 			  <div class="text-sm text-gray-300">Variables</div>
 			  <p class="text-gray-400 text-sm mt-3">
-				JSON-like placeholders resolved by the runtime (e.g. <span class="mono">{wk.include}</span>, <span class="mono">{this.file}</span>).
+				JSON-like placeholders resolved by the runtime.<br>
+				e.g. <span class="mono">{wk.include}</span>, <span class="mono">{this.file}</span>
 			  </p>
 			</div>
 		  </div>
 
-		  <!-- Tiny examples -->
-		  <div class="grid md:grid-cols-2 gap-6">
-			<div class="module-card p-6 rounded-lg">
-			  <h3 class="mono text-xl font-bold mb-3">Minimal flow</h3>
-			  <pre class="mono text-sm overflow-x-auto"><code>echo "build" &gt; echo "run"</code></pre>
-			  <p class="text-gray-400 text-sm mt-3">
-				Linear, deterministic, zero surprise. What you see is exactly what happens.
-			  </p>
-			</div>
-			<div class="module-card p-6 rounded-lg">
-			  <h3 class="mono text-xl font-bold mb-3">Parallel + sequence</h3>
-			  <pre class="mono text-sm overflow-x-auto"><code>compile \| test &gt; deploy</code></pre>
-			  <p class="text-gray-400 text-sm mt-3">
-				<span class="mono">compile</span> and <span class="mono">test</span> run together; <span class="mono">deploy</span> starts when both are done.
-			  </p>
-			</div>
-		  </div>
+	
+	    <!-- CTA -->
+	 	<div class="text-center mt-10">
+		  <a href="https://github.com/wake-tools/Wake-Lang"
+			 target="_blank" rel="noopener"
+			 class="inline-flex items-center gap-2 border border-gray-600 text-gray-300 px-6 py-3 rounded-md font-medium transition hover:border-gray-400 hover:text-gray-100">
+			<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+			  <path fill-rule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l4.387 4.387a1 1 0 01-1.414 1.414l-4.387-4.387zM14 8a6 6 0 11-12 0 6 6 0 0112 0z" clip-rule="evenodd"/>
+			</svg>
+			Wake Lang on GitHub
+		  </a>
+		</div>
 
-		  <!-- CTA -->
-		  <div class="text-center mt-10">
-			<a href="https://github.com/wake-tools/Wake-Lang"
-			   class="bg-wake-blue hover-bg-wake-blue text-white px-6 py-3 rounded-md font-medium inline-flex items-center">
-			  🔎 Learn more — Wake Lang on GitHub
-			</a>
-		  </div>
+
+
+
+
 		</section>
 
 
