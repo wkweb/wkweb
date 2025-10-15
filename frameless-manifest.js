@@ -78,12 +78,6 @@ window.FRAMELESS_MANIFEST = [
   },
   
   {
-    image: "https://wkweb.github.io/wkspell/images/showcase/concepts01.png",
-    title: "Concept",
-    description: "Create custom mechanical rigs and simulate articulated joints with Wake’s live engine"
-  },
-  
-  {
     image: "https://wkweb.github.io/wkspell/images/showcase/normals02.png",
     title: "Normals",
     description: "Playing with normals on Wake"
