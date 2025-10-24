@@ -281,17 +281,17 @@
         .plus-blue-fade { color:#2196f3; animation: fadePulse 0.8s infinite ease-in-out; }
 
         /* Typewriter */
-        .typewriter-fixed {
-            display: inline-block;
-            width: 20ch;
-            overflow: hidden;
-            white-space: nowrap;
-            vertical-align: baseline;
-            margin-left: 0.4ch;
-            font-weight: 500;
-            color: #444;
-            font-family: monospace;
-        }
+		.typewriter-fixed{
+		  display:block;        /* au lieu d'inline-block */
+		  width:100%;           /* au lieu de 20ch */
+		  overflow:visible;     /* au lieu de hidden */
+		  white-space:nowrap;
+		  text-align:center;    /* centre le texte */
+		  margin-left:0;
+		  font-weight:500;
+		  color:#444;
+		  font-family:monospace;
+		}
         .cursor { display: inline-block; width: 1ch; color: #2196f3; animation: blink 1s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
@@ -321,8 +321,7 @@
             </h1>
             <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-12">
                 Live JIT C99<span class="plus-blue-fade">+</span> code<br>
-                <span>Deploy
-                    <span class="rotating-container">
+                <span>Deploy<span class="rotating-container">
                         <span class="rotating-word visible">instantly</span>
                     </span>
                 </span>
@@ -388,7 +387,7 @@
             <!-- Typewriter -->
             <script>
             (function() {
-              const phrases = ["Zero build time", "GPU shaders", "Hot reload"];
+              const phrases = ["Builds live while you code", "Unleash your GPU’s power", "Instant Hot Reload"];
               const textEl = document.getElementById("typewriter-text");
               let phraseIndex = 0, charIndex = 0, deleting = false;
               function type() {
