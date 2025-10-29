@@ -39,6 +39,19 @@
       background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));
     }
     .muted{ color:#a9a9a9; }
+    pre {
+      background:rgba(0,0,0,.55);
+      border:1px solid #004C99;
+      color:#BFD7FF;
+      font-size:0.85rem;
+      padding:1rem;
+      overflow-x:auto;
+      border-radius:0.5rem;
+      text-align:left;
+      white-space:pre-wrap;
+      word-break:break-word;
+      max-height:70vh;
+    }
   </style>
 </head>
 <body class="min-h-screen">
@@ -84,6 +97,12 @@
       </p>
     </div>
 
+    <!-- License text block (auto-loaded) -->
+    <div class="max-w-4xl mx-auto mt-16">
+      <h3 class="mono text-xl font-bold mb-3 text-center">Wake Public License v1.0</h3>
+      <pre id="license-text" class="mono">Loading WPL.txt…</pre>
+    </div>
+
     <!-- Footer -->
     <footer class="text-center mt-10">
       <p class="text-sm muted">
@@ -93,7 +112,23 @@
   </main>
 
   <script>
+    // update year
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // fetch WPL.txt and display its contents
+    fetch('WPL.txt')
+      .then(res => {
+        if (!res.ok) throw new Error('File not found');
+        return res.text();
+      })
+      .then(txt => {
+        document.getElementById('license-text').textContent = txt;
+      })
+      .catch(err => {
+        document.getElementById('license-text').textContent =
+          'Error loading WPL.txt (' + err.message + ')';
+      });
   </script>
+
 </body>
 </html>
