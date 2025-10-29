@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
 
   <style>
-    :root { --wake-blue:#0066CC; }
+    :root { --wake-blue:#0066CC; --wake-blue-d:#0055AA; }
     body { font-family:'Inter',sans-serif; background:#000; color:#EAEAEA; }
     .mono { font-family:'JetBrains Mono',monospace; }
     .wake-blue { color: var(--wake-blue); }
@@ -39,18 +39,39 @@
       background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));
     }
     .muted{ color:#a9a9a9; }
-    pre {
+
+    /* ---------- License block (new style) ---------- */
+    .license-wrap{
+      border:1px solid rgba(0,102,204,.55);
+      border-radius:0.75rem;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.35));
+      box-shadow:0 0 24px rgba(0,102,204,.15) inset;
+    }
+    .license-header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:.75rem; padding:.75rem 1rem;
+      background:linear-gradient(180deg, rgba(0,0,0,.65), rgba(0,0,0,.4));
+      border-bottom:1px solid rgba(0,102,204,.35);
+    }
+    .license-title{ margin:0; font-weight:700; letter-spacing:.02em; }
+    .license-actions { display:flex; gap:.5rem; }
+    .license-actions button, .license-actions a{
+      border:1px solid rgba(255,255,255,.15);
+      background:rgba(0,0,0,.35);
+      padding:.4rem .75rem; border-radius:.5rem;
+      color:#EAEAEA; font-weight:600; font-size:.9rem;
+      transition: all .15s ease;
+    }
+    .license-actions button:hover, .license-actions a:hover{
+      border-color: rgba(255,255,255,.25);
+      background:rgba(0,0,0,.5);
+    }
+    pre.license {
+      margin:0; padding:1rem; font-size:.9rem; line-height:1.45;
+      color:#CFE2FF; white-space:pre-wrap; word-break:break-word;
+      max-height:70vh; overflow:auto;
       background:rgba(0,0,0,.55);
-      border:1px solid #004C99;
-      color:#BFD7FF;
-      font-size:0.85rem;
-      padding:1rem;
-      overflow-x:auto;
-      border-radius:0.5rem;
-      text-align:left;
-      white-space:pre-wrap;
-      word-break:break-word;
-      max-height:70vh;
     }
   </style>
 </head>
@@ -98,9 +119,15 @@
     </div>
 
     <!-- License text block (auto-loaded) -->
-    <div class="max-w-4xl mx-auto mt-16">
-      <h3 class="mono text-xl font-bold mb-3 text-center">Wake Public License v1.0</h3>
-      <pre id="license-text" class="mono">Loading WPL.txt…</pre>
+    <div class="max-w-4xl mx-auto mt-16 license-wrap">
+      <div class="license-header">
+        <h3 class="license-title mono text-lg">Wake Public License v1.0</h3>
+        <div class="license-actions">
+          <button id="copyBtn" class="mono" title="Copy license to clipboard">Copy</button>
+          <a id="downloadBtn" class="mono" href="WPL.txt" download="WPL.txt" title="Download WPL.txt">Download</a>
+        </div>
+      </div>
+      <pre id="license-text" class="license mono">Loading WPL.txt…</pre>
     </div>
 
     <!-- Footer -->
@@ -116,18 +143,28 @@
     document.getElementById('y').textContent = new Date().getFullYear();
 
     // fetch WPL.txt and display its contents
+    const pre = document.getElementById('license-text');
     fetch('WPL.txt')
       .then(res => {
         if (!res.ok) throw new Error('File not found');
         return res.text();
       })
-      .then(txt => {
-        document.getElementById('license-text').textContent = txt;
-      })
+      .then(txt => { pre.textContent = txt; })
       .catch(err => {
-        document.getElementById('license-text').textContent =
-          'Error loading WPL.txt (' + err.message + ')';
+        pre.textContent = 'Error loading WPL.txt (' + err.message + ')';
       });
+
+    // copy button
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pre.textContent);
+        const btn = document.getElementById('copyBtn');
+        const old = btn.textContent; btn.textContent = 'Copied';
+        setTimeout(()=> btn.textContent = old, 1200);
+      } catch(e) {
+        alert('Copy failed');
+      }
+    });
   </script>
 
 </body>
