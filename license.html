@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-  <title>Wake — Commercial Licensing</title>
-  <meta name="description" content="Contact Majify Technologies to obtain a commercial license for the Wake JIT Engine."/>
+  <title>Wake — Licensing</title>
+  <meta name="description" content="Wake is free for individuals and small teams. Only large organizations need a commercial license."/>
 
   <!-- Fonts + Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -26,7 +25,6 @@
     .glass-card{
       background:rgba(0,0,0,.35);
       border:1px solid var(--wake-blue);
-     // backdrop-filter: blur(6px);
       transition: all .25s ease;
     }
     .glass-card:hover{
@@ -40,7 +38,7 @@
     }
     .muted{ color:#a9a9a9; }
 
-    /* ---------- License block ---------- */
+    /* License block */
     .license-wrap{
       border:1px solid rgba(0,102,204,.55);
       border-radius:0.75rem;
@@ -73,41 +71,50 @@
       max-height:70vh; overflow:auto;
       background:rgba(0,0,0,.55);
     }
-
-
   </style>
 </head>
 <body class="min-h-screen">
 
-  <!-- Header bar -->
+  <!-- Header -->
   <header id="console-strip" class="w-full">
     <div class="max-w-5xl mx-auto px-4 py-3 text-sm mono text-gray-300">
       &gt; Wake Runtime — Licensing Console
-      <span class="text-gray-500"> // commercial licensing information</span>
+      <span class="text-gray-500"> // licensing overview</span>
     </div>
   </header>
 
   <!-- Hero -->
   <section class="min-h-[30vh] flex flex-col justify-center items-center text-center px-4 py-14">
     <h1 class="mono text-4xl md:text-6xl font-bold mb-4">
-      <a href="index.html" class="hover:opacity-80 transition duration-200">
-        <span class="wake-blue title-outline">WAKE</span>
-        <span class="title-outline">JIT ENGINE</span>
-      </a>
+      <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
     </h1>
     <p class="text-lg md:text-xl max-w-2xl muted">
-      Commercial licensing is available for companies and organizations that exceed the free tier thresholds.
+      <span class="text-white font-semibold">Projects built with Wake are free to ship.</span><br>
+      Only larger organizations need a commercial license.
     </p>
   </section>
 
-  <!-- License info -->
-  <main class="px-4 pb-24">
+  <main class="px-4 pb-24 space-y-10">
+    <!-- Free tier -->
     <div class="max-w-xl mx-auto glass-card rounded-xl p-6 md:p-8 text-center">
-      <h2 class="mono text-2xl font-bold mb-3">Commercial License</h2>
+      <h2 class="mono text-2xl font-bold mb-3 text-green-400">Free Tier — For Everyone</h2>
+      <p class="muted mb-4">
+        <span class="text-white font-semibold">Individuals and small teams:</span><br>
+        Build, sell, and distribute your Wake-powered projects freely.<br>
+        No royalties. No fees. Just create.
+      </p>
+      <p class="text-sm text-gray-500 italic">
+        Includes open-source, indie, educational, and experimental use.
+      </p>
+    </div>
+
+    <!-- Business tier -->
+    <div class="max-w-xl mx-auto glass-card rounded-xl p-6 md:p-8 text-center">
+      <h2 class="mono text-2xl font-bold mb-3 text-blue-400">Business Tier — For Companies</h2>
       <p class="muted mb-6">
-        Wake is free for individuals and small teams.  
-        If your company has five or more employees, or earns over USD 100,000 per year from Wake-related projects,
-        a commercial license is required.
+        A <span class="text-white font-semibold">commercial license</span> is required if your organization has<br>
+        <span class="text-white">5+ employees</span> <span class="text-gray-500">or</span>
+        <span class="text-white">&ge; USD&nbsp;100,000/year</span> in revenue.
       </p>
 
       <a href="mailto:license@majify.tech"
@@ -116,17 +123,17 @@
       </a>
 
       <p class="text-sm muted mt-6">
-        Our team will provide the appropriate license agreement and pricing options for your organization.
+        Our team will send the proper agreement and pricing options for your company.
       </p>
     </div>
 
-    <!-- License text block (auto-loaded) -->
+    <!-- License text -->
     <div class="max-w-4xl mx-auto mt-16 license-wrap">
       <div class="license-header">
         <h3 class="license-title mono text-base">Wake Public License v1.0</h3>
         <div class="license-actions">
-          <button id="copyBtn" class="mono" title="Copy license to clipboard">Copy</button>
-          <a id="downloadBtn" class="mono" href="WPL.txt" download="WPL.txt" title="Download WPL.txt">Download</a>
+          <button id="copyBtn" class="mono">Copy</button>
+          <a id="downloadBtn" class="mono" href="WPL.txt" download="WPL.txt">Download</a>
         </div>
       </div>
       <pre id="license-text" class="license mono">Loading WPL.txt…</pre>
@@ -134,29 +141,21 @@
 
     <!-- Footer -->
     <footer class="text-center mt-10">
-      <p class="text-sm muted">
-        © <span id="y"></span> Majify Technologies — Wake Licensing Portal.
-      </p>
+      <p class="text-sm muted">© <span id="y"></span> Majify Technologies — Wake Licensing Portal.</p>
     </footer>
   </main>
 
   <script>
-    // update year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // fetch WPL.txt and display its contents
+    // Load license
     const pre = document.getElementById('license-text');
     fetch('WPL.txt')
-      .then(res => {
-        if (!res.ok) throw new Error('File not found');
-        return res.text();
-      })
-      .then(txt => { pre.textContent = txt; })
-      .catch(err => {
-        pre.textContent = 'Error loading WPL.txt (' + err.message + ')';
-      });
+      .then(res => res.ok ? res.text() : Promise.reject('File not found'))
+      .then(txt => pre.textContent = txt)
+      .catch(err => pre.textContent = 'Error loading WPL.txt (' + err + ')');
 
-    // copy button
+    // Copy license
     document.getElementById('copyBtn').addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(pre.textContent);
@@ -168,6 +167,5 @@
       }
     });
   </script>
-
 </body>
 </html>
