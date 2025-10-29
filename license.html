@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <title>Wake — Commercial Licensing</title>
+  <meta name="description" content="Contact Majify Technologies to obtain a commercial license for the Wake JIT Engine."/>
+
+  <!-- Fonts + Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
+
+  <style>
+    :root { --wake-blue:#0066CC; }
+    body { font-family:'Inter',sans-serif; background:#000; color:#EAEAEA; }
+    .mono { font-family:'JetBrains Mono',monospace; }
+    .wake-blue { color: var(--wake-blue); }
+    .bg-wake-blue { background-color: var(--wake-blue); }
+    .hover-bg-wake-blue:hover { background-color:#0055AA; }
+    .title-outline {
+      text-shadow:
+        -2px -2px 0 #000, 2px -2px 0 #000,
+        -2px  2px 0 #000, 2px  2px 0 #000;
+    }
+    .glass-card{
+      background:rgba(0,0,0,.35);
+      border:1px solid var(--wake-blue);
+      backdrop-filter: blur(6px);
+      transition: all .25s ease;
+    }
+    .glass-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 0 18px rgba(0,102,204,.25);
+      background:rgba(0,0,0,.45);
+    }
+    #console-strip{
+      border-bottom:1px solid #0b0b0b;
+      background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));
+    }
+    .muted{ color:#a9a9a9; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Header bar -->
+  <header id="console-strip" class="w-full">
+    <div class="max-w-5xl mx-auto px-4 py-3 text-sm mono text-gray-300">
+      &gt; Wake Runtime — Licensing Console
+      <span class="text-gray-500"> // commercial licensing information</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="min-h-[30vh] flex flex-col justify-center items-center text-center px-4 py-14">
+    <h1 class="mono text-4xl md:text-6xl font-bold mb-4">
+      <a href="index.html" class="hover:opacity-80 transition duration-200">
+        <span class="wake-blue title-outline">WAKE</span>
+        <span class="title-outline">JIT ENGINE</span>
+      </a>
+    </h1>
+    <p class="text-lg md:text-xl max-w-2xl muted">
+      Commercial licensing is available for companies and organizations that exceed the free tier thresholds.
+    </p>
+  </section>
+
+  <!-- License info -->
+  <main class="px-4 pb-24">
+    <div class="max-w-xl mx-auto glass-card rounded-xl p-6 md:p-8 text-center">
+      <h2 class="mono text-2xl font-bold mb-3">Commercial License</h2>
+      <p class="muted mb-6">
+        Wake is free for individuals and small teams.  
+        If your company has five or more employees, or earns over USD 100,000 per year from Wake-related projects,
+        a commercial license is required.
+      </p>
+
+      <a href="mailto:license@majify.tech"
+         class="inline-flex items-center justify-center bg-wake-blue hover-bg-wake-blue text-white font-semibold px-6 py-3 rounded-lg transition">
+        Contact license@majify.tech
+      </a>
+
+      <p class="text-sm muted mt-6">
+        Our team will provide the appropriate license agreement and pricing options for your organization.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-10">
+      <p class="text-sm muted">
+        © <span id="y"></span> Majify Technologies — Wake Licensing Portal.
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
