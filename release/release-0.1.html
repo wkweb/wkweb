@@ -48,6 +48,7 @@
       background:rgba(0,0,0,.55); border:1px solid rgba(0,102,204,.35);
       border-radius:.5rem; padding:1rem; color:#CFE2FF; font-size:.9rem;
     }
+
   </style>
 </head>
 <body class="min-h-screen">
@@ -61,12 +62,13 @@
   </header>
 
   <!-- Hero -->
-  <section class="min-h-[25vh] flex flex-col justify-center items-center text-center px-4 py-14">
-    <h1 class="mono text-4xl md:text-6xl font-bold mb-3">
-      <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
+  <section class="min-h-[16vh] flex flex-col justify-center items-center text-center px-4 py-6">
+    <h1 class="mono text-2xl md:text-4xl font-bold mb-1">
+  	<span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
     </h1>
-    <p class="text-lg md:text-xl muted">Official Windows Release — Installer & Portable Versions</p>
+    <p class="text-sm md:text-base muted mt-0.5">Official Windows Release — Installer & Portable Versions</p>
   </section>
+
 
   <main class="px-4 pb-24 space-y-12 max-w-5xl mx-auto">
 
@@ -139,35 +141,7 @@ wake myapp.jc
     </footer>
   </main>
 
-  <script>
-  // ========= CONFIGURATION CENTRALE DES LIENS =========
-  const LINKS = {
-    installer: [
-      {
-        name: "Wake-Offline-Setup-x64.msi",
-        arch: "x64",
-        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi"
-      }
-    ],
-    portable: [
-      {
-        name: "Wake-Portable-x64.zip",
-        arch: "x64",
-        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip"
-      },
-      {
-        name: "Wake-Portable-x86.zip",
-        arch: "x86",
-        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip"
-      },
-      {
-        name: "Wake-Portable-Dual.zip",
-        arch: "x86 + x64",
-        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip"
-      }
-    ]
-  };
-  </script>
+  <script defer src="authorize.js"></script>
   <script defer src="fetchsize.js"></script>
 
 </body>
