@@ -55,7 +55,7 @@ You may NOT:
 -------------------------------------------------------------------------------
 Wake is free for individuals, students, and small independent teams defined as
 organizations with fewer than five (5) full-time employees and less than
-USD 100,000 in annual gross revenue derived from projects using Wake.
+USD 500,000 in annual gross revenue derived from projects using Wake.
 
 A valid Commercial License Agreement with Majify Technologies Inc. is required
 if either of these thresholds is exceeded.
@@ -161,7 +161,7 @@ business@majify.tech
 -------------------------------------------------------------------------------
 SUMMARY
 -------------------------------------------------------------------------------
-- Free for personal, educational, and small-team use (<5 employees OR <100k USD)
+- Free for personal, educational, and small-team use (<5 employees OR <500k USD)
 - Commercial use beyond this threshold requires a Majify Commercial License
 - No redistribution, resale, or reverse engineering
 - Official builds and modules are signed and verified
