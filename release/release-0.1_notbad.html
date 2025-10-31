@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Wake — Official Release</title>
+  <meta name="description" content="Official Wake JIT Engine release for Windows — offline installer and portable builds."/>
+
+  <!-- Fonts + Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
+
+  <style>
+    /* --- GLOBAL LAYOUT SAFETY --- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width:100%; max-width:100%; overflow-x:hidden; }
+
+    :root { --wake-blue:#0066CC; --wake-blue-d:#0055AA; }
+    body { font-family:'Inter',sans-serif; background:#000; color:#EAEAEA; }
+    .mono { font-family:'JetBrains Mono',monospace; }
+    .wake-blue { color: var(--wake-blue); }
+    .bg-wake-blue { background-color: var(--wake-blue); }
+    .hover-bg-wake-blue:hover { background-color:#0055AA; }
+    .title-outline {
+      text-shadow:-2px -2px 0 #000, 2px -2px 0 #000,
+                  -2px  2px 0 #000, 2px  2px 0 #000;
+    }
+    .glass-card {
+      background:rgba(0,0,0,.35);
+      border:1px solid var(--wake-blue);
+      border-radius:0.75rem;
+      box-shadow:0 0 18px rgba(0,102,204,.2) inset;
+      transition:background .25s ease;
+    }
+    .glass-card:hover { background:rgba(0,0,0,.45); }
+    #console-strip {
+      border-bottom:1px solid #0b0b0b;
+      background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));
+    }
+    .muted { color:#a9a9a9; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:.75rem .9rem; border-bottom:1px solid rgba(255,255,255,.08); }
+    th { text-align:left; font-weight:700; color:#9ecaff; background:rgba(0,0,0,.35); }
+    tr:last-child td { border-bottom:none; }
+    a.btn {
+      display:inline-block; background:var(--wake-blue); color:#fff;
+      font-weight:600; padding:.6rem 1rem; border-radius:.5rem;
+      text-decoration:none; transition:background .2s; white-space:nowrap;
+    }
+    a.btn:hover { background:var(--wake-blue-d); }
+    .btn-ghost { border:1px solid rgba(255,255,255,.15); padding:.55rem 1rem; border-radius:.5rem; font-weight:600; white-space:nowrap; }
+    .btn-ghost:hover { border-color:rgba(255,255,255,.35); }
+
+    /* --- CODE BLOCKS: no overflow --- */
+    pre.console {
+      background:rgba(0,0,0,.55); border:1px solid rgba(0,102,204,.35);
+      border-radius:.5rem; padding:1rem; color:#CFE2FF; font-size:.9rem;
+      white-space:pre-wrap; word-break:break-word; overflow:auto;
+    }
+
+    /* --- SAMPLES GRID --- */
+    .grid-cards {
+      display:grid; grid-template-columns:1fr; gap:12px;
+      overflow:hidden; /* évite visuels qui "sortent" */
+    }
+    @media (min-width:768px){
+      .grid-cards { grid-template-columns:repeat(3, minmax(0,1fr)); }
+    }
+    .grid-cards > * { min-width:0; } /* empêche dépassement à cause des enfants */
+
+    /* Cartes internes dédiées (évite le hover-translate qui faisait déborder) */
+    .card {
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(0,102,204,.35);
+      border-radius:.6rem;
+      padding:1rem;
+      display:flex; flex-direction:column; height:100%;
+      transition:background .2s, border-color .2s;
+    }
+    .card:hover { background:rgba(0,0,0,.35); border-color:rgba(0,102,204,.6); }
+    .card .btn { margin-top:auto; } /* bouton collé en bas proprement */
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Header -->
+  <header id="console-strip" class="w-full">
+    <div class="max-w-5xl mx-auto px-4 py-3 text-sm mono text-gray-300">
+      &gt; Wake Runtime — Release Console
+      <span class="text-gray-500"> // official build downloads</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="min-h-[16vh] flex flex-col justify-center items-center text-center px-4 py-6">
+    <h1 class="mono text-2xl md:text-4xl font-bold mb-2">
+      <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
+    </h1>
+    <p class="text-sm md:text-base muted mt-0.5">Official Windows Release — Installer & Portable Versions</p>
+
+    <!-- Hero CTAs -->
+    <div class="mt-4 flex flex-col md:flex-row gap-3">
+      <a class="btn" href="#installer">Download Installer</a>
+      <a class="btn-ghost" href="#samples">Get Samples (Start Fast)</a>
+    </div>
+  </section>
+
+  <main class="px-4 pb-24 space-y-12 max-w-5xl mx-auto">
+
+    <!-- TRY WITH SAMPLES -->
+    <section id="samples" class="glass-card p-6 md:p-8">
+      <h2 class="mono text-2xl font-bold mb-3 text-purple-300">Try With Samples (Recommended)</h2>
+      <p class="muted mb-4">Grab ready-to-run examples from the official repository, then launch them with Wake.</p>
+
+      <div class="grid-cards mb-4">
+        <div class="card">
+          <div class="mono font-bold text-lg mb-2">1) Clone (Git)</div>
+          <pre class="console mono mb-2">git clone https://github.com/wake-tools/wake-samples.git
+cd wake-samples
+wake --install
+wake hello.jc</pre>
+          <a class="btn" target="_blank" rel="noopener" href="https://github.com/wake-tools/wake-samples">Open Repository</a>
+        </div>
+
+        <div class="card">
+          <div class="mono font-bold text-lg mb-2">2) Download ZIP</div>
+          <pre class="console mono mb-2"># Download the ZIP, unzip, then:
+cd wake-samples-main
+wake --install
+wake hello.jc</pre>
+          <a class="btn" target="_blank" rel="noopener" href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">Download ZIP</a>
+        </div>
+
+        <div class="card">
+          <div class="mono font-bold text-lg mb-2">3) Browse Examples</div>
+          <p class="muted mb-3">Explore graphics, tools, and interactive demos. Each sample is a single <span class="mono">.jc</span> file with embedded metadata.</p>
+          <a class="btn" target="_blank" rel="noopener" href="https://github.com/wake-tools/wake-samples/tree/main">Browse Samples</a>
+        </div>
+      </div>
+
+      <details class="mt-2">
+        <summary class="cursor-pointer mono">What does <code>wake --install</code> do?</summary>
+        <p class="muted mt-2">It registers <span class="mono">.jc</span> file associations and adds Wake to <span class="mono">PATH</span>, so you can double-click <span class="mono">.jc</span> files or run <span class="mono">wake</span> from any folder.</p>
+      </details>
+    </section>
+
+    <!-- Installer Version -->
+    <section id="installer" class="glass-card p-6 md:p-8">
+      <h2 class="mono text-2xl font-bold mb-4 text-blue-300">Installer Version (Pre-Configured)</h2>
+      <p class="muted mb-4">
+        Perfect for a complete install. Just run the <span class="mono">.msi</span>, and you’re ready to go.
+      </p>
+
+      <ul class="list-disc ml-5 space-y-1 text-sm mb-6">
+        <li>Everything is pre-configured</li>
+        <li>Instantly runs <span class="mono">.jc</span> files from File Explorer</li>
+        <li>Ideal if you want the full Wake environment, pre-bundled and ready out of the box.</li>
+      </ul>
+
+      <div class="overflow-auto rounded-lg border border-[rgba(0,102,204,.4)] mb-4">
+        <table class="mono w-full text-sm">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Architecture</th>
+              <th>Size</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody id="installer-table"></tbody>
+        </table>
+      </div>
+
+      <pre class="console mono mb-2">
+# Install Wake (MSI), then open a sample
+git clone https://github.com/wake-tools/wake-samples.git
+cd wake-samples
+wake hello.jc
+      </pre>
+    </section>
+
+    <!-- Portable Version -->
+    <section class="glass-card p-6 md:p-8">
+      <h2 class="mono text-2xl font-bold mb-4 text-green-300">Portable Version (Minimal & Flexible)</h2>
+      <p class="muted mb-4">
+        A super-light Wake build that you can copy, move, or duplicate anywhere. It includes only the essentials, and automatically pulls missing packages when needed.
+      </p>
+
+      <div class="overflow-auto rounded-lg border border-[rgba(0,102,204,.4)] mb-5">
+        <table class="mono w-full text-sm">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Architecture</th>
+              <th>Size</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody id="portable-table"></tbody>
+        </table>
+      </div>
+
+      <pre class="console mono mb-2">
+# Go to your Wake directory
+cd wake
+
+# Register file associations and add Wake to PATH
+wake --install
+
+# Run a sample (recommended)
+git clone https://github.com/wake-tools/wake-samples.git
+cd wake-samples
+wake hello.jc
+
+# Or run your own file
+wake myapp.jc
+      </pre>
+    </section>
+
+    <footer class="text-center mt-10">
+      <p class="text-sm muted">© <span id="y"></span> Majify Technologies — Wake Official Release.</p>
+    </footer>
+  </main>
+
+  <script>
+  // ========= CENTRAL LINK CONFIG =========
+  const LINKS = {
+    installer: [
+      {
+        name: "Wake-Offline-Setup.msi",
+        arch: "x86 + x64",
+        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi"
+      }
+    ],
+    portable: [
+      {
+        name: "Wake-Portable-Dual.zip",
+        arch: "x86 + x64",
+        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip"
+      },
+      {
+        name: "Wake-Portable-x64(Only).zip",
+        arch: "x64",
+        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip"
+      },
+      {
+        name: "Wake-Portable-x86(Only).zip",
+        arch: "x86",
+        url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip"
+      }
+    ]
+  };
+
+  // ====== RENDER TABLES with GUARD ======
+  (function(){
+    if (window.__wakeRendered) return; // anti-double
+    window.__wakeRendered = true;
+
+    function renderTable(id, rows){
+      const tbody = document.getElementById(id);
+      if(!tbody) return;
+      if (tbody.getAttribute('data-rendered') === '1') return; // idempotent
+      tbody.innerHTML = rows.map(r => `
+        <tr>
+          <td class="mono">${r.name}</td>
+          <td>${r.arch}</td>
+          <td class="muted" data-size>…</td>
+          <td><a class="btn" href="${r.url}" rel="noopener">Download</a></td>
+        </tr>
+      `).join('');
+      tbody.setAttribute('data-rendered','1');
+    }
+
+    renderTable('installer-table', LINKS.installer);
+    renderTable('portable-table', LINKS.portable);
+
+    // Year
+    var y = document.getElementById('y');
+    if (y) y.textContent = new Date().getFullYear();
+  })();
+  </script>
+
+  <!-- Optional helpers (peuvent tourner sans casser le rendu) -->
+  <script defer src="authorize.js"></script>
+  <script defer src="fetchsize.js"></script>
+</body>
+</html>
