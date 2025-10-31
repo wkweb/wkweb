@@ -26,7 +26,7 @@ container.className = "mono text-center mt-7 mb-5 px-4";
     // Message aléatoire
     const msg = messages[Math.floor(Math.random() * messages.length)];
     container.innerHTML = `
-      <p class="text-lg text-blue-300 font-semibold mb-2">Welcome back, ${user}.</p>
+      <p class="text-2xl text-blue-300 font-semibold mb-2">> Welcome back, ${user}.</p>
       <p class="text-sm text-gray-400 italic">${msg}</p>
     `;
   } else {

@@ -101,12 +101,12 @@
     <h1 class="mono text-2xl md:text-4xl font-bold mb-2">
       <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
     </h1>
-    <p class="text-sm md:text-base muted mt-0.5">Official Windows Release — Installer & Portable Versions</p>
-
+      <p class="text-sm md:text-base muted mt-0.5">Official Installer & Portable Versions</p>
+    <!--  
     <div class="mt-4 flex flex-col md:flex-row gap-3">
       <a class="btn" href="#installer">Download Installer</a>
       <a class="btn" href="#portable">Portable</a>
-    </div>
+    </div>-->
   </section>
 
   <main class="px-4 pb-24 space-y-12 max-w-5xl mx-auto">
@@ -187,16 +187,35 @@ wake hello.jc</pre>
   </main>
 
   <script>
+    // Config centrale (la population est gérée par fetchsize.js)
     const LINKS = {
       installer: [
-        { name: "Wake-Offline-Setup.msi", arch: "x86 + x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi" }
+        {
+          name: "Wake-Offline-Setup.msi",
+          arch: "x86 + x64",
+          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi"
+        }
       ],
       portable: [
-        { name: "Wake-Portable-Dual.zip", arch: "x86 + x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip" },
-        { name: "Wake-Portable-x64(Only).zip", arch: "x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip" },
-        { name: "Wake-Portable-x86(Only).zip", arch: "x86", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip" }
+        {
+          name: "Wake-Portable-Dual.zip",
+          arch: "x86 + x64",
+          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip"
+        },
+        {
+          name: "Wake-Portable-x64(Only).zip",
+          arch: "x64",
+          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip"
+        },
+        {
+          name: "Wake-Portable-x86(Only).zip",
+          arch: "x86",
+          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip"
+        }
       ]
     };
+
+    // Année dynamique uniquement
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 
