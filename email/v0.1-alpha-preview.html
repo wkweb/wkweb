@@ -23,7 +23,7 @@
 
           <!-- ROW: Badge overlay à droite, remonté par-dessus le bord -->
           <tr>
-            <td align="right" style="padding:5 5px 0 10px;line-height:1;">
+            <td align="right" style="padding:5 5px 0 0px;line-height:1;">
               <span style="display:inline-block;padding:4px 10px;border-radius:999px;
                            font:600 11px/1 Inter,Segoe UI,Arial,sans-serif;
                            letter-spacing:.08em;text-transform:uppercase;
@@ -73,7 +73,7 @@
           <!-- CTA -->
           <tr>
             <td align="center" style="padding:26px 24px 34px 24px;">
-              <a href="https://wake.tools/release/release-v0.1?u={{ contact.EMAIL }}"
+              <a href="https://wake.tools/release/release-v0.1?u={{ contact.FIRSTNAME|default:'developer' }}"
                  style="background:#0066CC;border:1px solid #0055AA;border-radius:8px;
                         color:#ffffff;display:inline-block;text-decoration:none;
                         font-family:Inter,Segoe UI,Arial,sans-serif;
@@ -107,3 +107,4 @@
   </table>
 </body>
 </html>
+
