@@ -17,11 +17,8 @@
     body{font-family:'Inter',sans-serif;background:#000;color:#EAEAEA;}
     .mono{font-family:'JetBrains Mono',monospace;}
     .wake-blue{color:var(--wake-blue);}
-    .bg-wake-blue{background-color:var(--wake-blue);}
-    .hover-bg-wake-blue:hover{background-color:#0055AA;}
     .title-outline{text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000;}
-    .glass-card{background:rgba(0,0,0,.35);border:1px solid var(--wake-blue);border-radius:.75rem;
-      box-shadow:0 0 18px rgba(0,102,204,.2) inset;transition:background .25s ease;}
+    .glass-card{background:rgba(0,0,0,.35);border:1px solid var(--wake-blue);border-radius:.75rem;box-shadow:0 0 18px rgba(0,102,204,.2) inset;transition:background .25s ease;}
     .glass-card:hover{background:rgba(0,0,0,.45);}
     #console-strip{border-bottom:1px solid #0b0b0b;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));}
     .muted{color:#a9a9a9;}
@@ -29,11 +26,30 @@
     th,td{padding:.75rem .9rem;border-bottom:1px solid rgba(255,255,255,.08);}
     th{text-align:left;font-weight:700;color:#9ecaff;background:rgba(0,0,0,.35);}
     tr:last-child td{border-bottom:none;}
-    a.btn{display:inline-block;background:var(--wake-blue);color:#fff;font-weight:600;
-      padding:.6rem 1rem;border-radius:.5rem;text-decoration:none;transition:background .2s;white-space:nowrap;}
-    a.btn:hover{background:var(--wake-blue-d);}
 
-    /* Bouton inline bleu (secondaire, atténué) */
+    /* ===== Boutons ===== */
+
+    /* (1) Les boutons “Download” des tableaux : on garde la classe .btn mais on lui donne le style ghost blanc,
+           identique à “Get Samples” pour une cohérence visuelle. */
+    a.btn{
+      background:transparent;
+      border:1px solid rgba(255,255,255,.34);
+      color:rgba(255,255,255,.88);
+      font-weight:600;
+      padding:.38rem .9rem;
+      border-radius:.42rem;
+      text-decoration:none;
+      white-space:nowrap;
+      transition:background .15s,border-color .15s,color .15s,opacity .15s;
+      opacity:.94;
+    }
+    a.btn:hover{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.52);
+      color:#fff; opacity:1;
+    }
+
+    /* (2) Bouton inline bleu (secondaire, atténué) — pour “View on GitHub” */
     a.btn-inline{
       background:rgba(0,102,204,.16);
       border:1px solid rgba(0,102,204,.36);
@@ -48,7 +64,7 @@
     }
     a.btn-inline:hover{background:rgba(0,102,204,.28);border-color:rgba(0,102,204,.5);color:#e7f1ff;}
 
-    /* Ghost blanc SUBTIL (moins intrusif) */
+    /* (3) Ghost blanc subtil — réutilisé pour “Get Samples” */
     a.btn-ghost-white{
       background:transparent;
       border:1px solid rgba(255,255,255,.34);
@@ -68,7 +84,7 @@
       color:#fff; opacity:1;
     }
 
-    /* Console + overlay */
+    /* ===== Console + overlay ===== */
     .code-wrapper{position:relative;}
     pre.console{
       background:rgba(0,0,0,.55);
@@ -83,7 +99,6 @@
       margin-bottom:0;
     }
 
-    /* Capsule d’actions overlay, bas-droite */
     .overlay-group{
       position:absolute;
       right:.8rem;
@@ -98,12 +113,7 @@
       padding:.35rem .45rem;
       backdrop-filter:blur(2px);
     }
-    /* Séparateur fin entre les 2 boutons (invisible en mobile s’ils stackent) */
-    .overlay-sep{
-      width:1px;height:1.4rem;background:rgba(255,255,255,.1);
-    }
-
-    /* Dégradé discret sous la capsule */
+    .overlay-sep{width:1px;height:1.4rem;background:rgba(255,255,255,.1);}
     .code-wrapper::after{
       content:"";
       position:absolute;
@@ -115,11 +125,8 @@
       border-bottom-right-radius:.5rem;
       pointer-events:none;
     }
-
-    /* Icônes */
     .ico{display:inline-block;vertical-align:middle;margin-right:.4rem;opacity:.9}
 
-    /* Responsive : capsule qui passe en colonne si écran étroit */
     @media (max-width:480px){
       .overlay-group{flex-direction:column;align-items:stretch;padding:.35rem;}
       .overlay-sep{display:none;}
@@ -172,7 +179,6 @@
       <div class="mt-6">
         <h3 class="mono font-bold mb-2">Quick Start with Samples</h3>
         <div class="code-wrapper">
-          <!-- Capsule overlay : Get Samples (ghost) + View on GitHub (inline) -->
           <div class="overlay-group">
             <a class="btn-ghost-white" target="_blank" rel="noopener"
                href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">
