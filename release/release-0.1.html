@@ -27,10 +27,10 @@
     th{text-align:left;font-weight:700;color:#9ecaff;background:rgba(0,0,0,.35);}
     tr:last-child td{border-bottom:none;}
 
-    /* ===== Boutons ===== */
+    /* ===== Boutons harmonisés ===== */
+    a.btn,a.btn-ghost-white,a.btn-inline{display:inline-flex;align-items:center;gap:.5rem;}
 
-    /* (1) Les boutons “Download” des tableaux : on garde la classe .btn mais on lui donne le style ghost blanc,
-           identique à “Get Samples” pour une cohérence visuelle. */
+    /* Download / ghost style */
     a.btn{
       background:transparent;
       border:1px solid rgba(255,255,255,.34);
@@ -46,10 +46,17 @@
     a.btn:hover{
       background:rgba(255,255,255,.06);
       border-color:rgba(255,255,255,.52);
-      color:#fff; opacity:1;
+      color:#fff;opacity:1;
+    }
+    a.btn::before{
+      content:"";
+      width:16px;height:16px;
+      background:no-repeat center/contain
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='M8 11l4 4 4-4'/%3E%3Cpath d='M5 21h14'/%3E%3C/svg%3E");
+      opacity:.95;
     }
 
-    /* (2) Bouton inline bleu (secondaire, atténué) — pour “View on GitHub” */
+    /* View on GitHub */
     a.btn-inline{
       background:rgba(0,102,204,.16);
       border:1px solid rgba(0,102,204,.36);
@@ -63,8 +70,15 @@
       backdrop-filter:blur(2px);
     }
     a.btn-inline:hover{background:rgba(0,102,204,.28);border-color:rgba(0,102,204,.5);color:#e7f1ff;}
+    a.btn-inline.with-gh::before{
+      content:"";
+      width:16px;height:16px;
+      background:no-repeat center/contain
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cfe2ff'%3E%3Cpath d='M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.1 7.62 10.58.56.1.76-.24.76-.54 0-.26-.01-1.09-.02-1.98-3.1.67-3.76-1.32-3.76-1.32-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15 1 .1.7 1.98 2.87 1.41.1-.75.39-1.26.72-1.55-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 2.83-.38c.96 0 1.93.13 2.83.38 2.16-1.45 3.11-1.15 3.11-1.15.61 1.55.23 2.7.11 2.98.71.78 1.15 1.78 1.15 3 0 4.28-2.61 5.22-5.1 5.49.4.34.76 1.01.76 2.04 0 1.47-.01 2.66-.01 3.02 0 .3.2.65.77.54 4.42-1.48 7.61-5.65 7.61-10.58C23.23 5.46 18.27.5 12 .5Z'/%3E%3C/svg%3E");
+      opacity:.95;
+    }
 
-    /* (3) Ghost blanc subtil — réutilisé pour “Get Samples” */
+    /* Get Samples */
     a.btn-ghost-white{
       background:transparent;
       border:1px solid rgba(255,255,255,.34);
@@ -75,13 +89,15 @@
       text-decoration:none;
       white-space:nowrap;
       transition:background .15s,border-color .15s,color .15s,opacity .15s;
-      backdrop-filter:none;
       opacity:.94;
     }
-    a.btn-ghost-white:hover{
-      background:rgba(255,255,255,.06);
-      border-color:rgba(255,255,255,.52);
-      color:#fff; opacity:1;
+    a.btn-ghost-white:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.52);color:#fff;opacity:1;}
+    a.btn-ghost-white.with-dl::before{
+      content:"";
+      width:16px;height:16px;
+      background:no-repeat center/contain
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='M8 11l4 4 4-4'/%3E%3Cpath d='M5 21h14'/%3E%3C/svg%3E");
+      opacity:.95;
     }
 
     /* ===== Console + overlay ===== */
@@ -98,7 +114,6 @@
       overflow:auto;
       margin-bottom:0;
     }
-
     .overlay-group{
       position:absolute;
       right:.8rem;
@@ -125,8 +140,6 @@
       border-bottom-right-radius:.5rem;
       pointer-events:none;
     }
-    .ico{display:inline-block;vertical-align:middle;margin-right:.4rem;opacity:.9}
-
     @media (max-width:480px){
       .overlay-group{flex-direction:column;align-items:stretch;padding:.35rem;}
       .overlay-sep{display:none;}
@@ -180,26 +193,15 @@
         <h3 class="mono font-bold mb-2">Quick Start with Samples</h3>
         <div class="code-wrapper">
           <div class="overlay-group">
-            <a class="btn-ghost-white" target="_blank" rel="noopener"
-               href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">
-              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Get Samples
-            </a>
+            <a class="btn-ghost-white with-dl" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">Get Samples</a>
             <span class="overlay-sep"></span>
-            <a class="btn-inline" target="_blank" rel="noopener"
-               href="https://github.com/wake-tools/wake-samples">
-              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.1 7.62 10.58.56.1.76-.24.76-.54 0-.26-.01-1.09-.02-1.98-3.1.67-3.76-1.32-3.76-1.32-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15 1 .1.7 1.98 2.87 1.41.1-.75.39-1.26.72-1.55-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 2.83-.38c.96 0 1.93.13 2.83.38 2.16-1.45 3.11-1.15 3.11-1.15.61 1.55.23 2.7.11 2.98.71.78 1.15 1.78 1.15 3 0 4.28-2.61 5.22-5.1 5.49.4.34.76 1.01.76 2.04 0 1.47-.01 2.66-.01 3.02 0 .3.2.65.77.54 4.42-1.48 7.61-5.65 7.61-10.58C23.23 5.46 18.27.5 12 .5Z"/>
-              </svg>
-              View on GitHub
-            </a>
+            <a class="btn-inline with-gh" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples">View on GitHub</a>
           </div>
 
 <pre class="console mono">git clone https://github.com/wake-tools/wake-samples.git
 cd wake-samples
-wake --install
 wake hello.jc</pre>
         </div>
       </div>
@@ -225,21 +227,11 @@ wake hello.jc</pre>
         <h3 class="mono font-bold mb-2">Run a Sample (Recommended)</h3>
         <div class="code-wrapper">
           <div class="overlay-group">
-            <a class="btn-ghost-white" target="_blank" rel="noopener"
-               href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">
-              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Get Samples
-            </a>
+            <a class="btn-ghost-white with-dl" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">Get Samples</a>
             <span class="overlay-sep"></span>
-            <a class="btn-inline" target="_blank" rel="noopener"
-               href="https://github.com/wake-tools/wake-samples">
-              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.1 7.62 10.58.56.1.76-.24.76-.54 0-.26-.01-1.09-.02-1.98-3.1.67-3.76-1.32-3.76-1.32-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15 1 .1.7 1.98 2.87 1.41.1-.75.39-1.26.72-1.55-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 2.83-.38c.96 0 1.93.13 2.83.38 2.16-1.45 3.11-1.15 3.11-1.15.61 1.55.23 2.7.11 2.98.71.78 1.15 1.78 1.15 3 0 4.28-2.61 5.22-5.1 5.49.4.34.76 1.01.76 2.04 0 1.47-.01 2.66-.01 3.02 0 .3.2.65.77.54 4.42-1.48 7.61-5.65 7.61-10.58C23.23 5.46 18.27.5 12 .5Z"/>
-              </svg>
-              View on GitHub
-            </a>
+            <a class="btn-inline with-gh" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples">View on GitHub</a>
           </div>
 
 <pre class="console mono"># Go to your Wake directory
@@ -262,7 +254,6 @@ wake hello.jc</pre>
   </main>
 
   <script>
-    // Config centrale (remplie par fetchsize.js)
     const LINKS = {
       installer: [
         { name: "Wake-Offline-Setup.msi", arch: "x86 + x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi" }
