@@ -104,7 +104,7 @@ container.className = "mono text-center mt-7 mb-5 px-4";
     const subCursor = container.querySelector('#subtitle-cursor');
     if (!welcomeEl || !subEl) return;
 
-    const titleText = `> Welcome back, ${user}.`;
+    const titleText = `> Welcome back, ${user}`;
     const titleSpeed = 45, subType = 55, subDel = 35, hold = 1500;
 
     if (welcomeCursor) welcomeCursor.style.visibility = 'visible';
