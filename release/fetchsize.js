@@ -6,6 +6,7 @@
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${pkg.name}</td>
+        <td>Windows</td>
         <td>${pkg.arch}</td>
         <td class="size">Loading…</td>
         <td><a class="btn" href="${pkg.url}">Download</a></td>

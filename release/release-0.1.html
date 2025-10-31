@@ -32,7 +32,8 @@
     //  background:rgba(255,255,255,.04);
     }
     table tbody td:nth-child(2),
-    table tbody td:nth-child(3){
+    table tbody td:nth-child(3),
+    table tbody td:nth-child(4){
       color:rgba(234,234,234,.72);
     }
 
@@ -180,7 +181,7 @@
     <p class="text-sm md:text-base muted mt-0.5">Official Installer & Portable Versions</p>
   </section>
 
-  <main class="px-4 pb-24 space-y-12 max-w-5xl mx-auto">
+  <main class="px-4 pb-8 space-y-12 max-w-5xl mx-auto">
 
     <!-- Installer Version -->
     <section id="installer" class="glass-card p-6 md:p-8">
@@ -198,7 +199,7 @@
       <div class="overflow-auto rounded-lg border border-[rgba(0,102,204,.4)] mb-4">
         <table class="mono w-full text-sm">
           <thead>
-            <tr><th>File</th><th>System</th><th>Size</th><th>Download</th></tr>
+            <tr><th>File</th><th>Platform</th><th>System</th><th>Size</th><th>Download</th></tr>
           </thead>
           <tbody id="installer-table"></tbody>
         </table>
@@ -234,7 +235,7 @@ wake hello.jc</pre>
       <div class="overflow-auto rounded-lg border border-[rgba(0,102,204,.4)] mb-5">
         <table class="mono w-full text-sm">
           <thead>
-            <tr><th>File</th><th>System</th><th>Size</th><th>Download</th></tr>
+            <tr><th>File</th><th>Platform</th><th>System</th><th>Size</th><th>Download</th></tr>
           </thead>
           <tbody id="portable-table"></tbody>
         </table>
@@ -265,8 +266,8 @@ wake hello.jc</pre>
       </div>
     </section>
 
-    <footer class="text-center mt-10">
-      <p class="text-sm muted">© <span id="y"></span> Majify Technologies — Wake Official Release.</p>
+    <footer class="text-center mt-4">
+      <p class="text-sm muted"><em>Wake Official Release</em><br>© <span id="y"></span> Majify Technologies</p>
     </footer>
   </main>
 

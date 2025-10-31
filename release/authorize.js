@@ -105,7 +105,7 @@ container.className = "mono text-center mt-7 mb-5 px-4";
     if (!welcomeEl || !subEl) return;
 
     const titleText = `> Welcome back, ${user}.`;
-    const titleSpeed = 45, subType = 28, subDel = 20, hold = 1200;
+    const titleSpeed = 45, subType = 55, subDel = 35, hold = 1500;
 
     if (welcomeCursor) welcomeCursor.style.visibility = 'visible';
     await typeOut(welcomeEl, titleText, titleSpeed);
