@@ -28,7 +28,7 @@
     tr:last-child td{border-bottom:none;}
 
     /* ===== Boutons harmonisés ===== */
-    a.btn,a.btn-ghost-white,a.btn-inline{display:inline-flex;align-items:center;gap:.5rem;}
+    a.btn,a.btn-ghost-white,a.btn-inline{display:inline-flex;align-items:center;gap:.35rem;}
 
     /* Download / ghost style */
     a.btn{
@@ -58,46 +58,49 @@
 
     /* View on GitHub */
     a.btn-inline{
-      background:rgba(0,102,204,.16);
-      border:1px solid rgba(0,102,204,.36);
-      color:#cfe2ff;
-      font-weight:600;
-      padding:.38rem .85rem;
-      border-radius:.42rem;
+      background:transparent;
+      border:1px solid rgba(0,102,204,.2);
+      color:rgba(207,226,255,.7);
+      font-weight:400;
+      font-size:.8rem;
+      padding:.25rem .5rem;
+      border-radius:.35rem;
       text-decoration:none;
-      transition:background .15s,border-color .15s,color .15s;
+      transition:background .15s,border-color .15s,color .15s,opacity .15s;
       white-space:nowrap;
-      backdrop-filter:blur(2px);
+      backdrop-filter:none;
+      opacity:.75;
     }
-    a.btn-inline:hover{background:rgba(0,102,204,.28);border-color:rgba(0,102,204,.5);color:#e7f1ff;}
+    a.btn-inline:hover{background:rgba(0,102,204,.08);border-color:rgba(0,102,204,.28);color:rgba(207,226,255,.85);opacity:.85;}
     a.btn-inline.with-gh::before{
       content:"";
-      width:16px;height:16px;
+      width:11px;height:11px;
       background:no-repeat center/contain
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cfe2ff'%3E%3Cpath d='M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.1 7.62 10.58.56.1.76-.24.76-.54 0-.26-.01-1.09-.02-1.98-3.1.67-3.76-1.32-3.76-1.32-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15 1 .1.7 1.98 2.87 1.41.1-.75.39-1.26.72-1.55-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 2.83-.38c.96 0 1.93.13 2.83.38 2.16-1.45 3.11-1.15 3.11-1.15.61 1.55.23 2.7.11 2.98.71.78 1.15 1.78 1.15 3 0 4.28-2.61 5.22-5.1 5.49.4.34.76 1.01.76 2.04 0 1.47-.01 2.66-.01 3.02 0 .3.2.65.77.54 4.42-1.48 7.61-5.65 7.61-10.58C23.23 5.46 18.27.5 12 .5Z'/%3E%3C/svg%3E");
-      opacity:.95;
+      opacity:.7;
     }
 
     /* Get Samples */
     a.btn-ghost-white{
       background:transparent;
-      border:1px solid rgba(255,255,255,.34);
-      color:rgba(255,255,255,.85);
-      font-weight:500;
-      padding:.38rem .9rem;
-      border-radius:.42rem;
+      border:1px solid rgba(0,102,204,.2);
+      color:rgba(234,234,234,.7);
+      font-weight:400;
+      font-size:.8rem;
+      padding:.25rem .5rem;
+      border-radius:.35rem;
       text-decoration:none;
       white-space:nowrap;
       transition:background .15s,border-color .15s,color .15s,opacity .15s;
-      opacity:.94;
+      opacity:.75;
     }
-    a.btn-ghost-white:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.52);color:#fff;opacity:1;}
+    a.btn-ghost-white:hover{background:rgba(0,102,204,.08);border-color:rgba(0,102,204,.28);color:rgba(234,234,234,.9);opacity:.85;}
     a.btn-ghost-white.with-dl::before{
       content:"";
-      width:16px;height:16px;
+      width:11px;height:11px;
       background:no-repeat center/contain
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12'/%3E%3Cpath d='M8 11l4 4 4-4'/%3E%3Cpath d='M5 21h14'/%3E%3C/svg%3E");
-      opacity:.95;
+      opacity:.7;
     }
 
     /* ===== Console + overlay ===== */
@@ -116,19 +119,19 @@
     }
     .overlay-group{
       position:absolute;
-      right:.8rem;
-      bottom:.8rem;
+      right:.6rem;
+      bottom:.6rem;
       display:flex;
-      gap:.45rem;
+      gap:.3rem;
       z-index:3;
       align-items:center;
-      background:rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:.55rem;
-      padding:.35rem .45rem;
-      backdrop-filter:blur(2px);
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(0,102,204,.15);
+      border-radius:.35rem;
+      padding:.15rem .25rem;
+      backdrop-filter:none;
     }
-    .overlay-sep{width:1px;height:1.4rem;background:rgba(255,255,255,.1);}
+    .overlay-sep{width:1px;height:.9rem;background:rgba(0,102,204,.18);}
     .code-wrapper::after{
       content:"";
       position:absolute;
