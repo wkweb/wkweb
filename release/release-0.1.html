@@ -24,11 +24,22 @@
     .muted{color:#a9a9a9;}
     table{width:100%;border-collapse:collapse;}
     th,td{padding:.75rem .9rem;border-bottom:1px solid rgba(255,255,255,.08);}
-    th{text-align:left;font-weight:700;color:#9ecaff;background:rgba(0,0,0,.35);}
+    th{text-align:left;font-weight:700;color:rgba(158,202,255,.75);background:rgba(0,0,0,.32);} 
     tr:last-child td{border-bottom:none;}
 
-    /* Subtitles inside cards (e.g., Quick Start with Samples) */
-    .glass-card h3.mono{font-size:.95rem;color:rgba(207,226,255,.82);}
+    /* Header zebra: make even columns slightly lighter */
+    table thead th:nth-child(even){
+    //  background:rgba(255,255,255,.04);
+    }
+    table tbody td:nth-child(2),
+    table tbody td:nth-child(3){
+      color:rgba(234,234,234,.72);
+    }
+
+    /* Subtitles inside cards: hide for compact layout */
+    .glass-card h3.mono{display:none;}
+    /* Reduce spacing where these blocks appear */
+    .glass-card .mt-6{margin-top:.5rem;}
 
     /* ===== Boutons harmonisés ===== */
     a.btn,a.btn-ghost-white,a.btn-inline{display:inline-flex;align-items:center;gap:.35rem;}
@@ -127,12 +138,12 @@
       z-index:3;
       align-items:center;
       background:transparent;
-      border:1px solid rgba(0,102,204,.12);
-      border-radius:.3rem;
-      padding:.1rem .2rem;
+      border:none;
+      border-radius:0;
+      padding:0;
       backdrop-filter:none;
     }
-    .overlay-sep{width:1px;height:.75rem;background:rgba(0,102,204,.16);} 
+    .overlay-sep{display:none;width:0;height:0;background:transparent;}
     .code-wrapper::after{
       content:"";
       position:absolute;
@@ -187,7 +198,7 @@
       <div class="overflow-auto rounded-lg border border-[rgba(0,102,204,.4)] mb-4">
         <table class="mono w-full text-sm">
           <thead>
-            <tr><th>File</th><th>Architecture</th><th>Size</th><th>Download</th></tr>
+            <tr><th>File</th><th>System</th><th>Size</th><th>Download</th></tr>
           </thead>
           <tbody id="installer-table"></tbody>
         </table>
@@ -204,7 +215,9 @@
                href="https://github.com/wake-tools/wake-samples">View on GitHub</a>
           </div>
 
-<pre class="console mono">git clone https://github.com/wake-tools/wake-samples.git
+<pre class="console mono"># Clone and run a sample
+git clone https://github.com/wake-tools/wake-samples.git
+
 cd wake-samples
 wake hello.jc</pre>
         </div>
@@ -221,7 +234,7 @@ wake hello.jc</pre>
       <div class="overflow-auto rounded-lg border border-[rgba(0,102,204,.4)] mb-5">
         <table class="mono w-full text-sm">
           <thead>
-            <tr><th>File</th><th>Architecture</th><th>Size</th><th>Download</th></tr>
+            <tr><th>File</th><th>System</th><th>Size</th><th>Download</th></tr>
           </thead>
           <tbody id="portable-table"></tbody>
         </table>
@@ -260,12 +273,12 @@ wake hello.jc</pre>
   <script>
     const LINKS = {
       installer: [
-        { name: "Wake-Offline-Setup.msi", arch: "x86 + x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi" }
+        { name: "Wake-Offline-Setup.msi", arch: "w32 + w64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi" }
       ],
       portable: [
-        { name: "Wake-Portable-Dual.zip", arch: "x86 + x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip" },
-        { name: "Wake-Portable-x64(Only).zip", arch: "x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip" },
-        { name: "Wake-Portable-x86(Only).zip", arch: "x86", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip" }
+        { name: "Wake-Portable-Dual.zip", arch: "w32 + w64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip" },
+        { name: "Wake-Portable-x64(Only).zip", arch: "w32", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip" },
+        { name: "Wake-Portable-x86(Only).zip", arch: "w32", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip" }
       ]
     };
     document.getElementById('y').textContent = new Date().getFullYear();

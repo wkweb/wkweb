@@ -26,7 +26,7 @@ container.className = "mono text-center mt-7 mb-5 px-4";
     // Message aléatoire
     const msg = messages[Math.floor(Math.random() * messages.length)];
     container.innerHTML = `
-      <p class="text-2xl text-blue-300 font-semibold mb-2">> Welcome back, ${user}.</p>
+      <p class="text-2xl text-blue-300 font-semibold mb-2"><span id="welcome-typed" class="mono"></span></p>
       <p class="text-sm text-gray-400 italic">${msg}</p>
     `;
   } else {
@@ -42,4 +42,22 @@ container.className = "mono text-center mt-7 mb-5 px-4";
   // ---- Insertion juste après le header ----
   const header = document.getElementById("console-strip");
   header.insertAdjacentElement("afterend", container);
+
+  // ---- Typewriter pour "Welcome back, <user>" ----
+  if (user && /^[A-Za-z0-9 _-]{2,32}$/.test(user)) {
+    const target = container.querySelector('#welcome-typed');
+    if (target) {
+      const text = `> Welcome back, ${user}.`;
+      let idx = 0;
+      const speed = 45; // ms/char
+      const type = () => {
+        if (idx <= text.length) {
+          target.textContent = text.slice(0, idx);
+          idx++;
+          setTimeout(type, speed);
+        }
+      };
+      type();
+    }
+  }
 })();
