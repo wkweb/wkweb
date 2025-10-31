@@ -33,22 +33,42 @@
       padding:.6rem 1rem;border-radius:.5rem;text-decoration:none;transition:background .2s;white-space:nowrap;}
     a.btn:hover{background:var(--wake-blue-d);}
 
-    /* Bouton inline original */
-    .btn-inline{
-      background:rgba(0,102,204,.2);
-      border:1px solid rgba(0,102,204,.4);
+    /* Bouton inline bleu (secondaire, atténué) */
+    a.btn-inline{
+      background:rgba(0,102,204,.16);
+      border:1px solid rgba(0,102,204,.36);
       color:#cfe2ff;
       font-weight:600;
-      padding:.4rem .9rem;
-      border-radius:.4rem;
+      padding:.38rem .85rem;
+      border-radius:.42rem;
       text-decoration:none;
-      transition:background .15s;
+      transition:background .15s,border-color .15s,color .15s;
       white-space:nowrap;
-      backdrop-filter:blur(3px);
+      backdrop-filter:blur(2px);
     }
-    .btn-inline:hover{background:rgba(0,102,204,.4);}
+    a.btn-inline:hover{background:rgba(0,102,204,.28);border-color:rgba(0,102,204,.5);color:#e7f1ff;}
 
-    /* Console + overlay fix */
+    /* Ghost blanc SUBTIL (moins intrusif) */
+    a.btn-ghost-white{
+      background:transparent;
+      border:1px solid rgba(255,255,255,.34);
+      color:rgba(255,255,255,.85);
+      font-weight:500;
+      padding:.38rem .9rem;
+      border-radius:.42rem;
+      text-decoration:none;
+      white-space:nowrap;
+      transition:background .15s,border-color .15s,color .15s,opacity .15s;
+      backdrop-filter:none;
+      opacity:.94;
+    }
+    a.btn-ghost-white:hover{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.52);
+      color:#fff; opacity:1;
+    }
+
+    /* Console + overlay */
     .code-wrapper{position:relative;}
     pre.console{
       background:rgba(0,0,0,.55);
@@ -63,26 +83,47 @@
       margin-bottom:0;
     }
 
-    /* Bouton à l'intérieur du cadre (corrigé) */
-    .btn-inline.overlay{
+    /* Capsule d’actions overlay, bas-droite */
+    .overlay-group{
       position:absolute;
-      right:1rem;   /* éloigné légèrement du bord */
-      bottom:1rem;
+      right:.8rem;
+      bottom:.8rem;
+      display:flex;
+      gap:.45rem;
       z-index:3;
-      box-shadow:0 0 10px rgba(0,102,204,.4);
+      align-items:center;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:.55rem;
+      padding:.35rem .45rem;
+      backdrop-filter:blur(2px);
+    }
+    /* Séparateur fin entre les 2 boutons (invisible en mobile s’ils stackent) */
+    .overlay-sep{
+      width:1px;height:1.4rem;background:rgba(255,255,255,.1);
     }
 
-    /* Dégradé discret derrière le bouton pour lisibilité */
+    /* Dégradé discret sous la capsule */
     .code-wrapper::after{
       content:"";
       position:absolute;
-      right:.5rem;
-      bottom:.5rem;
-      width:40%;
+      right:.4rem;
+      bottom:.4rem;
+      width:36%;
       height:2.4rem;
-      background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.8));
-      border-bottom-right-radius:.4rem;
+      background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.78));
+      border-bottom-right-radius:.5rem;
       pointer-events:none;
+    }
+
+    /* Icônes */
+    .ico{display:inline-block;vertical-align:middle;margin-right:.4rem;opacity:.9}
+
+    /* Responsive : capsule qui passe en colonne si écran étroit */
+    @media (max-width:480px){
+      .overlay-group{flex-direction:column;align-items:stretch;padding:.35rem;}
+      .overlay-sep{display:none;}
+      .code-wrapper::after{width:52%;height:3.2rem;}
     }
   </style>
 </head>
@@ -101,12 +142,7 @@
     <h1 class="mono text-2xl md:text-4xl font-bold mb-2">
       <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
     </h1>
-      <p class="text-sm md:text-base muted mt-0.5">Official Installer & Portable Versions</p>
-    <!--  
-    <div class="mt-4 flex flex-col md:flex-row gap-3">
-      <a class="btn" href="#installer">Download Installer</a>
-      <a class="btn" href="#portable">Portable</a>
-    </div>-->
+    <p class="text-sm md:text-base muted mt-0.5">Official Installer & Portable Versions</p>
   </section>
 
   <main class="px-4 pb-24 space-y-12 max-w-5xl mx-auto">
@@ -136,9 +172,26 @@
       <div class="mt-6">
         <h3 class="mono font-bold mb-2">Quick Start with Samples</h3>
         <div class="code-wrapper">
-          <a class="btn-inline overlay" target="_blank" rel="noopener"
-             href="https://github.com/wake-tools/wake-samples">Get Samples on GitHub →</a>
-          <pre class="console mono">git clone https://github.com/wake-tools/wake-samples.git
+          <!-- Capsule overlay : Get Samples (ghost) + View on GitHub (inline) -->
+          <div class="overlay-group">
+            <a class="btn-ghost-white" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Get Samples
+            </a>
+            <span class="overlay-sep"></span>
+            <a class="btn-inline" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.1 7.62 10.58.56.1.76-.24.76-.54 0-.26-.01-1.09-.02-1.98-3.1.67-3.76-1.32-3.76-1.32-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15 1 .1.7 1.98 2.87 1.41.1-.75.39-1.26.72-1.55-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 2.83-.38c.96 0 1.93.13 2.83.38 2.16-1.45 3.11-1.15 3.11-1.15.61 1.55.23 2.7.11 2.98.71.78 1.15 1.78 1.15 3 0 4.28-2.61 5.22-5.1 5.49.4.34.76 1.01.76 2.04 0 1.47-.01 2.66-.01 3.02 0 .3.2.65.77.54 4.42-1.48 7.61-5.65 7.61-10.58C23.23 5.46 18.27.5 12 .5Z"/>
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+
+<pre class="console mono">git clone https://github.com/wake-tools/wake-samples.git
 cd wake-samples
 wake --install
 wake hello.jc</pre>
@@ -165,9 +218,25 @@ wake hello.jc</pre>
       <div class="mt-6">
         <h3 class="mono font-bold mb-2">Run a Sample (Recommended)</h3>
         <div class="code-wrapper">
-          <a class="btn-inline overlay" target="_blank" rel="noopener"
-             href="https://github.com/wake-tools/wake-samples">Get Samples on GitHub →</a>
-          <pre class="console mono"># Go to your Wake directory
+          <div class="overlay-group">
+            <a class="btn-ghost-white" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples/archive/refs/heads/main.zip">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Get Samples
+            </a>
+            <span class="overlay-sep"></span>
+            <a class="btn-inline" target="_blank" rel="noopener"
+               href="https://github.com/wake-tools/wake-samples">
+              <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.1 7.62 10.58.56.1.76-.24.76-.54 0-.26-.01-1.09-.02-1.98-3.1.67-3.76-1.32-3.76-1.32-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.15 1.7 1.15 1 .1.7 1.98 2.87 1.41.1-.75.39-1.26.72-1.55-2.48-.28-5.09-1.24-5.09-5.51 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.11 1.15a10.8 10.8 0 0 1 2.83-.38c.96 0 1.93.13 2.83.38 2.16-1.45 3.11-1.15 3.11-1.15.61 1.55.23 2.7.11 2.98.71.78 1.15 1.78 1.15 3 0 4.28-2.61 5.22-5.1 5.49.4.34.76 1.01.76 2.04 0 1.47-.01 2.66-.01 3.02 0 .3.2.65.77.54 4.42-1.48 7.61-5.65 7.61-10.58C23.23 5.46 18.27.5 12 .5Z"/>
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+
+<pre class="console mono"># Go to your Wake directory
 cd wake
 
 # Register file associations and add Wake to PATH
@@ -187,35 +256,17 @@ wake hello.jc</pre>
   </main>
 
   <script>
-    // Config centrale (la population est gérée par fetchsize.js)
+    // Config centrale (remplie par fetchsize.js)
     const LINKS = {
       installer: [
-        {
-          name: "Wake-Offline-Setup.msi",
-          arch: "x86 + x64",
-          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi"
-        }
+        { name: "Wake-Offline-Setup.msi", arch: "x86 + x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Offline-Setup-x64.msi" }
       ],
       portable: [
-        {
-          name: "Wake-Portable-Dual.zip",
-          arch: "x86 + x64",
-          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip"
-        },
-        {
-          name: "Wake-Portable-x64(Only).zip",
-          arch: "x64",
-          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip"
-        },
-        {
-          name: "Wake-Portable-x86(Only).zip",
-          arch: "x86",
-          url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip"
-        }
+        { name: "Wake-Portable-Dual.zip", arch: "x86 + x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-Dual.zip" },
+        { name: "Wake-Portable-x64(Only).zip", arch: "x64", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x64.zip" },
+        { name: "Wake-Portable-x86(Only).zip", arch: "x86", url: "https://github.com/ORG/REPO/releases/download/vX.Y.Z/Wake-Portable-x86.zip" }
       ]
     };
-
-    // Année dynamique uniquement
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 
