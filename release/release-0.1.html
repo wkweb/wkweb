@@ -27,6 +27,9 @@
     th{text-align:left;font-weight:700;color:#9ecaff;background:rgba(0,0,0,.35);}
     tr:last-child td{border-bottom:none;}
 
+    /* Subtitles inside cards (e.g., Quick Start with Samples) */
+    .glass-card h3.mono{font-size:.95rem;color:rgba(207,226,255,.82);}
+
     /* ===== Boutons harmonisés ===== */
     a.btn,a.btn-ghost-white,a.btn-inline{display:inline-flex;align-items:center;gap:.35rem;}
 
@@ -120,16 +123,16 @@
       right:.6rem;
       bottom:.6rem;
       display:flex;
-      gap:.3rem;
+      gap:.25rem;
       z-index:3;
       align-items:center;
-      background:rgba(0,0,0,.25);
-      border:1px solid rgba(0,102,204,.15);
-      border-radius:.35rem;
-      padding:.15rem .25rem;
+      background:transparent;
+      border:1px solid rgba(0,102,204,.12);
+      border-radius:.3rem;
+      padding:.1rem .2rem;
       backdrop-filter:none;
     }
-    .overlay-sep{width:1px;height:.9rem;background:rgba(0,102,204,.18);}
+    .overlay-sep{width:1px;height:.75rem;background:rgba(0,102,204,.16);} 
     .code-wrapper::after{
       content:"";
       position:absolute;
