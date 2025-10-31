@@ -24,10 +24,13 @@ container.className = "mono text-center mt-7 mb-5 px-4";
 
   if (user && /^[A-Za-z0-9 _-]{2,32}$/.test(user)) {
     // Message aléatoire
-    const msg = messages[Math.floor(Math.random() * messages.length)];
     container.innerHTML = `
-      <p class="text-2xl text-blue-300 font-semibold mb-2"><span id="welcome-typed" class="mono"></span></p>
-      <p class="text-sm text-gray-400 italic">${msg}</p>
+      <p class="text-2xl text-blue-300 font-semibold mb-2">
+        <span id="welcome-typed" class="mono"></span><span id="welcome-cursor" class="cursor">|</span>
+      </p>
+      <p class="text-sm text-gray-400 italic">
+        <span id="subtitle-typed"></span><span id="subtitle-cursor" class="cursor">|</span>
+      </p>
     `;
   } else {
     // Page non autorisée
@@ -43,21 +46,83 @@ container.className = "mono text-center mt-7 mb-5 px-4";
   const header = document.getElementById("console-strip");
   header.insertAdjacentElement("afterend", container);
 
-  // ---- Typewriter pour "Welcome back, <user>" ----
+  // ---- Masquer le curseur du sous-titre au début ----
   if (user && /^[A-Za-z0-9 _-]{2,32}$/.test(user)) {
-    const target = container.querySelector('#welcome-typed');
-    if (target) {
-      const text = `> Welcome back, ${user}.`;
-      let idx = 0;
-      const speed = 45; // ms/char
-      const type = () => {
-        if (idx <= text.length) {
-          target.textContent = text.slice(0, idx);
-          idx++;
-          setTimeout(type, speed);
-        }
-      };
-      type();
+    const subCursor = container.querySelector('#subtitle-cursor');
+    if (subCursor) subCursor.style.visibility = 'hidden';
+  }
+
+  // ---- Style curseur bleu (blink) ----
+  (function ensureCursorStyle(){
+    if (document.getElementById('auth-cursor-style')) return;
+    const style = document.createElement('style');
+    style.id = 'auth-cursor-style';
+    style.textContent = `@keyframes blink{50%{opacity:0}} .cursor{display:inline-block;width:1ch;color:#2196f3;animation:blink 1s step-end infinite}`;
+    document.head.appendChild(style);
+  })();
+
+  // ---- Helpers ----
+  function typeOut(el, text, speed){
+    el.textContent = '';
+    return new Promise(res => {
+      let i = 0;
+      (function tick(){
+        if (i <= text.length){
+          el.textContent = text.slice(0, i);
+          i++;
+          setTimeout(tick, speed);
+        } else res();
+      })();
+    });
+  }
+  function delOut(el, text, speed){
+    return new Promise(res => {
+      (function tick(t){
+        if (t.length){
+          el.textContent = t.slice(0, -1);
+          setTimeout(() => tick(t.slice(0, -1)), speed);
+        } else res();
+      })(text);
+    });
+  }
+  function makePicker(list){
+    let last = -1;
+    return function(){
+      if (!list.length) return '';
+      let i = Math.floor(Math.random()*list.length);
+      if (list.length>1){ while(i===last) i = Math.floor(Math.random()*list.length); }
+      last = i; return list[i];
     }
   }
+
+  // ---- Séquence: titre, puis sous-titre en boucle ----
+  (async function runSequence(){
+    if (!(user && /^[A-Za-z0-9 _-]{2,32}$/.test(user))) return;
+    const welcomeEl = container.querySelector('#welcome-typed');
+    const welcomeCursor = container.querySelector('#welcome-cursor');
+    const subEl = container.querySelector('#subtitle-typed');
+    const subCursor = container.querySelector('#subtitle-cursor');
+    if (!welcomeEl || !subEl) return;
+
+    const titleText = `> Welcome back, ${user}.`;
+    const titleSpeed = 45, subType = 28, subDel = 20, hold = 1200;
+
+    if (welcomeCursor) welcomeCursor.style.visibility = 'visible';
+    await typeOut(welcomeEl, titleText, titleSpeed);
+    if (welcomeCursor) welcomeCursor.style.visibility = 'hidden';
+    
+    // Petite pause avant de "changer de ligne"
+    await new Promise(r => setTimeout(r, 200));
+    
+    if (subCursor) subCursor.style.visibility = 'visible';
+    const pick = makePicker(messages);
+    (async function loop(){
+      const next = pick();
+      await typeOut(subEl, next, subType);
+      await new Promise(r => setTimeout(r, hold));
+      await delOut(subEl, next, subDel);
+      await new Promise(r => setTimeout(r, 250));
+      loop();
+    })();
+  })();
 })();
