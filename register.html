@@ -1,18 +1,18 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-  <title>Wake JIT Engine — Early Access</title>
-  <meta name="description" content="Join the Wake Early Access waiting list to become an early developer. The download link will be released later to selected participants."/>
+  <title>Wake JIT Engine — Preview & Early Access</title>
+  <meta name="description" content="Preview of Wake JIT Engine. Join Early Access to get updates and private access as releases roll out."/>
 
-  <!-- Fonts + Tailwind (same as main page) -->
+  <!-- Fonts + Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap">
 
   <script defer src="version.js"></script>
- 
+
   <style>
     :root { --wake-blue:#0066CC; }
     body { font-family:'Inter',sans-serif; background:#000; color:#EAEAEA; }
@@ -48,44 +48,75 @@
     .status.ok{ color:#25d366; }
     .status.err{ color:#ff6b6b; }
     .hp{ position:absolute; left:-5000px; opacity:0; }
+    .badge {
+      display:inline-flex; align-items:center; gap:.5rem;
+      border:1px solid #0f2439; background:#0B0B0B;
+      padding:.4rem .7rem; border-radius:.6rem; font-size:.85rem;
+    }
+    .dot { width:.5rem; height:.5rem; border-radius:9999px; background:var(--wake-blue); }
+
+    /* Effet couleur progressif uniquement pour la version */
+    .aurora-text {
+      background: linear-gradient(90deg, #3aa0ff, #64d4ff, #3aa0ff);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+              background-clip: text;
+      color: transparent;
+      animation: aurora-move 2.4s linear infinite;
+    }
+    @keyframes aurora-move {
+      0%   { background-position:   0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    section.min-h-\[30vh\] {
+     padding-bottom: 2.0rem !important;
+   }
+
   </style>
 </head>
 <body class="min-h-screen">
 
-  <!-- Visual continuity header -->
+  <!-- Console header -->
   <header id="console-strip" class="w-full">
     <div class="max-w-5xl mx-auto px-4 py-3 text-sm mono text-gray-300">
-      &gt; Wake Runtime — Early Access Console
-      <span class="text-gray-500"> // awaiting developer registrations…</span>
+      &gt; Wake Runtime — Preview Console
+      <span class="text-gray-500"> // preview active — waiting for Early Access registrations...</span>
     </div>
   </header>
 
   <!-- Hero -->
   <section class="min-h-[30vh] flex flex-col justify-center items-center text-center px-4 py-14">
-    <h1 class="mono text-4xl md:text-6xl font-bold mb-4">
+    <h1 class="mono text-4xl md:text-6xl font-bold mb-3">
       <a href="index.html" class="hover:opacity-80 transition duration-200">
         <span class="wake-blue title-outline">WAKE</span>
         <span class="title-outline">JIT ENGINE</span>
       </a>
     </h1>
+
+    <!-- Current version badge -->
+    <div class="badge mono mb-5" aria-label="Current version">
+    
+      <span>Current version:</span>
+      <!-- Seule la version a l'effet couleur progressif -->
+      <strong class="aurora-text">Wake Alpha Preview v0.1</strong>
+    </div>
+
+    <!-- Texte punchy en 3 lignes (exact) -->
     <p class="text-lg md:text-xl max-w-2xl muted">
-      The download link isn’t available yet. Join the waiting list to become an <span class="text-white font-semibold">early developer</span>
-      and receive prioritized access when Early Access opens.
+      <span class="block">You’re about to enter the <span class="text-white font-semibold">Wake Alpha Preview</span></span>
+      <span class="block">The first live JIT engine experience</span><br>
+      <span class="block">Enter your email below to step inside and unlock <span class="text-white font-semibold">Early Access
     </p>
   </section>
 
-
-  <!-- Register Card -->
+  <!-- Early Access Form -->
   <main class="px-4 pb-24">
     <div class="max-w-xl mx-auto glass-card rounded-xl p-6 md:p-8">
-      <h2 class="mono text-2xl font-bold mb-2">Early Access</h2>
+      <h2 class="mono text-2xl font-bold mb-2">Request Early Access</h2>
       <p class="muted mb-6">
-        Enter your email to join. We’ll notify you when downloads roll out, along with insider updates.
+        Join the Early Access list to receive invites, release notes, and the private link when the build goes live.
       </p>
 
-      <!-- Progressive enhancement:
-           - No JS: classic urlencoded POST to the endpoint.
-           - With JS: intercept + fetch JSON to the same endpoint. -->
       <form id="wakeForm" action="/subscribe" method="post" novalidate>
         <label for="email" class="block font-semibold mb-2">Email</label>
         <input id="email" name="email" type="email" autocomplete="email"
@@ -95,7 +126,7 @@
         <div class="flex items-start gap-3 mb-1">
           <input id="consent" name="consent" type="checkbox" required class="mt-[6px]">
           <label for="consent" class="font-normal text-sm muted">
-            I agree to receive Early Access emails from Wake (one-click unsubscribe anytime).
+            I agree to receive Early Access invitations and updates from Wake.
           </label>
         </div>
 
@@ -105,26 +136,22 @@
           <input id="website" name="website" type="text" tabindex="-1" autocomplete="off"/>
         </div>
 
-        <!-- Optional Turnstile can be injected later -->
+        <!-- Optional Turnstile -->
         <div id="turnstile-box" class="mt-3"></div>
 
         <button id="submitBtn" type="submit" disabled
                 class="mt-5 inline-flex items-center justify-center bg-wake-blue hover-bg-wake-blue text-white font-semibold px-5 py-3 rounded-lg transition opacity-50 cursor-not-allowed">
-          Join the Waiting List
+          Join Early Access
         </button>
 
         <div id="status" class="status" role="status" aria-live="polite"></div>
 
         <p class="small-note mt-3">
-          You’re signing up for Early Access updates. The download link will be sent later to selected early developers.
+          No spam, no trackers. Unsubscribe anytime.
         </p>
 
-        <div class="border-t border-gray-800 mt-6 pt-6 small-note">
-          You can unsubscribe anytime from any email. No spam, no trackers.
-        </div>
-
         <noscript class="text-red-400 mt-2 block">
-          JavaScript is disabled. The form will still submit, but you won't see inline status messages.
+          JavaScript is disabled. The form will still submit, but you won’t see inline messages.
         </noscript>
       </form>
     </div>
@@ -132,39 +159,30 @@
     <!-- Footer -->
     <footer class="text-center mt-10">
       <p class="text-sm muted">
-        © <span id="y"></span> Majify Technologies — Wake Early Access Program.
+        © <span id="y"></span> Majify Technologies — Wake Preview & Early Access.
       </p>
     </footer>
   </main>
 
   <script>
   (function(){
-    // ===== CONFIG =====
     // While your Worker is only on workers.dev:
     const ACTION_URL = "https://wake-ea.waketools-dev.workers.dev/subscribe";
-    // After you add a Cloudflare Worker Route on your domain, switch to:
-    // const ACTION_URL = "/subscribe";
+    // After routing on your domain, switch to: const ACTION_URL = "/subscribe";
+    const TURNSTILE_SITE_KEY = "";
 
-    // Optional Turnstile site key (leave empty "" to hide widget here)
-    const TURNSTILE_SITE_KEY = ""; // e.g. "0x4AAAAA...."
-
-    // ===== INIT =====
     document.getElementById('y').textContent = new Date().getFullYear();
     const form = document.getElementById('wakeForm');
     const btn  = document.getElementById('submitBtn');
     const consent = document.getElementById('consent');
     const statusEl = document.getElementById('status');
-
-    // Force the action to the Worker endpoint
     form.action = ACTION_URL;
 
-    // Optionally render Turnstile if you set a site key (not required)
     if (TURNSTILE_SITE_KEY) {
       const s = document.createElement('script');
       s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
       s.async = true; s.defer = true;
       document.head.appendChild(s);
-
       const box = document.getElementById('turnstile-box');
       const div = document.createElement('div');
       div.className = 'cf-turnstile';
@@ -172,7 +190,6 @@
       box.appendChild(div);
     }
 
-    // ===== Enable/disable button based on consent checkbox =====
     function updateButtonState() {
       if (consent.checked) {
         btn.disabled = false;
@@ -185,27 +202,22 @@
     consent.addEventListener('change', updateButtonState);
     updateButtonState();
 
-    // ===== Status helper =====
     function setStatus(msg, ok){
       statusEl.textContent = msg || '';
       statusEl.className = 'status ' + (ok===true ? 'ok' : ok===false ? 'err' : '');
     }
 
-    // ===== Submit handler =====
     form.addEventListener('submit', async (e) => {
       if (window.fetch) {
         e.preventDefault();
         setStatus('');
-
         if (!form.email.value || !form.email.checkValidity()) {
           setStatus('Enter a valid email.', false); return;
         }
         if (!form.consent.checked) {
-          setStatus('Please accept Early Access emails to proceed.', false); return;
+          setStatus('Please confirm consent.', false); return;
         }
-        if (form.website.value) { // honeypot
-          setStatus('Blocked (bot detected).', false); return;
-        }
+        if (form.website.value) { setStatus('Blocked (bot detected).', false); return; }
 
         btn.disabled = true;
         btn.textContent = 'Sending…';
@@ -223,39 +235,27 @@
           });
 
           let ok = res.ok;
-          let msg = 'You’re on the waiting list. We’ll email you when Early Access downloads open.';
-          let directUrl = '';
-
+          let msg = 'You’re now registered for the Wake Early Access preview.';
           const ct = res.headers.get('content-type') || '';
           if (ct.includes('application/json')) {
             const data = await res.json().catch(()=>({}));
             ok = ('ok' in data) ? !!data.ok : res.ok;
             msg = (data.message || msg);
-            directUrl = data.directUrl || '';
-          } else {
-            const txt = await res.text();
-            if (txt) msg = txt;
           }
-
           if (ok) {
             setStatus(msg, true);
-            if (directUrl) {
-              statusEl.innerHTML = `Download ready: <a class="underline text-white" href="${directUrl}">click here</a>.`;
-              statusEl.className = 'status ok';
-            }
             form.reset();
             updateButtonState();
           } else {
-            setStatus(msg || 'Error. Please try again in a moment.', false);
+            setStatus(msg || 'Error. Please try again.', false);
           }
         } catch(err){
           setStatus('Network error. Please try again.', false);
         } finally {
-          btn.textContent = 'Join the Waiting List';
+          btn.textContent = 'Join Early Access';
           updateButtonState();
         }
       }
-      // Without JS, the browser will do a classic urlencoded POST to ACTION_URL
     });
   })();
   </script>

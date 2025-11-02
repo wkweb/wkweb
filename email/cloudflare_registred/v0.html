@@ -1,0 +1,97 @@
+  <!doctype html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
+    <title>Wake — Early Access</title>
+    <style>
+      /* Fallback for clients that support <style> in head */
+      @media (prefers-color-scheme: dark) {
+        .bg-dark { background: #000000 !important; }
+        .text { color: #EAEAEA !important; }
+        .muted { color: #A9A9A9 !important; }
+        .card  { background: #0B0B0B !important; border-color: ${blue} !important; }
+        .btn   { background: ${blue} !important; color: #ffffff !important; }
+      }
+      a { color: ${blue}; text-decoration: none; }
+    </style>
+  </head>
+  <body class="bg-dark" style="margin:0;padding:0;background:#000000;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000000;">
+      <tr>
+        <td align="center" style="padding:24px;">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+            <!-- Header -->
+            <tr>
+              <td align="center" style="padding:8px 0 18px 0;">
+                <div style="font-family: 'Inter', -apple-system, Segoe UI, Roboto, Arial, sans-serif; font-size:26px; font-weight:700; color:#EAEAEA; line-height:1.2;">
+                  <span style="color:${blue}; text-shadow:-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;">WAKE</span>
+                  <span style="text-shadow:-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;">JIT ENGINE</span>
+                </div>
+                <div style="font-family:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size:12px; color:#9aa0a6;">
+                  The Power of a Live Engine
+                </div>
+              </td>
+            </tr>
+
+            <!-- Card -->
+            <tr>
+              <td class="card" style="border:1px solid ${blue}; background:#0B0B0B; border-radius:12px; overflow:hidden;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding:22px 22px 8px 22px; font-family: 'Inter', -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#EAEAEA; font-size:16px;">
+                      <div style="font-weight:600; font-size:18px; margin-bottom:8px;">Hi ${safeFirst} 👋</div>
+                      <div class="text" style="color:#EAEAEA;">
+                        You're now on the <b>Wake Early Access</b> waiting list.
+                        We’ll notify you by email as downloads roll out.
+                      </div>
+                      <div class="muted" style="color:#A9A9A9; font-size:13px; margin-top:10px;">
+                        Tip: check your <b>spam folder</b> and mark us as safe to ensure you don’t miss the invite.
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- CTA row -->
+                  <tr>
+                    <td align="center" style="padding:12px 22px 6px 22px;">
+                      <a class="btn" href="${siteUrl || '#'}" target="_blank"
+                         style="display:inline-block; background:${blue}; color:#ffffff; font-family:'Inter', -apple-system, Segoe UI, Roboto, Arial, sans-serif; font-weight:600; padding:12px 18px; border-radius:10px;">
+                        Learn more on the site
+                      </a>
+                    </td>
+                  </tr>
+
+                  <!-- Links -->
+                  <tr>
+                    <td align="center" style="padding:6px 22px 18px 22px; font-family:'Inter', -apple-system, Segoe UI, Roboto, Arial, sans-serif;">
+                      <div style="font-size:13px;color:#9aa0a6;">
+                        Follow progress:
+                        <a href="${youtubeUrl}" target="_blank" style="color:${blue};">YouTube</a>
+                        &nbsp;•&nbsp;
+                        <a href="${discordUrl}" target="_blank" style="color:${blue};">Discord</a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td align="center" style="padding:14px 8px 0 8px;">
+                <div style="font-family:'Inter', -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#9aa0a6; font-size:12px;">
+                  © ${new Date().getFullYear()} Majify Technologies — Wake Early Access.
+                </div>
+                <div style="font-family:'Inter', -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#666; font-size:11px; padding-top:6px;">
+                  No trackers. No analytics. Just execution.
+                </div>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+  </html>
