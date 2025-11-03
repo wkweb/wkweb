@@ -47,7 +47,7 @@ container.className = "mono text-center mt-7 mb-5 px-4";
   header.insertAdjacentElement("afterend", container);
 
   // ---- Masquer le curseur du sous-titre au début ----
-  if (user && /^[A-Za-z0-9 _-]{2,32}$/.test(user)) {
+  if (user && /^[A-Za-z0-9 _-]{1,32}$/.test(user)) {
     const subCursor = container.querySelector('#subtitle-cursor');
     if (subCursor) subCursor.style.visibility = 'hidden';
   }
@@ -97,7 +97,7 @@ container.className = "mono text-center mt-7 mb-5 px-4";
 
   // ---- Séquence: titre, puis sous-titre en boucle ----
   (async function runSequence(){
-    if (!(user && /^[A-Za-z0-9 _-]{2,32}$/.test(user))) return;
+    if (!(user && /^[A-Za-z0-9 _-]{1,32}$/.test(user))) return;
     const welcomeEl = container.querySelector('#welcome-typed');
     const welcomeCursor = container.querySelector('#welcome-cursor');
     const subEl = container.querySelector('#subtitle-typed');
