@@ -22,7 +22,7 @@
 container.className = "mono text-center mt-7 mb-5 px-4";
 
 
-  if (user && /^[A-Za-z0-9 _-]{2,32}$/.test(user)) {
+  if (user && /^[A-Za-z0-9 _-]{1,32}$/.test(user)) {
     // Message aléatoire
     container.innerHTML = `
       <p class="text-2xl text-blue-300 font-semibold mb-2">
