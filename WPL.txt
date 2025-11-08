@@ -1,7 +1,7 @@
-Wake Public License v1.0 (WPL-1.0)
-Version 1.0 - October 2025
-(c) 2025 Majify Technologies Inc. All rights reserved.
-SPDX-License-Identifier: WPL-1.0
+Wake Public License v1.1 (WPL-1.1)
+Version 1.1 – November 2025
+© 2025 Majify Technologies Inc. All rights reserved.
+SPDX-License-Identifier: WPL-1.1
 
 -------------------------------------------------------------------------------
 1. DEFINITIONS
@@ -29,7 +29,7 @@ interfaces, or JIT runtime without incorporating Wake's source code or
 binary components.
 
 -------------------------------------------------------------------------------
-2. LICENSE GRANT - PERSONAL & EDUCATIONAL USE
+2. LICENSE GRANT – PERSONAL & EDUCATIONAL USE
 -------------------------------------------------------------------------------
 Majify Technologies Inc. grants you a worldwide, royalty-free, non-exclusive,
 non-transferable license to use Wake and its official libraries for
@@ -107,6 +107,12 @@ recognized as official.
 You may not alter or redistribute Wake binaries, headers, or manifests in a way
 that bypasses or falsifies these security checks.
 
+Security Disclaimer:
+While Wake implements digital signing and verification mechanisms, no software
+system can guarantee absolute protection against malicious code or
+vulnerabilities. By using Wake, you acknowledge these inherent risks and agree
+to use Wake at your own discretion.
+
 -------------------------------------------------------------------------------
 6. OPEN-SOURCE COMPATIBILITY
 -------------------------------------------------------------------------------
@@ -125,6 +131,12 @@ In no event shall Majify Technologies Inc. or its affiliates be liable for any
 claim, damages, or other liability arising from the use or inability to use
 Wake or its components.
 
+Third-Party Code Disclaimer:
+Majify Technologies Inc. is not responsible for third-party scripts, modules,
+or code executed through the Wake runtime. Users are solely responsible for
+verifying the origin, integrity, and safety of any `.jc` or `.wpkg` files they
+choose to execute.
+
 -------------------------------------------------------------------------------
 8. TERMINATION
 -------------------------------------------------------------------------------
@@ -133,6 +145,12 @@ Upon termination, you must cease all use of Wake and destroy all copies.
 
 Majify Technologies Inc. reserves the right to revoke licenses or access keys
 if fraudulent, abusive, or unauthorized use is detected.
+
+User Responsibility:
+Users agree not to use Wake to develop, distribute, or execute malicious,
+harmful, or unauthorized code, including but not limited to malware, exploits,
+or data exfiltration tools. Majify Technologies Inc. reserves the right to
+suspend or revoke access in such cases.
 
 -------------------------------------------------------------------------------
 9. GOVERNING LAW
@@ -146,9 +164,8 @@ exclusive jurisdiction of the courts located in Quebec City, Canada.
 10. LICENSE UPDATES
 -------------------------------------------------------------------------------
 Majify Technologies Inc. may publish updated versions of this License from time
-to time.
-Continued use of Wake after publication of an updated version constitutes
-acceptance of the revised terms.
+to time. Continued use of Wake after publication of an updated version
+constitutes acceptance of the revised terms.
 
 -------------------------------------------------------------------------------
 11. CONTACT
@@ -159,10 +176,12 @@ https://majify.tech
 business@majify.tech
 
 -------------------------------------------------------------------------------
-SUMMARY
+12. SUMMARY
 -------------------------------------------------------------------------------
 - Free for personal, educational, and small-team use (<5 employees OR <500k USD)
 - Commercial use beyond this threshold requires a Majify Commercial License
 - No redistribution, resale, or reverse engineering
 - Official builds and modules are signed and verified
+- Wake cannot guarantee absolute security against malicious code; users are
+  responsible for verifying third-party scripts
 - Governed by Quebec law
