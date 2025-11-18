@@ -6,182 +6,164 @@ SPDX-License-Identifier: WPL-1.1
 -------------------------------------------------------------------------------
 1. DEFINITIONS
 -------------------------------------------------------------------------------
-"Wake" refers to the Wake Runtime, JIT Engine, associated runtime components
-and modules (including but not limited to .dll, .so, .a, .lib, .sm, .wpkg, .jc,
-and any other Wake-specific formats), tools, headers, and all related software
-distributed by Majify Technologies Inc.
+"Wake" refers to the Wake Runtime, JIT Engine, associated components and
+modules (including but not limited to .dll, .so, .a, .lib, .sm, .wpkg, .jc,
+and any other Wake-specific formats), tools, headers, build systems, and all
+related software distributed by Majify Technologies Inc.
 
-"Majify" refers to Majify Technologies Inc., the copyright holder and
-exclusive licensor of Wake and its components.
+"Majify" refers to Majify Technologies Inc., the copyright holder and exclusive
+licensor of Wake.
 
 "Personal or Educational Use" means use by an individual for personal learning,
-research, experimentation, or internal development not involving any
-commercial, revenue-generating, or business activity.
+research, hobby development, experimentation, or internal training, not tied
+to any revenue-generating or business operations.
 
-"Commercial Use" means any use of Wake or its components in connection with
-a paid product, service, or internal business operation that generates or
-intends to generate revenue, directly or indirectly.
+"Commercial Use" means any use of Wake in connection with a product, service,
+tool, studio pipeline, or internal business activity that generates — or is
+intended to generate — revenue, directly or indirectly. This includes prototypes
+intended for commercial release.
 
-"Derivative Work" means any modification, integration, adaptation, or
-extension of Wake or its components, whether distributed or not.
-Derivative Work excludes works that merely use Wake's public APIs, scripting
-interfaces, or JIT runtime without incorporating Wake's source code or
-binary components.
+"Enterprise Use" means use of Wake by any organization with five (5) or more
+employees OR annual gross revenue of USD 500,000 or more, regardless of the
+project scale.
+
+"Derivative Work" means any modification, adaptation, port, or integration of
+Wake or its components. This does not include applications that merely use
+Wake's public APIs or JIT runtime without incorporating Wake's source or
+binary code.
 
 -------------------------------------------------------------------------------
-2. LICENSE GRANT – PERSONAL & EDUCATIONAL USE
+2. LICENSE GRANT – PERSONAL & EDUCATIONAL USE (FREE)
 -------------------------------------------------------------------------------
-Majify Technologies Inc. grants you a worldwide, royalty-free, non-exclusive,
-non-transferable license to use Wake and its official libraries for
-Personal or Educational Use, subject to the restrictions below.
+Majify grants you a worldwide, royalty-free, non-exclusive license to install
+and use Wake for Personal or Educational Use.
 
 You may:
-- Install and use Wake on your personal computer or test environment;
-- Create and test your own applications using the Wake runtime;
-- Share screenshots, videos, or research findings using Wake for educational
-  or non-commercial demonstration purposes.
+- Use Wake on your personal computer or lab environments;
+- Develop applications, demos, research, prototypes, and creative experiments;
+- Publish screenshots, videos, academic results, or non-commercial prototypes;
+- Share Wake-based content as long as no Wake binaries are redistributed.
 
 You may NOT:
-- Distribute or sell any product, module, or service that embeds, wraps, or
-  relies on Wake or its libraries for commercial purposes;
-- Redistribute the Wake binaries (.exe, .dll, .so, .lib) or any part thereof;
-- Circumvent, remove, or alter any signature, verification, licensing, or
-  security mechanism built into Wake;
-- Reverse engineer, disassemble, or attempt to extract any private keys,
-  tokens, or proprietary code from Wake or its components.
+- Distribute Wake binaries (.exe, .dll, .so, .lib) or modified versions;
+- Sell any product, tool, or service that embeds, links, loads, bundles, or
+  relies on Wake;
+- Create a competing engine, framework, or runtime derived from Wake;
+- Bypass, remove, or tamper with Wake’s signature, verification, or security;
+- Reverse engineer Wake’s signing keys or proprietary components.
 
 -------------------------------------------------------------------------------
-3. COMMERCIAL USE AND FAIR THRESHOLD
+3. COMMERCIAL USE – FUTURE REQUIREMENT NOTICE
 -------------------------------------------------------------------------------
-Wake is free for individuals, students, and small independent teams defined as
-organizations with fewer than five (5) full-time employees and less than
-USD 500,000 in annual gross revenue derived from projects using Wake.
+Wake is currently free for small creators and independent developers.
+A dedicated Commercial License for revenue-generating projects will be
+introduced in a future version of Wake.
 
-A valid Commercial License Agreement with Majify Technologies Inc. is required
-if either of these thresholds is exceeded.
+Until that update:
+- Small independent developers (<5 employees AND <500k USD/year) may prototype
+  non-commercially.
+- Any revenue-generating release must wait for Wake’s official commercial
+  licensing terms OR contact Majify for pre-release licensing.
 
-This includes, but is not limited to:
-- Products, software, or services sold for profit;
-- Internal enterprise applications used for production or client delivery;
-- Integration of Wake into any hardware or system sold commercially;
-- Distribution of Wake-powered applications through app stores, SaaS
-  platforms, or digital marketplaces.
+This ensures fairness: individuals can experiment freely, while commercial
+adoption is controlled and licensed appropriately when the engine matures.
 
-This Fair Threshold aims to maintain fairness: independent creators keep
-free access, while larger organizations contribute to sustaining the
-development of Wake.
+-------------------------------------------------------------------------------
+4. ENTERPRISE USE (REQUIRES LICENSE NOW)
+-------------------------------------------------------------------------------
+Any Enterprise Use (5+ employees OR 500k+ USD annual revenue) requires a valid
+Commercial License with Majify Technologies Inc. — effective immediately.
 
-To obtain a commercial license:
+Enterprise Use includes:
+- Internal tools, automation pipelines, dashboards, visualization systems;
+- Commercial hardware/software integration;
+- Studio workflows, production tools, XR/VR pipelines, or rendering systems;
+- Products distributed through app stores, Steam, SaaS platforms, or any
+  revenue-generating channel.
+
+To obtain a license:
 https://wake.tools/license
 licensing@majify.tech
 
-Commercial license terms may include per-seat, per-device, per-module, or
-revenue-share models depending on usage and integration level.
-
 -------------------------------------------------------------------------------
-4. OWNERSHIP AND INTELLECTUAL PROPERTY
+5. OWNERSHIP AND INTELLECTUAL PROPERTY
 -------------------------------------------------------------------------------
-Wake and all associated components are the exclusive property of
-Majify Technologies Inc. This license does not transfer ownership.
+Wake and all associated components remain the exclusive property of Majify.
+No ownership rights are transferred.
 
-Any feedback, ideas, or code contributions that you voluntarily submit directly
-to the Wake project (such as pull requests, issue reports, or documentation
-edits) may be used by Majify Technologies Inc. for any purpose under a
-perpetual, worldwide, royalty-free license, without transferring ownership
-and without obligation of compensation.
+Voluntary feedback or contributions (issues, pull requests, documentation)
+grant Majify a perpetual, worldwide, royalty-free license to use them.
 
-This clause does not apply to independently developed modules, plugins, or
-projects released under your own license, even if they interact with Wake
-through its public APIs.
+This does NOT apply to independent modules, tools, or apps that interact with
+Wake solely through public APIs.
 
-Trademarks "Wake", "Wake JIT Engine", "Majify", and related logos are
+Trademarks “Wake”, “Wake JIT Engine”, “Majify”, and related logos are
 registered or pending trademarks of Majify Technologies Inc.
 
 -------------------------------------------------------------------------------
-5. SECURITY AND SIGNING
+6. SECURITY, SIGNING, AND REDISTRIBUTION
 -------------------------------------------------------------------------------
-Wake binaries and modules use digital signing (Ed25519) to verify integrity and
-authenticity. Only modules signed by Majify or authorized partners are
-recognized as official.
+Official Wake modules use Ed25519 signing. Only modules signed by Majify or
+authorized partners are recognized.
 
-You may not alter or redistribute Wake binaries, headers, or manifests in a way
-that bypasses or falsifies these security checks.
+You may not:
+- Redistribute Wake binaries;
+- Distribute modified binaries or manifests;
+- Circumvent signature verification.
 
-Security Disclaimer:
-While Wake implements digital signing and verification mechanisms, no software
-system can guarantee absolute protection against malicious code or
-vulnerabilities. By using Wake, you acknowledge these inherent risks and agree
-to use Wake at your own discretion.
-
--------------------------------------------------------------------------------
-6. OPEN-SOURCE COMPATIBILITY
--------------------------------------------------------------------------------
-Open-source projects distributed under OSI-approved licenses may use Wake for
-development, testing, or demonstration purposes, provided no commercial
-distribution occurs and Wake itself is not redistributed.
+Users acknowledge that no software provides perfect protection against malicious
+scripts or third-party code. You are responsible for verifying any `.jc`,
+`.sm`, or `.wpkg` file executed through Wake.
 
 -------------------------------------------------------------------------------
-7. LIMITATION OF LIABILITY
+7. OPEN-SOURCE COMPATIBILITY
 -------------------------------------------------------------------------------
-Wake is provided "AS IS" without warranty of any kind, express or implied,
-including but not limited to warranties of merchantability, fitness for a
-particular purpose, and non-infringement.
-
-In no event shall Majify Technologies Inc. or its affiliates be liable for any
-claim, damages, or other liability arising from the use or inability to use
-Wake or its components.
-
-Third-Party Code Disclaimer:
-Majify Technologies Inc. is not responsible for third-party scripts, modules,
-or code executed through the Wake runtime. Users are solely responsible for
-verifying the origin, integrity, and safety of any `.jc` or `.wpkg` files they
-choose to execute.
+Open-source projects under OSI-approved licenses may use Wake for development
+and non-commercial distribution, provided that:
+- Wake itself is not redistributed, and
+- no commercial revenue is generated.
 
 -------------------------------------------------------------------------------
-8. TERMINATION
+8. LIMITATION OF LIABILITY
 -------------------------------------------------------------------------------
-Any breach of this License immediately terminates your rights under it.
-Upon termination, you must cease all use of Wake and destroy all copies.
+Wake is provided “AS IS”, without warranties of any kind. Majify shall not be
+liable for any damages arising from the use or inability to use Wake.
 
-Majify Technologies Inc. reserves the right to revoke licenses or access keys
-if fraudulent, abusive, or unauthorized use is detected.
-
-User Responsibility:
-Users agree not to use Wake to develop, distribute, or execute malicious,
-harmful, or unauthorized code, including but not limited to malware, exploits,
-or data exfiltration tools. Majify Technologies Inc. reserves the right to
-suspend or revoke access in such cases.
+Third-party modules, scripts, shaders, AI models, or packages executed by Wake
+are the sole responsibility of the user.
 
 -------------------------------------------------------------------------------
-9. GOVERNING LAW
+9. TERMINATION
 -------------------------------------------------------------------------------
-This License shall be governed by and construed in accordance with the laws of
-the Province of Quebec, Canada.
-Any disputes arising from or related to this License shall be subject to the
-exclusive jurisdiction of the courts located in Quebec City, Canada.
+Any violation of this License immediately terminates your rights. You must
+cease use and destroy all copies.
+
+Majify reserves the right to revoke keys or licenses in cases of fraudulent,
+abusive, harmful, or unauthorized use.
+
+Wake may not be used to create or distribute malware, exploits, or harmful
+software.
 
 -------------------------------------------------------------------------------
-10. LICENSE UPDATES
+10. GOVERNING LAW
 -------------------------------------------------------------------------------
-Majify Technologies Inc. may publish updated versions of this License from time
-to time. Continued use of Wake after publication of an updated version
-constitutes acceptance of the revised terms.
+This License is governed by the laws of the Province of Quebec, Canada.
+Exclusive jurisdiction: courts located in Quebec City, Canada.
 
 -------------------------------------------------------------------------------
-11. CONTACT
+11. LICENSE UPDATES
 -------------------------------------------------------------------------------
-Majify Technologies Inc.
-Quebec City, QC, Canada
-https://majify.tech
-business@majify.tech
+Majify may publish updated versions of this License. Continued use constitutes
+acceptance of updated terms.
 
 -------------------------------------------------------------------------------
 12. SUMMARY
 -------------------------------------------------------------------------------
-- Free for personal, educational, and small-team use (<5 employees OR <500k USD)
-- Commercial use beyond this threshold requires a Majify Commercial License
-- No redistribution, resale, or reverse engineering
-- Official builds and modules are signed and verified
-- Wake cannot guarantee absolute security against malicious code; users are
-  responsible for verifying third-party scripts
-- Governed by Quebec law
+- Free for personal, educational, and small-team non-commercial use.
+- Enterprise use requires a Majify Commercial License now.
+- Commercial use for small teams will require a license in a future version.
+- No redistribution or reverse engineering of Wake binaries.
+- Official modules must remain signed and verified.
+- Governed by Quebec law.
+
+END OF LICENSE
