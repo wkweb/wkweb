@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Wake — Licensing</title>
-  <meta name="description" content="Wake is free for individuals and small teams. Only large organizations need a commercial license."/>
+  <meta name="description" content="Wake is free for personal, educational, and small-team non-commercial use. Indie commercial licensing is coming soon. Enterprise use requires a commercial license."/>
 
   <!-- Fonts + Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -91,41 +91,60 @@
       <span class="wake-blue title-outline">WAKE</span> <span class="title-outline">JIT ENGINE</span>
     </h1>
     <p class="text-lg md:text-xl max-w-2xl muted">
-      <span class="text-white font-semibold">Projects built with Wake are free to ship.</span><br>
-      Only large organizations need a commercial license.
+      <span class="text-white font-semibold">Free for personal, educational, and small-team non-commercial use.</span><br>
+      Indie commercial licensing is coming soon. Enterprise use requires a license today.
     </p>
   </section>
 
   <main class="px-4 pb-24 space-y-10">
-    <!-- Free tier -->
+
+    <!-- Free Tier -->
     <div class="max-w-xl mx-auto glass-card rounded-xl p-6 md:p-8 text-center">
-      <h2 class="mono text-2xl font-bold mb-3 text-green-400">Free Tier — For Everyone</h2>
+      <h2 class="mono text-2xl font-bold mb-3 text-green-400">Free Tier</h2>
       <p class="muted mb-4">
-        <span class="text-white font-semibold">Individuals and small teams:</span><br>
-        Build, sell, and distribute your Wake-powered projects freely.<br>
-        No royalties. No fees. Just create.
+        <span class="text-white font-semibold">For individuals and small teams:</span><br>
+        Use Wake freely for learning, research, open-source, hobby development, and prototyping.<br>
+        As long as no revenue is generated and Wake binaries are not redistributed.
       </p>
       <p class="text-sm text-gray-500 italic">
-        Includes open-source, indie, educational, and experimental use.
+        Start building today. No fees. No obligations.
       </p>
     </div>
 
-    <!-- Business tier -->
+    <!-- Indie Tier (cyan soft) -->
     <div class="max-w-xl mx-auto glass-card rounded-xl p-6 md:p-8 text-center">
-      <h2 class="mono text-2xl font-bold mb-3 text-blue-400">Business Tier — For Companies</h2>
+      <h2 class="mono text-2xl font-bold mb-3" style="color:#66D6FF">Indie Tier</h2>
+      <p class="muted mb-4">
+        <span class="text-white font-semibold">For small teams preparing a commercial release:</span><br>
+        Prototype freely today. A dedicated indie commercial license will be introduced in a future Wake release.<br>
+        No fees during development.
+      </p>
+      <p class="text-sm text-gray-500 italic">
+        Want early access or pre-release licensing? We’d be happy to discuss.
+      </p>
+
+      <a href="mailto:licensing@majify.tech"
+         class="inline-flex items-center justify-center bg-wake-blue hover-bg-wake-blue text-white font-semibold px-6 py-3 mt-4 rounded-lg transition">
+        licensing@majify.tech
+      </a>
+    </div>
+
+    <!-- Enterprise Tier -->
+    <div class="max-w-xl mx-auto glass-card rounded-xl p-6 md:p-8 text-center">
+      <h2 class="mono text-2xl font-bold mb-3 text-blue-400">Enterprise Tier</h2>
       <p class="muted mb-6">
         A <span class="text-white font-semibold">commercial license</span> is required if your organization has<br>
         <span class="text-white">5+ employees</span> <span class="text-gray-500">or</span>
         <span class="text-white">&ge; USD&nbsp;500,000/year</span> in revenue.
       </p>
 
-      <a href="mailto:license@majify.tech"
+      <a href="mailto:licensing@majify.tech"
          class="inline-flex items-center justify-center bg-wake-blue hover-bg-wake-blue text-white font-semibold px-6 py-3 rounded-lg transition">
-        license@majify.tech
+        licensing@majify.tech
       </a>
 
       <p class="text-sm muted mt-6">
-        Our team will send the proper agreement and pricing options for your company.
+        Our team will provide the proper agreement and pricing options for your needs.
       </p>
     </div>
 
@@ -141,7 +160,6 @@
       <pre id="license-text" class="license mono">Loading WPL.txt…</pre>
     </div>
 
-    <!-- Footer -->
     <footer class="text-center mt-10">
       <p class="text-sm muted">© <span id="y"></span> Majify Technologies — Wake Licensing Portal.</p>
     </footer>
